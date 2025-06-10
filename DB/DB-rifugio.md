@@ -7,26 +7,27 @@
 
 ## AnagraficaAnimali
 
-- idAnimale (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- specie (INT NOT NULL)
-- razza (INT)
-- sesso (CHAR NOT NULL)
-- data_nascita (DATE)
-- descrizione (TEXT)
+- IdAnimale (PRIMARY KEY AUTO INCREMENT NOT NULL)
+- Specie (INT NOT NULL)
+- Razza (INT)
+- Sesso (CHAR NOT NULL)
+- DataNascita (DATE)
+- Descrizione (TEXT)
 
 ## Donazioni 
 
-- idDonazione (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- importo (FLOAT NOT NULL)
-- idPersona (INT)
-- dataDonazione (DATE NOT NULL)
+- IdDonazione (PRIMARY KEY AUTO INCREMENT NOT NULL)
+- Importo (FLOAT NOT NULL)
+- IdPersona (INT)
+- DataDonazione (DATE NOT NULL)
+- Descrizione (VARCHAR 200)
 
 ## Adozioni
 
 - idAdozione (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- data (DATE NOT NULL)
 - idAnimale (INT NOT NULL)
 - idPersona (INT NOT NULL)
+- dataAdozione (DATE NOT FULL)
 
 ## VisiteVeterinarie
 
@@ -34,7 +35,7 @@
 - dataVisita (DATE NOT NULL)
 - idAnimale (INT NOT NULL)
 
-## Persone
+## Utenti
 
 - idPersona (PRIMARY KEY AUTO INCREMENT NOT NULL)
 - nome (TEXT NOT NULL)
