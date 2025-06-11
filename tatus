@@ -1,0 +1,55 @@
+[33mcommit 69cc76d834c4c94284cdefc5f246a7b129d8fba6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ilda-05 <191975905+ilda-05@users.noreply.github.com>
+Date:   Wed Jun 11 00:17:22 2025 +0200
+
+    Aggiunto diagramma DB
+
+[33mcommit 86d758d539228caed89ef3d2b4c4ca91ed78ac8e[m
+Author: LucaDipa11 <luca.dipasquale@edu-its.it>
+Date:   Tue Jun 3 10:56:30 2025 +0200
+
+    LOGO DIAMOCI UNA ZAMPA SCRITTA BIANCA NO BCKGRND
+
+[33mcommit 89ad59afb9082240a896738dfc51ed1d4f7dc9a9[m
+Author: LucaDipa11 <luca.dipasquale@edu-its.it>
+Date:   Tue Jun 3 09:26:43 2025 +0200
+
+    LOGO DIAMOCI UNA ZAMPA
+    
+    LOGO DA AGGIUNGERE NELLA PRESENTAZIONE E NEL SITO
+
+[33mcommit 14942d436f37d1f3566c30874c298a312d606fa2[m
+Author: LucaDipa11 <luca.dipasquale@edu-its.it>
+Date:   Mon May 26 12:02:18 2025 +0200
+
+    Loghi Azienda KEDIS
+    
+    Ho creato e aggiunto i loghi per la nostra azienda all'interno della cartella loghi kedis.
+    I file con l'estensione ".jpg" e la scritta "BCKGRND" sono i loghi con lo sfondo BIANCO.
+    I file con l'estensione ".png" e senza scritta "BCKGRND" sono i loghi senza sfondo.
+    FILE KEDIS -> 1024x1024px
+    FILE KEDOS->  757x223px
+
+[33mcommit da9e1a593d83280935a4334a3f51c71927eeddbc[m
+Author: Marco <dimamarco02@gmail.com>
+Date:   Sun May 25 19:14:01 2025 +0200
+
+    Update DB-rifugio.md
+
+[33mcommit 3a4bd26dcd7ffb34b851b2a6df4f58c23e074805[m
+Author: Marco <dimamarco02@gmail.com>
+Date:   Sat May 24 18:45:22 2025 +0200
+
+    Rename README.md to DB-rifugio.md
+
+[33mcommit 6e091a28757cfa534ec3bcef08db2c4c4a6f9b5c[m
+Author: ilda-05 <191975905+ilda-05@users.noreply.github.com>
+Date:   Sat May 24 16:43:26 2025 +0200
+
+    Aggiunto README.md , struttura delle tabelle
+
+[33mcommit c1352ffab77d238129607a077b8054097b40e6ab[m
+Author: MarcoSpeda <marco.spedaliere@edu-its.it>
+Date:   Mon May 19 12:14:15 2025 +0200
+
+    Initial commit
