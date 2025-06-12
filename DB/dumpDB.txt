@@ -1,0 +1,97 @@
+-- Creazione tabelle per Rifugio Animali
+
+-- Tabella Stati
+CREATE TABLE Stati (
+    IdStato INT AUTO_INCREMENT PRIMARY KEY,
+    Descrizione VARCHAR(30) NOT NULL
+);
+
+-- Tabella Specie
+CREATE TABLE Specie (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50) NOT NULL
+);
+
+-- Tabella Razze
+CREATE TABLE Razze (
+    IdRazza INT AUTO_INCREMENT PRIMARY KEY,
+    IdSpecie INT NOT NULL,
+    Nome VARCHAR(50) NOT NULL,
+    FOREIGN KEY (IdSpecie) REFERENCES Specie(Id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Tabella Utenti
+CREATE TABLE Utenti (
+    IdPersona INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50) NOT NULL,
+    Cognome VARCHAR(50) NOT NULL,
+    CodiceFiscale VARCHAR(16) NOT NULL UNIQUE,
+    Numero VARCHAR(15) NOT NULL,
+    Email VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Tabella AnagraficaAnimali
+CREATE TABLE AnagraficaAnimali (
+    IdAnimale INT AUTO_INCREMENT PRIMARY KEY,
+    IdSpecie INT NOT NULL,
+    IdRazza INT,
+    Sesso CHAR(1) NOT NULL CHECK (Sesso IN ('M', 'F', 'A')),
+    DataNascita DATE NOT NULL,
+    DataArrivo DATE NOT NULL,
+    DescrizioneBreve VARCHAR(100),
+    DescrizioneLunga VARCHAR(400),
+    Vaccinato BOOLEAN DEFAULT FALSE,
+    Sterilizzato BOOLEAN DEFAULT FALSE,
+    Microchip BOOLEAN DEFAULT FALSE,
+    Stato INT NOT NULL,
+    FOREIGN KEY (IdSpecie) REFERENCES Specie(Id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    FOREIGN KEY (IdRazza) REFERENCES Razze(IdRazza)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+    FOREIGN KEY (Stato) REFERENCES Stati(IdStato)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+-- Tabella Donazioni
+CREATE TABLE Donazioni (
+    IdDonazione INT AUTO_INCREMENT PRIMARY KEY,
+    Importo DECIMAL(10,2) NOT NULL,
+    IdPersona INT NOT NULL,
+    DataDonazione DATE NOT NULL,
+    Descrizione VARCHAR(150),
+    FOREIGN KEY (IdPersona) REFERENCES Utenti(IdPersona)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Tabella Adozioni
+CREATE TABLE Adozioni (
+    IdAdozione INT AUTO_INCREMENT PRIMARY KEY,
+    IdAnimale INT NOT NULL UNIQUE,
+    IdPersona INT NOT NULL,
+    DataAdozione DATE NOT NULL,
+    FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    FOREIGN KEY (IdPersona) REFERENCES Utenti(IdPersona)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Tabella VisiteVeterinarie
+CREATE TABLE VisiteVeterinarie (
+    IdVisita INT AUTO_INCREMENT PRIMARY KEY,
+    Data DATE NOT NULL,
+    Ora TIME NOT NULL,
+    IdAnimale INT NOT NULL,
+    Motivo VARCHAR(150) NOT NULL,
+    Esito VARCHAR(150) NOT NULL,
+    FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
