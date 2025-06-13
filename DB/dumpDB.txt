@@ -1,19 +1,25 @@
 -- Creazione tabelle per Rifugio Animali
 
 -- Tabella Stati
-CREATE TABLE Stati (
+
+DROP TABLE IF EXISTS Stati;
+
+CREATE TABLE IF NOT EXISTS Stati (
     IdStato INT AUTO_INCREMENT PRIMARY KEY,
     Descrizione VARCHAR(30) NOT NULL
 );
 
 -- Tabella Specie
-CREATE TABLE Specie (
+CREATE TABLE IF NOT EXISTS Specie (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Nome VARCHAR(50) NOT NULL
 );
 
 -- Tabella Razze
-CREATE TABLE Razze (
+
+DROP TABLE IF EXISTS Razze;
+
+CREATE TABLE IF NOT EXISTS Razze (
     IdRazza INT AUTO_INCREMENT PRIMARY KEY,
     IdSpecie INT NOT NULL,
     Nome VARCHAR(50) NOT NULL,
@@ -23,7 +29,10 @@ CREATE TABLE Razze (
 );
 
 -- Tabella Utenti
-CREATE TABLE Utenti (
+
+DROP TABLE IF EXISTS Utenti;
+
+CREATE TABLE IF NOT EXISTS Utenti (
     IdPersona INT AUTO_INCREMENT PRIMARY KEY,
     Nome VARCHAR(50) NOT NULL,
     Cognome VARCHAR(50) NOT NULL,
@@ -33,11 +42,14 @@ CREATE TABLE Utenti (
 );
 
 -- Tabella AnagraficaAnimali
-CREATE TABLE AnagraficaAnimali (
+
+DROP TABLE IF EXISTS AnagraficaAnimali;
+
+CREATE TABLE IF NOT EXISTS AnagraficaAnimali (
     IdAnimale INT AUTO_INCREMENT PRIMARY KEY,
     IdSpecie INT NOT NULL,
     IdRazza INT,
-    Sesso CHAR(1) NOT NULL CHECK (Sesso IN ('M', 'F', 'A')),
+    Sesso CHAR(1) NOT NULL CHECK (Sesso IN ('M', 'F')),
     DataNascita DATE NOT NULL,
     DataArrivo DATE NOT NULL,
     DescrizioneBreve VARCHAR(100),
@@ -58,7 +70,10 @@ CREATE TABLE AnagraficaAnimali (
 );
 
 -- Tabella Donazioni
-CREATE TABLE Donazioni (
+
+DROP TABLE IF EXISTS Donazioni;
+
+CREATE TABLE IF NOT EXISTS Donazioni (
     IdDonazione INT AUTO_INCREMENT PRIMARY KEY,
     Importo DECIMAL(10,2) NOT NULL,
     IdPersona INT NOT NULL,
@@ -70,7 +85,10 @@ CREATE TABLE Donazioni (
 );
 
 -- Tabella Adozioni
-CREATE TABLE Adozioni (
+
+DROP TABLE IF EXISTS Adozioni;
+
+CREATE TABLE IF NOT EXISTS Adozioni (
     IdAdozione INT AUTO_INCREMENT PRIMARY KEY,
     IdAnimale INT NOT NULL UNIQUE,
     IdPersona INT NOT NULL,
@@ -84,7 +102,10 @@ CREATE TABLE Adozioni (
 );
 
 -- Tabella VisiteVeterinarie
-CREATE TABLE VisiteVeterinarie (
+
+DROP TABLE IF EXISTS VisiteVeterinarie;
+
+CREATE TABLE IF NOT EXISTS VisiteVeterinarie (
     IdVisita INT AUTO_INCREMENT PRIMARY KEY,
     Data DATE NOT NULL,
     Ora TIME NOT NULL,
