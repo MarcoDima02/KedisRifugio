@@ -2,70 +2,99 @@
 
 ---
 
-### Come prima cosa andiamo a decidere la struttura delle tabelle delle informazioni da gestire :
+## Struttura del Database
 
+### AnagraficaAnimali
+- **IdAnimale**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdSpecie**: INT NOT NULL FOREIGN KEY (Specie.Id)
+- **IdRazza**: INT NULL FOREIGN KEY (Razze.IdRazza)
+- **Sesso**: CHAR(1) NOT NULL (M/F)
+- **DataNascita**: DATE NOT NULL
+- **DataArrivo**: DATE NOT NULL
+- **DescrizioneBreve**: VARCHAR(100)
+- **DescrizioneLunga**: VARCHAR(400)
+- **Vaccinato**: BOOLEAN DEFAULT FALSE
+- **Sterilizzato**: BOOLEAN DEFAULT FALSE
+- **Microchip**: BOOLEAN DEFAULT FALSE
+- **Stato**: INT NOT NULL FOREIGN KEY (StatoAnimale.IdStato)
 
-## AnagraficaAnimali
+---
 
-- IdAnimale (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- IdSpecie (INT NOT NULL FOREIGN KEY)
-- IdRazza (INT FOREIGN KEY) 
-- Sesso (CHAR NOT NULL) 
-- DataNascita (DATE NOT NULL)
-- DataArrivo (DATE NOT NULL)
-- DescrizioneBreve (VARCHAR 100)
-- DescrizioneLunga (VARCHAR 400)
-- Vaccinato (BOOL)
-- Sterilizzato (BOOL)
-- Microchip (BOOL)
-- Stato (INT NOT NULL) --> Se è adottato, in adozione o non adottato
+### StatoAnimale
+- **IdStato**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Descrizione**: VARCHAR(50) NOT NULL  
+*(Esempi: In adozione, Adottato, Non disponibile)*
 
-## Stati
+---
 
-- IdStato (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- Descrizione (VARCHAR 30 NOT NULL)
+### StepAdozioni
+- **IdStepAdozioni**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **ColloquioPerAffido**: BOOLEAN DEFAULT FALSE
+- **VisitaDomiciliare**: BOOLEAN DEFAULT FALSE
+- **AffidoProva**: BOOLEAN DEFAULT FALSE
+- **Adozione**: BOOLEAN DEFAULT FALSE
+- **ControlliPostAffido**: BOOLEAN DEFAULT FALSE
 
-## Donazioni 
+---
 
-- IdDonazione (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- Importo (DECIMAL(10,2) NOT NULL)
-- IdPersona (INT FOREIGN KEY NOT NULL)
-- DataDonazione (DATE NOT NULL)
-- Descrizione (VARCHAR 150)
+### Donazioni
+- **IdDonazione**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Importo**: DECIMAL(10,2) NOT NULL
+- **IdPersona**: INT NOT NULL FOREIGN KEY (Utenti.IdPersona)
+- **DataDonazione**: DATE NOT NULL
+- **Descrizione**: VARCHAR(150)
 
-## Adozioni
+---
 
-- idAdozione (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- idAnimale (INT NOT NULL FOREIGN KEY)
-- idPersona (INT NOT NULL FOREIGN KEY)
-- dataAdozione (DATE NOT NULL)
+### Adozioni
+- **IdAdozione**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdAnimale**: INT NOT NULL FOREIGN KEY (AnagraficaAnimali.IdAnimale)
+- **IdPersona**: INT NOT NULL FOREIGN KEY (Utenti.IdPersona)
+- **DataAdozione**: DATE NOT NULL
+- **IdStepAdozioni**: INT NULL FOREIGN KEY (StepAdozioni.IdStepAdozioni)
 
-## VisiteVeterinarie
+---
 
-- idVisita (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- Data (DATE NOT NULL)
-- Ora (TIME NOT NULL)
-- idAnimale (INT NOT NULL FOREIGN KEY)
-- Motivo (VARCHAR 150 NOT NULL)
-- Esito (VARCHAR 150 NOT NULL)
+### VisiteVeterinarie
+- **IdVisita**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Data**: DATE NOT NULL
+- **Ora**: TIME NOT NULL
+- **IdAnimale**: INT NOT NULL FOREIGN KEY (AnagraficaAnimali.IdAnimale)
+- **Motivo**: VARCHAR(150) NOT NULL
+- **Esito**: VARCHAR(150) NOT NULL
 
-## Utenti
+---
 
-- IdPersona (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- Nome (VARCHAR 50 NOT NULL)
-- Cognome (VARCHAR 50 NOT NULL)
-- CodiceFiscale (TEXT NOT NULL)
-- Numero (VARCHAR 50 NOT NULL)
-- Email (VARCHAR 50 NOT NULL)
+### Utenti
+- **IdPersona**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Nome**: VARCHAR(50) NOT NULL
+- **Cognome**: VARCHAR(50) NOT NULL
+- **CodiceFiscale**: VARCHAR(16) NOT NULL UNIQUE
+- **Numero**: VARCHAR(50)
+- **Email**: VARCHAR(50)
 
-## Specie
+---
 
-- Id (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- Nome (VARCHAR 50 NOT NULL)
+### Specie
+- **Id**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Nome**: VARCHAR(50) NOT NULL
 
-## Razze 
+---
 
-- IdRazza (PRIMARY KEY AUTO INCREMENT NOT NULL)
-- IdSpecie (INT NOT NULL FOREIGN KEY)
-- Nome (TEXT NOT NULL)
+### Razze
+- **IdRazza**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdSpecie**: INT NOT NULL FOREIGN KEY (Specie.Id)
+- **Nome**: VARCHAR(50) NOT NULL
 
+---
+
+### CartellaClinica
+- **IdCartella**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdAnimale**: INT NOT NULL FOREIGN KEY (AnagraficaAnimali.IdAnimale)
+- **Sterilizzato**: BOOLEAN DEFAULT FALSE
+- **Vaccini**: INT NOT NULL
+- **Microchip**: VARCHAR(50)
+- **Sverminazione**: BOOLEAN DEFAULT FALSE
+- **TrattamentoAntiparassitario**: BOOLEAN DEFAULT FALSE
+
+---
