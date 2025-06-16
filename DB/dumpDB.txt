@@ -1,55 +1,57 @@
--- Creazione tabelle per Rifugio Animali
+-- Dump SQL Completo - Rifugio Animali
 
--- Tabella Stati
+-- Eliminazione tabelle in ordine corretto (prima le dipendenti)
+DROP TABLE IF EXISTS CartellaClinica;
+DROP TABLE IF EXISTS VisiteVeterinarie;
+DROP TABLE IF EXISTS Adozioni;
+DROP TABLE IF EXISTS Donazioni;
+DROP TABLE IF EXISTS StepAdozioni;
+DROP TABLE IF EXISTS AnagraficaAnimali;
+DROP TABLE IF EXISTS Utenti;
+DROP TABLE IF EXISTS Razze;
+DROP TABLE IF EXISTS Specie;
+DROP TABLE IF EXISTS StatoAnimale;
 
-DROP TABLE IF EXISTS Stati;
-
-CREATE TABLE IF NOT EXISTS Stati (
-    IdStato INT AUTO_INCREMENT PRIMARY KEY,
-    Descrizione VARCHAR(30) NOT NULL
-);
+-- Creazione database
+CREATE DATABASE IF NOT EXISTS RifugioAnimali;
+USE RifugioAnimali;
 
 -- Tabella Specie
-CREATE TABLE IF NOT EXISTS Specie (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Specie (
+    Id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     Nome VARCHAR(50) NOT NULL
 );
 
 -- Tabella Razze
-
-DROP TABLE IF EXISTS Razze;
-
-CREATE TABLE IF NOT EXISTS Razze (
-    IdRazza INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Razze (
+    IdRazza INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     IdSpecie INT NOT NULL,
     Nome VARCHAR(50) NOT NULL,
     FOREIGN KEY (IdSpecie) REFERENCES Specie(Id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+);
+
+-- Tabella StatoAnimale
+CREATE TABLE StatoAnimale (
+    IdStato INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    Descrizione VARCHAR(50) NOT NULL
 );
 
 -- Tabella Utenti
-
-DROP TABLE IF EXISTS Utenti;
-
-CREATE TABLE IF NOT EXISTS Utenti (
-    IdPersona INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Utenti (
+    IdPersona INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     Nome VARCHAR(50) NOT NULL,
     Cognome VARCHAR(50) NOT NULL,
     CodiceFiscale VARCHAR(16) NOT NULL UNIQUE,
-    Numero VARCHAR(15) NOT NULL,
-    Email VARCHAR(50) NOT NULL UNIQUE
+    Numero VARCHAR(50),
+    Email VARCHAR(50)
 );
 
 -- Tabella AnagraficaAnimali
-
-DROP TABLE IF EXISTS AnagraficaAnimali;
-
-CREATE TABLE IF NOT EXISTS AnagraficaAnimali (
-    IdAnimale INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE AnagraficaAnimali (
+    IdAnimale INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     IdSpecie INT NOT NULL,
-    IdRazza INT,
-    Sesso CHAR(1) NOT NULL CHECK (Sesso IN ('M', 'F')),
+    IdRazza INT NULL,
+    Sesso CHAR(1) NOT NULL,
     DataNascita DATE NOT NULL,
     DataArrivo DATE NOT NULL,
     DescrizioneBreve VARCHAR(100),
@@ -58,61 +60,62 @@ CREATE TABLE IF NOT EXISTS AnagraficaAnimali (
     Sterilizzato BOOLEAN DEFAULT FALSE,
     Microchip BOOLEAN DEFAULT FALSE,
     Stato INT NOT NULL,
-    FOREIGN KEY (IdSpecie) REFERENCES Specie(Id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
-    FOREIGN KEY (IdRazza) REFERENCES Razze(IdRazza)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE,
-    FOREIGN KEY (Stato) REFERENCES Stati(IdStato)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
+    FOREIGN KEY (IdSpecie) REFERENCES Specie(Id),
+    FOREIGN KEY (IdRazza) REFERENCES Razze(IdRazza),
+    FOREIGN KEY (Stato) REFERENCES StatoAnimale(IdStato)
+);
+
+-- Tabella StepAdozioni
+CREATE TABLE StepAdozioni (
+    IdStepAdozioni INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    ColloquioPerAffido BOOLEAN DEFAULT FALSE,
+    VisitaDomiciliare BOOLEAN DEFAULT FALSE,
+    AffidoProva BOOLEAN DEFAULT FALSE,
+    Adozione BOOLEAN DEFAULT FALSE,
+    ControlliPostAffido BOOLEAN DEFAULT FALSE
 );
 
 -- Tabella Donazioni
-
-DROP TABLE IF EXISTS Donazioni;
-
-CREATE TABLE IF NOT EXISTS Donazioni (
-    IdDonazione INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Donazioni (
+    IdDonazione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     Importo DECIMAL(10,2) NOT NULL,
     IdPersona INT NOT NULL,
     DataDonazione DATE NOT NULL,
     Descrizione VARCHAR(150),
     FOREIGN KEY (IdPersona) REFERENCES Utenti(IdPersona)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 -- Tabella Adozioni
-
-DROP TABLE IF EXISTS Adozioni;
-
-CREATE TABLE IF NOT EXISTS Adozioni (
-    IdAdozione INT AUTO_INCREMENT PRIMARY KEY,
-    IdAnimale INT NOT NULL UNIQUE,
+CREATE TABLE Adozioni (
+    IdAdozione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    IdAnimale INT NOT NULL,
     IdPersona INT NOT NULL,
     DataAdozione DATE NOT NULL,
-    FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
-    FOREIGN KEY (IdPersona) REFERENCES Utenti(IdPersona)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+    IdStepAdozioni INT NULL,
+    FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale),
+    FOREIGN KEY (IdPersona) REFERENCES Utenti(IdPersona),
+    FOREIGN KEY (IdStepAdozioni) REFERENCES StepAdozioni(IdStepAdozioni)
 );
 
 -- Tabella VisiteVeterinarie
-
-DROP TABLE IF EXISTS VisiteVeterinarie;
-
-CREATE TABLE IF NOT EXISTS VisiteVeterinarie (
-    IdVisita INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE VisiteVeterinarie (
+    IdVisita INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     Data DATE NOT NULL,
     Ora TIME NOT NULL,
     IdAnimale INT NOT NULL,
     Motivo VARCHAR(150) NOT NULL,
     Esito VARCHAR(150) NOT NULL,
     FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+);
+
+-- Tabella CartellaClinica
+CREATE TABLE CartellaClinica (
+    IdCartella INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    IdAnimale INT NOT NULL,
+    Sterilizzato BOOLEAN DEFAULT FALSE,
+    Vaccini INT NOT NULL,
+    Microchip VARCHAR(50),
+    Sverminazione BOOLEAN DEFAULT FALSE,
+    TrattamentoAntiparassitario BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (IdAnimale) REFERENCES AnagraficaAnimali(IdAnimale)
 );
