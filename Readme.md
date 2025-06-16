@@ -1,66 +1,44 @@
-# 📌 Diamoci una zampa - rifugio per animali
----
-Questo progetto è puramente a scopo didattico, consiste nella creazione di un applicazione web di un rifugio per animali, fondato e gestito dal sig. Leonardo Ippolito Zampa.
+# Guida al flusso di lavoro con Git e GitHub
 
----
+## 1. Creazione della branch personale (già create)
+Se non hai ancora una branch personale, creala partendo da `main`:
 
-## 📝 Descrizione
-
-Attraverso questo programma, sarà presente un interfaccia utente, che permetta di conoscere la storia e l'obiettivo del rifugio,  
-i componenti, e navigare all'interno del sito per visualizzare gli animali presenti nel rifugio. 
-Ogni animale avrà una sua sezione personale, con tutti i dettagli necessari(nome, razza,età, sesso, cartella clinica),
-una descrizione della loro personalità, e l'opportunità di poter adottare l'animale.
-Inoltre sarà presente una dashboard per l'admin, che permetterà a quest'ultimo di gestire:
-- Anagrafica degli animali;
-- Adozioni;
-- Donazioni;
-- Visite veterinarie.
-
----
-
-### Stack tecnologico:
-
-- Backend: Java + Spring Boot  
-- Frontend: React  
-- Database: H2 + MySQL
-
----
-
-## 📁 Struttura del Progetto
-
-```plaintext
-/backend     → API e logica server  
-/frontend    → UI dell’applicazione  
-/database    → Script SQL e migrazioni  
-/docs        → Documentazione tecnica  
-/assets      → Immagini e risorse statiche  
+```bash
+git checkout main
+git pull origin main
+git checkout -b [cognome]  # Comando essenziale per cambiare branch
+git push -u origin [cognome]
 ```
----
 
-## 🛠️ Tecnologie Utilizzate
-```plaintext
-Backend: Java 17 + Spring Boot
-Frontend: HTML, CSS, Javascript
-Database: H2
-Utility: Git + GitHub
+## 2. Fare commit del proprio lavoro
+Lavora sul tuo codice e usa commit chiari e descrittivi:
+una volta che si decide di committare, esegui i seguenti comandi:
+
+```bash
+git add .     # il punto fa si che vengano aggiunti in area di stage tutti i file che sono stati modificati
+git commit -m "Aggiunto controller per gestione prodotti"
+git push origin [cognome]
 ```
----
 
-## 👨‍💻 Team - Kedis
+*Ribadisco:fai commit frequenti e con messaggi significativi!*
 
+## 3. Aggiornare la branch con le modifiche del main (opzionale ma consigliato)
+Se il `main` viene aggiornato, puoi integrare le novità nella tua branch:
+Ogni volta che il main verrà modificato, tuttavia, tutti i membri verranno avvisati, ma è buona usanza effettuare il pull dal main prima di spostarsi nella propria branch per continuare il proprio lavoro.
 
-Marco Dima – Team leader - Software dev student – [MarcoDima02](https://github.com/MarcoDima02)
+```bash
+git checkout main
+git pull origin main
+git checkout [cognome]
+git merge main OPPURE git rebase main (più pulito ma richiede attenzione)  #questo comando permette di integrare le modifiche dal main, all'interno della propria branch
+```
 
-Dario Ilescu – Software dev student – [ilda-05](https://github.com/ilda-05)
+## 4. Completamento del lavoro e merge nel main
+Una volta terminata la tua parte e testato il codice:
 
-Marco Spedialiere – Software dev student – [MarcoSpeda](https://github.com/MarcoSpeda)
+1. Vai su GitHub  
+2. Apri una **Pull Request** dalla tua branch (cognome) verso `main`  
+3. Dai un titolo chiaro e descrivi le modifiche fatte  
+4. Aspetta la revisione o approvazione  
+5. Una volta approvata, fai il **merge nel main**  
 
-Luca Di Pasquale – Software dev student – [LucaDipa11](https://github.com/LucaDipa11)
-
-Lorenzo Maero – Software dev student – [LorenzoMaero](https://github.com/LorenzoMaero)
-
----
-
-## 📌 Stato del Progetto
-
-🚧 Work in progress
