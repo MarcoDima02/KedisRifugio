@@ -1,4 +1,4 @@
-package main.java.com.rifugio.rifugio.entities;
+package com.rifugio.rifugio.entities;
 
 public class Esempio {
 

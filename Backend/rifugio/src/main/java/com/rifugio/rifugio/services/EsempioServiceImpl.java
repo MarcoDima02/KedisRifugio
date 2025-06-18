@@ -1,4 +1,4 @@
-package main.java.com.rifugio.rifugio.services;
+package com.rifugio.rifugio.services;
 
 public class EsempioServiceImpl {
 

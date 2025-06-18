@@ -1,4 +1,4 @@
-package main.java.com.rifugio.rifugio.controller;
+package com.rifugio.rifugio.controller;
 
 public class TemplateMVC {
 
