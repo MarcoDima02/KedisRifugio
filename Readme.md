@@ -21,7 +21,7 @@ Inoltre sarà presente una dashboard per l'admin, che permetterà a quest'ultimo
 ### Stack tecnologico:
 
 - Backend: Java + Spring Boot  
-- Frontend: React  
+- Frontend: HTML, CSS, Javascript 
 - Database: H2 + MySQL
 
 ---
