@@ -1,4 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Visiteveterinarie.com</title>
 
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Titolo</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Idvisita</th>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Idanimale</th>
+                    <th>Motivo</th>
+                    <th>Esito</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="v:${Visiteveterinarie}">
+                    <td th:text="${v.idvisita}"></td>
+                    <td th:text="${v.data}"></td>
+                    <td th:text="${v.ora}"></td>
+                    <td th:text="${v.idanimale}"></td>
+                    <td th:text="${v.motivo}"></td>
+                    <td th:text="${v.esito}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 
 
 
