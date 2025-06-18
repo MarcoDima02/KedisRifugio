@@ -1,6 +1,5 @@
 -- Database Rifugio Animali - MySQL
 
-
 -- Eliminazione tabelle esistenti (in ordine inverso per rispettare le foreign key)
 DROP TABLE IF EXISTS VisiteVeterinarie;
 DROP TABLE IF EXISTS Adozioni;
