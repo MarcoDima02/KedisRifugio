@@ -26,7 +26,7 @@ public class AnagraficaAnimali {
 
     @ManyToOne
     @JoinColumn(name = "IdRazza", referencedColumnName = "IdRazza")
-    private Razza razza;
+    private Razza Razza;
 
     private char Sesso;
     private Date DataNascita;
@@ -39,7 +39,7 @@ public class AnagraficaAnimali {
 
     @ManyToOne
     @JoinColumn(name = "IdStato", referencedColumnName = "IdStato")
-    private Stato stato;
+    private StatoAnimale StatoAnimale;
 
     public int getIdAnimale() {
         return IdAnimale;
@@ -66,11 +66,11 @@ public class AnagraficaAnimali {
     }
 
     public Razza getRazza() {
-        return razza;
+        return Razza;
     }
 
     public void setRazza(Razza razza) {
-        this.razza = razza;
+        this.Razza = razza;
     }
 
     public char getSesso() {
@@ -137,12 +137,12 @@ public class AnagraficaAnimali {
         Microchip = microchip;
     }
 
-    public Stato getStato() {
-        return stato;
+    public StatoAnimale getStatoAnimale() {
+        return StatoAnimale;
     }
 
-    public void setStato(Stato stato) {
-        this.stato = stato;
+    public void setStato(StatoAnimale statoAnimale) {
+        this.StatoAnimale = statoAnimale;
     }
 
     

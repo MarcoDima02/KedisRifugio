@@ -75,7 +75,7 @@
 
 ### Specie
 - **Id**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
-- **Descrizione**: VARCHAR(50) NOT NULL
+- **Nome**: VARCHAR(50) NOT NULL
 
 ---
 

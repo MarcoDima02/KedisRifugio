@@ -13,6 +13,21 @@ public class Specie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int IdSpecie;
-    private String Descrizione;
+    private String Nome;
+    
+    public int getIdSpecie() {
+        return IdSpecie;
+    }
+    public void setIdSpecie(int idSpecie) {
+        IdSpecie = idSpecie;
+    }
+    public String getNome() {
+        return Nome;
+    }
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+
 
 }
