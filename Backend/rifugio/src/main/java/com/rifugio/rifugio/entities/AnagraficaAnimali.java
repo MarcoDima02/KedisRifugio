@@ -38,7 +38,7 @@ public class AnagraficaAnimali {
     private Boolean Microchip;
 
     @ManyToOne
-    @JoinColumn(name = "IdStato", referencedColumnName = "IdStato")
+    @JoinColumn(name = "IdStatoAnimale", referencedColumnName = "IdStatoAnimale")
     private StatoAnimale StatoAnimale;
 
     public int getIdAnimale() {
