@@ -6,6 +6,7 @@
 
 ### AnagraficaAnimali
 - **IdAnimale**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **Nome**: VARCHAR(45) NOT NULL
 - **IdSpecie**: INT NOT NULL FOREIGN KEY (Specie.Id)
 - **IdRazza**: INT NULL FOREIGN KEY (Razze.IdRazza)
 - **Sesso**: CHAR(1) NOT NULL (M/F)
@@ -13,9 +14,6 @@
 - **DataArrivo**: DATE NOT NULL
 - **DescrizioneBreve**: VARCHAR(100)
 - **DescrizioneLunga**: VARCHAR(400)
-- **Vaccinato**: BOOLEAN DEFAULT FALSE
-- **Sterilizzato**: BOOLEAN DEFAULT FALSE
-- **Microchip**: BOOLEAN DEFAULT FALSE
 - **Stato**: INT NOT NULL FOREIGN KEY (StatoAnimale.IdStato)
 
 ---
@@ -77,7 +75,7 @@
 
 ### Specie
 - **Id**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
-- **Nome**: VARCHAR(50) NOT NULL
+- **Descrizione**: VARCHAR(50) NOT NULL
 
 ---
 
