@@ -19,7 +19,7 @@
 ---
 
 ### StatoAnimale
-- **IdStato**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdStatoAnimale**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
 - **Descrizione**: VARCHAR(50) NOT NULL  
 *(Esempi: In adozione, Adottato, Non disponibile)*
 
