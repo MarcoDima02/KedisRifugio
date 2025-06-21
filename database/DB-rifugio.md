@@ -14,7 +14,19 @@
 - **DataArrivo**: DATE NOT NULL
 - **DescrizioneBreve**: VARCHAR(100)
 - **DescrizioneLunga**: VARCHAR(400)
+- **idCartellaClinica** : INT NOT NULL
 - **Stato**: INT NOT NULL FOREIGN KEY (StatoAnimale.IdStato)
+
+---
+
+### CartellaClinica
+- **IdCartellaClinica**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
+- **IdAnimale**: INT NOT NULL FOREIGN KEY (AnagraficaAnimali.IdAnimale)
+- **Sterilizzato**: BOOLEAN DEFAULT FALSE
+- **Vaccini**: INT NOT NULL
+- **Microchip**: VARCHAR(50)
+- **Sverminazione**: BOOLEAN DEFAULT FALSE
+- **TrattamentoAntiparassitario**: BOOLEAN DEFAULT FALSE
 
 ---
 
@@ -83,16 +95,5 @@
 - **IdRazza**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
 - **IdSpecie**: INT NOT NULL FOREIGN KEY (Specie.Id)
 - **Nome**: VARCHAR(50) NOT NULL
-
----
-
-### CartellaClinica
-- **IdCartella**: INT PRIMARY KEY AUTO_INCREMENT NOT NULL
-- **IdAnimale**: INT NOT NULL FOREIGN KEY (AnagraficaAnimali.IdAnimale)
-- **Sterilizzato**: BOOLEAN DEFAULT FALSE
-- **Vaccini**: INT NOT NULL
-- **Microchip**: VARCHAR(50)
-- **Sverminazione**: BOOLEAN DEFAULT FALSE
-- **TrattamentoAntiparassitario**: BOOLEAN DEFAULT FALSE
 
 ---

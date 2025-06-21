@@ -21,8 +21,12 @@ public class AnagraficaAnimali {
     private String Nome;
 
     @ManyToOne
+    @JoinColumn(name = "IdCartellaClinica", referencedColumnName = "IdCartellaClinica")
+    private CartellaClinica IdCartellaClinica;
+
+    @ManyToOne
     @JoinColumn(name = "IdSpecie", referencedColumnName = "IdSpecie")
-    private Specie specie;
+    private Specie Specie;
 
     @ManyToOne
     @JoinColumn(name = "IdRazza", referencedColumnName = "IdRazza")
@@ -33,9 +37,6 @@ public class AnagraficaAnimali {
     private Date DataArrivo;
     private String DescrizioneBreve;
     private String DescrizioneLunga;
-    private Boolean Vaccinato;
-    private Boolean Sterilizzato;
-    private Boolean Microchip;
 
     @ManyToOne
     @JoinColumn(name = "IdStatoAnimale", referencedColumnName = "IdStatoAnimale")
@@ -58,11 +59,11 @@ public class AnagraficaAnimali {
     }
 
     public Specie getSpecie() {
-        return specie;
+        return Specie;
     }
 
     public void setSpecie(Specie specie) {
-        this.specie = specie;
+        this.Specie = specie;
     }
 
     public Razza getRazza() {
@@ -113,30 +114,6 @@ public class AnagraficaAnimali {
         DescrizioneLunga = descrizioneLunga;
     }
 
-    public Boolean getVaccinato() {
-        return Vaccinato;
-    }
-
-    public void setVaccinato(Boolean vaccinato) {
-        Vaccinato = vaccinato;
-    }
-
-    public Boolean getSterilizzato() {
-        return Sterilizzato;
-    }
-
-    public void setSterilizzato(Boolean sterilizzato) {
-        Sterilizzato = sterilizzato;
-    }
-
-    public Boolean getMicrochip() {
-        return Microchip;
-    }
-
-    public void setMicrochip(Boolean microchip) {
-        Microchip = microchip;
-    }
-
     public StatoAnimale getStatoAnimale() {
         return StatoAnimale;
     }
@@ -144,7 +121,5 @@ public class AnagraficaAnimali {
     public void setStato(StatoAnimale statoAnimale) {
         this.StatoAnimale = statoAnimale;
     }
-
-    
 
 }
