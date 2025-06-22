@@ -38,10 +38,27 @@ public class AnagraficaAnimali {
     private String DescrizioneBreve;
     private String DescrizioneLunga;
 
+
+
     @ManyToOne
     @JoinColumn(name = "IdStatoAnimale", referencedColumnName = "IdStatoAnimale")
-    private StatoAnimale StatoAnimale;
+    private StatoAnimale IdStatoAnimale;
 
+
+    
+    public CartellaClinica getIdCartellaClinica() {
+        return IdCartellaClinica;
+    }
+
+    public void setIdCartellaClinica(CartellaClinica idCartellaClinica) {
+        IdCartellaClinica = idCartellaClinica;
+    }
+
+    public void setStatoAnimale(StatoAnimale statoAnimale) {
+        IdStatoAnimale = statoAnimale;
+    }
+
+    
     public int getIdAnimale() {
         return IdAnimale;
     }
@@ -114,12 +131,14 @@ public class AnagraficaAnimali {
         DescrizioneLunga = descrizioneLunga;
     }
 
-    public StatoAnimale getStatoAnimale() {
-        return StatoAnimale;
+    public StatoAnimale getIdStatoAnimale() {
+        return IdStatoAnimale;
     }
 
-    public void setStato(StatoAnimale statoAnimale) {
-        this.StatoAnimale = statoAnimale;
+    public void setIdStatoAnimale(StatoAnimale statoAnimale) {
+        this.IdStatoAnimale = statoAnimale;
     }
+
+
 
 }
