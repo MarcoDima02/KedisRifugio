@@ -11,7 +11,7 @@ import com.rifugio.rifugio.repos.AnagraficaAnimaliRepo;
 @Service
 public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
 
-    private AnagraficaAnimaliRepo anagraficaAnimaliRepo;
+    private final AnagraficaAnimaliRepo anagraficaAnimaliRepo;
 
     public AnagraficaAnimaleServiceImpl(AnagraficaAnimaliRepo anagraficaAnimaliRepo) {
     this.anagraficaAnimaliRepo = anagraficaAnimaliRepo;

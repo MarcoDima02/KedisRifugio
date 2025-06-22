@@ -10,7 +10,7 @@ import com.rifugio.rifugio.repos.RazzaRepo;
 @Service
 public class RazzaServiceImpl implements RazzaService {
 
-    private RazzaRepo razzaRepo;
+    private final RazzaRepo razzaRepo;
 
     public RazzaServiceImpl(RazzaRepo razzaRepo) {
     this.razzaRepo = razzaRepo;

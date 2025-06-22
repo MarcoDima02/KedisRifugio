@@ -7,7 +7,7 @@ import com.rifugio.rifugio.repos.SpecieRepo;
 
 public class SpecieServiceImpl implements SpecieService {
 
-    private SpecieRepo specieRepo;
+    private final SpecieRepo specieRepo;
 
     public SpecieServiceImpl(SpecieRepo specieRepo) {
         this.specieRepo = specieRepo;
