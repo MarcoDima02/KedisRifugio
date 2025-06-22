@@ -13,6 +13,11 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
 
     private AnagraficaAnimaliRepo anagraficaAnimaliRepo;
 
+    public AnagraficaAnimaleServiceImpl(AnagraficaAnimaliRepo anagraficaAnimaliRepo) {
+    this.anagraficaAnimaliRepo = anagraficaAnimaliRepo;
+    }
+
+    @Override
     public List<AnagraficaAnimali> getAllAnagraficaAnimali() {
         return anagraficaAnimaliRepo.findAll();
     }
