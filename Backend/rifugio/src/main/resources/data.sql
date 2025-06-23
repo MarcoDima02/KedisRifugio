@@ -49,9 +49,12 @@ VALUES (
 -- (TRUE, TRUE, TRUE, TRUE, FALSE),
 -- (TRUE, TRUE, TRUE, TRUE, TRUE);
 
--- Esempio di inserimento utente
--- INSERT INTO Utenti (Nome, Cognome, CodiceFiscale, Numero, Email) VALUES 
--- ('Mario', 'Rossi', 'RSSMRA80A01H501Z', '3331234567', 'mario.rossi@email.com'),
--- ('Anna', 'Verdi', 'VRDNNA85B15H501W', '3337654321', 'anna.verdi@email.com');
+INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruolo) VALUES
+('Mario', 'Rossi', 'RSSMRA80A01H501U', '3331234567', 'mario.rossi@example.com', 'passMario1', 'USER'),
+('Luca', 'Bianchi', 'BNCLCU85B12H501V', '3339876543', 'luca.bianchi@example.com', 'passLuca2', 'USER'),
+('Giulia', 'Verdi', 'VRDGLI90C22H501W', '3341231234', 'giulia.verdi@example.com', 'passGiulia3', 'USER'),
+('Elena', 'Neri', 'NRELNA95D31H501X', '3353213210', 'elena.neri@example.com', 'passElena4', 'USER'),
+('Admin', 'Admin', 'ADMADM00E01H501Y', '3399999999', 'admin@example.com', 'adminPass5', 'ADMIN');
+
 
 COMMIT;

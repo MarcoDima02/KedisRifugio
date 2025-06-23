@@ -12,7 +12,7 @@ import com.rifugio.rifugio.repos.UtentiRepo;
 public class UtentiServiceImpl implements UtentiService {
 
     @Autowired
-    private final UtentiRepo utentiRepo;
+    private UtentiRepo utentiRepo;
 
     
 

@@ -61,14 +61,16 @@ CREATE TABLE anagrafica_animali (
 );
 
 -- Creazione tabella utenti
--- CREATE TABLE utenti (
---     id_persona INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
---     nome VARCHAR(50) NOT NULL,
---     cognome VARCHAR(50) NOT NULL,
---     codice_fiscale VARCHAR(16) NOT NULL UNIQUE,
---     numero VARCHAR(50),
---     email VARCHAR(50)
--- );
+CREATE TABLE utenti (
+    id_persona INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL,
+    codice_fiscale VARCHAR(16) NOT NULL UNIQUE,
+    numero VARCHAR(50),
+    email VARCHAR(50),
+    password VARCHAR(20) NOT NULL,
+    ruolo ENUM('ADMIN', 'USER') NOT NULL DEFAULT 'USER'
+);
 
 -- Creazione tabella step_adozioni
 -- CREATE TABLE step_adozioni (
