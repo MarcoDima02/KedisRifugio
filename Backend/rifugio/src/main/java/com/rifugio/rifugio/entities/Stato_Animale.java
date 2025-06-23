@@ -7,19 +7,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "StatoAnimale")
-public class StatoAnimale {
+@Table(name = "Stato_Animale")
+public class Stato_Animale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdStatoAnimale;
+    private int Id_Stato_Animale;
     private String Descrizione;
 
     public int getIdStatoAnimale() {
-        return IdStatoAnimale;
+        return Id_Stato_Animale;
     }
     public void setIdStatoAnimale(int idStatoAnimale) {
-        IdStatoAnimale = idStatoAnimale;
+        Id_Stato_Animale = idStatoAnimale;
     }
     public String getDescrizione() {
         return Descrizione;

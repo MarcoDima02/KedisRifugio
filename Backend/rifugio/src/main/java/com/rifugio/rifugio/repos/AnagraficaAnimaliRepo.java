@@ -1,9 +1,11 @@
 package com.rifugio.rifugio.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.rifugio.rifugio.entities.AnagraficaAnimali;
+import com.rifugio.rifugio.entities.Anagrafica_Animali;
 
-public interface AnagraficaAnimaliRepo extends JpaRepository<AnagraficaAnimali, Integer>{
+@Repository
+public interface AnagraficaAnimaliRepo extends JpaRepository<Anagrafica_Animali, Integer>{
 
 }
