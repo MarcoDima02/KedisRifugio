@@ -83,14 +83,14 @@ CREATE TABLE utenti (
 -- );
 
 -- Creazione tabella donazioni
--- CREATE TABLE donazioni (
---     id_donazione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
---     importo DECIMAL(10,2) NOT NULL,
---     id_persona INT NOT NULL,
---     data_donazione DATE NOT NULL,
---     descrizione VARCHAR(150),
---     FOREIGN KEY (id_persona) REFERENCES utenti(id_persona)
--- );
+CREATE TABLE donazioni (
+    id_donazione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    importo DECIMAL(10,2) NOT NULL,
+    id_persona INT NOT NULL,
+    data_donazione DATE NOT NULL,
+    descrizione VARCHAR(150),
+    FOREIGN KEY (id_persona) REFERENCES utenti(id_persona)
+);
 
 -- Creazione tabella adozioni
 -- CREATE TABLE adozioni (
