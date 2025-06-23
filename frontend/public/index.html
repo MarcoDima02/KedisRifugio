@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una Zampa - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Menu laterale a sinistra -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo Diamoci una Zampa" class="logo">
+            </div>
+            <p class="sidebar-subtitle">Dashboard gestionale</p>
+
+            <ul class="menu">
+                <li class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li><i class="GestioneAnimali"></i> Gestione animali</li>
+                <li><i class="Adozioni"></i> Adozioni</li>
+                <li><i class="VisiteVeterinarie"></i> Visite veterinarie</li>
+                <li><i class="Donazioni"></i> Donazioni</li>
+                <li><i class="Report"></i> Report</li>
+                <li><i class="fas fa-cog"></i> Impostazioni</li>
+            </ul>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div class="main-content">
+            <!-- Header -->
+            <header>
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span>Leo Zampa</span>
+                    <span class="admin-label">Admin</span>
+                    <div class="user-avatar">
+                        <img src="avatar.png" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Form Nuovo Animale -->
+            <div class="content-container">
+                <h2>Nuovo animale</h2>
+
+                <form class="animal-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" placeholder="Inserisci Nome">
+                        </div>
+                        <div class="form-group">
+                            <!-- Primo select: tipo di animale -->
+                            <label for="animale">Animale:</label>
+                            <select id="animale">
+                                <option value="">Scegli un animale</option>
+                                <option value="cane">Cane</option>
+                                <option value="gatto">Gatto</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="select-wrapper">
+                            <label for="razza">Razza:</label>
+                            <select id="razza">
+                            <option value="">Seleziona prima un animale</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Sesso</label>
+                        <div class="select-wrapper">
+                            <select id="gender">
+                                    <option>Seleziona</option>
+                                    <option>Maschio</option>
+                                    <option>Femmina</option>
+                                </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdate">Data Nascita</label>
+                        <div class="date-input-wrapper">
+                            <input type="text" id="birthdate" placeholder="dd/mm/yyyy">
+                            <i class="far fa-calendar"></i>
+                        </div>
+                    </div>
+            </div>
+
+
+            <div class="form-box">
+                <!-- Inizio del nuovo box -->
+                <div class="form-row">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="arrivaldate">Data Arrivo</label>
+                            <div class="date-input-wrapper">
+                                <input type="text" id="arrivaldate" placeholder="dd/mm/yyyy">
+                                <i class="far fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Peso (kg)</label>
+                            <input type="text" id="weight" placeholder="Inserisci Peso">
+                        </div>
+                        <div class="form-group photo-section">
+                            <label>Foto Principale</label>
+                            <div class="photo-upload">
+                                <label class="photo-btn" for="main-photo">Seleziona Foto</label>
+                                <input type="file" id="main-photo" class="photo-input" accept="image/*">
+                                <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                <div class="image-preview" id="main-photo-preview"></div>
+                            </div>
+                        </div>
+                        <div class="form-group photo-section additional-photos">
+                            <label>Altre Foto</label>
+                            <div class="photo-upload-grid">
+                                <div class="photo-upload">
+                                    <label class="photo-btn" for="additional-photo-1">Seleziona Foto</label>
+                                    <input type="file" id="additional-photo-1" class="photo-input" accept="image/*">
+                                    <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                    <div class="image-preview" id="additional-photo-1-preview"></div>
+                                </div>
+                                <div class="photo-upload">
+                                    <label class="photo-btn" for="additional-photo-2">Seleziona Foto</label>
+                                    <input type="file" id="additional-photo-2" class="photo-input" accept="image/*">
+                                    <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                    <div class="image-preview" id="additional-photo-2-preview"></div>
+                                </div>
+                                <div class="photo-upload">
+                                    <label class="photo-btn" for="additional-photo-3">Seleziona Foto</label>
+                                    <input type="file" id="additional-photo-3" class="photo-input" accept="image/*">
+                                    <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                    <div class="image-preview" id="additional-photo-3-preview"></div>
+                                </div>
+                                <div class="photo-upload">
+                                    <label class="photo-btn" for="additional-photo-4">Seleziona Foto</label>
+                                    <input type="file" id="additional-photo-4" class="photo-input" accept="image/*">
+                                    <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                    <div class="image-preview" id="additional-photo-4-preview"></div>
+                                </div>
+                                <div class="photo-upload">
+                                    <label class="photo-btn" for="additional-photo-5">Seleziona Foto</label>
+                                    <input type="file" id="additional-photo-5" class="photo-input" accept="image/*">
+                                    <span class="photo-status">Nessuna Foto Selezionata...</span>
+                                    <div class="image-preview" id="additional-photo-5-preview"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fine del nuovo box -->
+            </div>
+
+            <div class="form-row">
+                <div class="form-row">
+                    <div class="form-group description-group">
+                        <div class="form-description">
+                            <label for="short-desc">Descrizione Breve (max 100 caratteri)</label>
+                            <textarea id="short-desc" maxlength="100" placeholder="Inserisci Descrizione..."></textarea>
+                        </div>
+
+                        <div class="form-description">
+                            <div class="form-row">
+                                <div class="form-group description-group">
+                                    <label for="long-desc">Descrizione Lunga (max 500 caratteri)</label>
+                                    <textarea id="long-desc" maxlength="500" placeholder="Inserisci Descrizione..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group medical-section">
+                    <label></label>
+                    <div class="medical-checkboxes">
+                        <h2>Cartella Clinica</h2>
+                        <div class="checkbox-item">
+
+                            <label for="vaccinated">Vaccinato <input type="checkbox" id="vaccinated"></label>
+                        </div>
+                        <div class="checkbox-item">
+
+                            <label for="sterilized">Sterilizzato<input type="checkbox" id="sterilized"></label>
+                        </div>
+                        <div class="checkbox-item">
+
+                            <label for="microchipped">Microchip <input type="checkbox" id="microchipped"></label>
+                        </div>
+                    </div>
+                    <div class="segni-distintivi-section">
+                        <label for="distinctive-marks">Segni Distintivi</label>
+                        <textarea id="distinctive-marks" placeholder="Inserisci Descrizione..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-add">Aggiungi</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
