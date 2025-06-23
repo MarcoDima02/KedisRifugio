@@ -4,49 +4,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "CartellaClinica")
-public class CartellaClinica {
+@Table(name = "Cartella_Clinica")
+public class Cartella_Clinica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdCartellaClinica;
-    @ManyToOne
-    @JoinColumn(name = "IdAnimale", referencedColumnName = "IdAnimale")
-    private AnagraficaAnimali IdAnimale;
+    private int Id_Cartella_Clinica;
     private boolean Sterilizzato;
-    private boolean Vaccinato;
+    private int Vaccini;
     private String Microchip;
     private boolean Sverminazione;
-    private boolean TrattamentoAntiparassitario;
+    private boolean Trattamento_Antiparassitario;
 
     public int getIdCartellaClinica() {
-        return IdCartellaClinica;
+        return Id_Cartella_Clinica;
     }
     public void setIdCartellaClinica(int idCartellaClinica) {
-        IdCartellaClinica = idCartellaClinica;
+        Id_Cartella_Clinica = idCartellaClinica;
     }
-    public AnagraficaAnimali getIdAnimale() {
-        return IdAnimale;
-    }
-    public void setIdAnimale(AnagraficaAnimali idAnimale) {
-        IdAnimale = idAnimale;
-    }
+
     public boolean isSterilizzato() {
         return Sterilizzato;
     }
     public void setSterilizzato(boolean sterilizzato) {
         Sterilizzato = sterilizzato;
     }
-    public boolean isVaccinato() {
-        return Vaccinato;
+    public int getVaccinazioni() {
+        return Vaccini;
     }
-    public void setVaccinato(boolean vaccinato) {
-        Vaccinato = vaccinato;
+    public void setVaccinazioni(int vaccinazioni) {
+        Vaccini = vaccinazioni;
     }
     public String getMicrochip() {
         return Microchip;
@@ -61,10 +51,10 @@ public class CartellaClinica {
         Sverminazione = sverminazione;
     }
     public boolean isTrattamentoAntiparassitario() {
-        return TrattamentoAntiparassitario;
+        return Trattamento_Antiparassitario;
     }
     public void setTrattamentoAntiparassitario(boolean trattamentoAntiparassitario) {
-        TrattamentoAntiparassitario = trattamentoAntiparassitario;
+        Trattamento_Antiparassitario = trattamentoAntiparassitario;
     }
 
     

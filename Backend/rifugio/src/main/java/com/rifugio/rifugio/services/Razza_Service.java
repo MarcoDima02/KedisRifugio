@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.rifugio.rifugio.entities.Razza;
 
-public interface RazzaService {
+public interface Razza_Service {
 
     List<Razza> getAllRazze();
 

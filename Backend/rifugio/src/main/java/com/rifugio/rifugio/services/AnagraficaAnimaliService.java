@@ -2,10 +2,10 @@ package com.rifugio.rifugio.services;
 
 import java.util.List;
 
-import com.rifugio.rifugio.entities.AnagraficaAnimali;
+import com.rifugio.rifugio.entities.Anagrafica_Animali;
 
 public interface AnagraficaAnimaliService {
 
-    List<AnagraficaAnimali> getAllAnagraficaAnimali();
+    List<Anagrafica_Animali> getAllAnagraficaAnimali();
 
 }

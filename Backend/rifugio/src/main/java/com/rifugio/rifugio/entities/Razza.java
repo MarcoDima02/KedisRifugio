@@ -9,25 +9,25 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Razza")
+@Table(name = "Razze")
 public class Razza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdRazza;
+    private int Id_Razza;
 
     @ManyToOne
-    @JoinColumn(name = "IdSpecie", referencedColumnName = "IdSpecie")
+    @JoinColumn(name = "Id_Specie", referencedColumnName = "Id_Specie")
     private Specie Specie;
 
     private String Nome;
 
     public int getIdRazza() {
-        return IdRazza;
+        return Id_Razza;
     }
 
     public void setIdRazza(int idRazza) {
-        IdRazza = idRazza;
+        Id_Razza = idRazza;
     }
 
     public Specie getSpecie() {
