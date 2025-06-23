@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.rifugio.rifugio.entities.StatoAnimale;
+import com.rifugio.rifugio.entities.Stato_Animale;
 import com.rifugio.rifugio.repos.StatoAnimaleRepo;
 
 @Service
@@ -17,7 +17,7 @@ public class StatoAnimaleServiceImpl implements StatoAnimaleService{
     }
 
     @Override
-    public List<StatoAnimale> getAllStatiAnimali(){
+    public List<Stato_Animale> getAllStatiAnimali(){
 
         return statoAnimaleRepo.findAll();
 

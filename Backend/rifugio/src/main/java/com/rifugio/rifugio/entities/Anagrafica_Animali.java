@@ -11,60 +11,60 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="AnagraficaAnimali")
-public class AnagraficaAnimali {
+@Table(name="Anagrafica_Animali")
+public class Anagrafica_Animali {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdAnimale;
+    private int Id_Animale;
 
     private String Nome;
 
     @ManyToOne
-    @JoinColumn(name = "IdCartellaClinica", referencedColumnName = "IdCartellaClinica")
-    private CartellaClinica IdCartellaClinica;
+    @JoinColumn(name = "Id_Cartella_Clinica", referencedColumnName = "Id_Cartella_Clinica")
+    private Cartella_Clinica Id_Cartella_Clinica;
 
     @ManyToOne
-    @JoinColumn(name = "IdSpecie", referencedColumnName = "IdSpecie")
+    @JoinColumn(name = "Id_Specie", referencedColumnName = "Id_Specie")
     private Specie Specie;
 
     @ManyToOne
-    @JoinColumn(name = "IdRazza", referencedColumnName = "IdRazza")
+    @JoinColumn(name = "Id_Razza", referencedColumnName = "Id_Razza")
     private Razza Razza;
 
     private char Sesso;
-    private Date DataNascita;
-    private Date DataArrivo;
-    private String DescrizioneBreve;
-    private String DescrizioneLunga;
+    private Date Data_Nascita;
+    private Date Data_Arrivo;
+    private String Descrizione_Breve;
+    private String Descrizione_Lunga;
 
 
 
     @ManyToOne
-    @JoinColumn(name = "IdStatoAnimale", referencedColumnName = "IdStatoAnimale")
-    private StatoAnimale IdStatoAnimale;
+    @JoinColumn(name = "Id_Stato_Animale", referencedColumnName = "Id_Stato_Animale")
+    private Stato_Animale Id_Stato_Animale;
 
 
     
-    public CartellaClinica getIdCartellaClinica() {
-        return IdCartellaClinica;
+    public Cartella_Clinica getIdCartellaClinica() {
+        return Id_Cartella_Clinica;
     }
 
-    public void setIdCartellaClinica(CartellaClinica idCartellaClinica) {
-        IdCartellaClinica = idCartellaClinica;
+    public void setIdCartellaClinica(Cartella_Clinica idCartellaClinica) {
+        Id_Cartella_Clinica = idCartellaClinica;
     }
 
-    public void setStatoAnimale(StatoAnimale statoAnimale) {
-        IdStatoAnimale = statoAnimale;
+    public void setStatoAnimale(Stato_Animale statoAnimale) {
+        Id_Stato_Animale = statoAnimale;
     }
 
     
     public int getIdAnimale() {
-        return IdAnimale;
+        return Id_Animale;
     }
 
     public void setIdAnimale(int idAnimale) {
-        IdAnimale = idAnimale;
+        Id_Animale = idAnimale;
     }
 
     public String getNome() {
@@ -100,43 +100,43 @@ public class AnagraficaAnimali {
     }
 
     public Date getDataNascita() {
-        return DataNascita;
+        return Data_Nascita;
     }
 
     public void setDataNascita(Date dataNascita) {
-        DataNascita = dataNascita;
+        Data_Nascita = dataNascita;
     }
 
     public Date getDataArrivo() {
-        return DataArrivo;
+        return Data_Arrivo;
     }
 
     public void setDataArrivo(Date dataArrivo) {
-        DataArrivo = dataArrivo;
+        Data_Arrivo = dataArrivo;
     }
 
     public String getDescrizioneBreve() {
-        return DescrizioneBreve;
+        return Descrizione_Breve;
     }
 
     public void setDescrizioneBreve(String descrizioneBreve) {
-        DescrizioneBreve = descrizioneBreve;
+        Descrizione_Breve = descrizioneBreve;
     }
 
     public String getDescrizioneLunga() {
-        return DescrizioneLunga;
+        return Descrizione_Lunga;
     }
 
     public void setDescrizioneLunga(String descrizioneLunga) {
-        DescrizioneLunga = descrizioneLunga;
+        Descrizione_Lunga = descrizioneLunga;
     }
 
-    public StatoAnimale getIdStatoAnimale() {
-        return IdStatoAnimale;
+    public Stato_Animale getIdStatoAnimale() {
+        return Id_Stato_Animale;
     }
 
-    public void setIdStatoAnimale(StatoAnimale statoAnimale) {
-        this.IdStatoAnimale = statoAnimale;
+    public void setIdStatoAnimale(Stato_Animale statoAnimale) {
+        this.Id_Stato_Animale = statoAnimale;
     }
 
 

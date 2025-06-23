@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.rifugio.rifugio.entities.CartellaClinica;
+import com.rifugio.rifugio.entities.Cartella_Clinica;
 
 @Service
 public class CartellaClinicaServiceImpl implements CartellaClinicaService {
@@ -18,7 +18,7 @@ public class CartellaClinicaServiceImpl implements CartellaClinicaService {
     }
 
     @Override
-    public List<CartellaClinica> getAllCartelleCliniche() {
+    public List<Cartella_Clinica> getAllCartelleCliniche() {
         return cartellaClinicaRepo.findAll();
     }
 

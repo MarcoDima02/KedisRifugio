@@ -2,10 +2,10 @@ package com.rifugio.rifugio.services;
 
 import java.util.List;
 
-import com.rifugio.rifugio.entities.CartellaClinica;
+import com.rifugio.rifugio.entities.Cartella_Clinica;
 
 public interface CartellaClinicaService {
 
-    List<CartellaClinica> getAllCartelleCliniche();
+    List<Cartella_Clinica> getAllCartelleCliniche();
 
 }
