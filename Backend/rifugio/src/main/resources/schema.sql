@@ -93,16 +93,16 @@ CREATE TABLE donazioni (
 );
 
 -- Creazione tabella adozioni
--- CREATE TABLE adozioni (
---     id_adozione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
---     id_animale INT NOT NULL,
---     id_persona INT NOT NULL,
---     data_adozione DATE NOT NULL,
---     id_step_adozioni INT NULL,
---     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale),
---     FOREIGN KEY (id_persona) REFERENCES utenti(id_persona),
---     FOREIGN KEY (id_step_adozioni) REFERENCES step_adozioni(id_step_adozioni)
--- );
+CREATE TABLE adozioni (
+    id_adozione INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    id_animale INT NOT NULL,
+    id_persona INT NOT NULL,
+    data_adozione DATE NOT NULL,
+    id_step_adozioni INT NULL,
+    FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale),
+    FOREIGN KEY (id_persona) REFERENCES utenti(id_persona)
+    -- FOREIGN KEY (id_step_adozioni) REFERENCES step_adozioni(id_step_adozioni)
+);
 
 -- Creazione tabella visite_veterinarie
 -- CREATE TABLE visite_veterinarie (
