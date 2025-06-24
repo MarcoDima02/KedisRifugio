@@ -73,14 +73,11 @@ CREATE TABLE utenti (
 );
 
 -- Creazione tabella step_adozioni
--- CREATE TABLE step_adozioni (
---     id_step_adozioni INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
---     colloquio_per_affido BOOLEAN DEFAULT FALSE,
---     visita_domiciliare BOOLEAN DEFAULT FALSE,
---     affido_prova BOOLEAN DEFAULT FALSE,
---     adozione BOOLEAN DEFAULT FALSE,
---     controlli_post_affido BOOLEAN DEFAULT FALSE
--- );
+CREATE TABLE step_adozioni (
+    id_step_adozioni INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome_step VARCHAR(30) NOT NULL,
+    descrizione_step VARCHAR(150) NOT NULL
+);
 
 -- Creazione tabella donazioni
 CREATE TABLE donazioni (
