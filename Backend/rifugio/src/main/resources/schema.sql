@@ -97,17 +97,17 @@ CREATE TABLE adozioni (
     data_adozione DATE NOT NULL,
     id_step_adozioni INT NULL,
     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale),
-    FOREIGN KEY (id_persona) REFERENCES utenti(id_persona)
-    -- FOREIGN KEY (id_step_adozioni) REFERENCES step_adozioni(id_step_adozioni)
+    FOREIGN KEY (id_persona) REFERENCES utenti(id_persona),
+    FOREIGN KEY (id_step_adozioni) REFERENCES step_adozioni(id_step_adozioni)
 );
 
 -- Creazione tabella visite_veterinarie
--- CREATE TABLE visite_veterinarie (
---     id_visita INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
---     data DATE NOT NULL,
---     ora TIME NOT NULL,
---     id_animale INT NOT NULL,
---     motivo VARCHAR(150) NOT NULL,
---     esito VARCHAR(150) NOT NULL,
---     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
--- );
+CREATE TABLE visite_veterinarie (
+    id_visita INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    data DATE NOT NULL,
+    ora TIME NOT NULL,
+    id_animale INT NOT NULL,
+    motivo VARCHAR(150) NOT NULL,
+    esito VARCHAR(150) NOT NULL,
+    FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
+);
