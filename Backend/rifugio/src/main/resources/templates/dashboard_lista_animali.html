@@ -16,17 +16,33 @@
         <table>
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nome</th>     
                     <th>Specie</th>
                     <th>Razza</th>
+                    <th>Sesso</th>
+                    <th>Data Nascita</th>
+                    <th>Data Arrivo</th>
+                    <th>Stato Animale</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr th:each="animale:${animali}">
+                    <td>
+                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" th:text="${animale.nome}"></a>
+                    </td>
                     <td th:text="${animale.nome}"></td>   
                     <td th:text="${animale.specie.nome}"></td>   
-                    <td th:text="${animale.razza.nome}"></td>   
+                    <td th:text="${animale.razza.nome}"></td> 
+                    <td th:text="${animale.sesso}"></td> 
+                    <td th:text="${animale.DataNascita}"></td> 
+                    <td th:text="${animale.DataArrivo}"></td> 
+                    <td th:text="${animale.IdStatoAnimale.descrizione}"></td> 
+                    <td th:button="true">
+                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}">Dettagli</a>
+                    </td>
+                      
                 </tr>
             </tbody>
         </table>
@@ -36,4 +52,3 @@
 
 
 
-<!-- Qua va inserita la pagina web che comunica con la sezione backend di competenza-->

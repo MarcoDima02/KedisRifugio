@@ -20,4 +20,9 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
         return anagraficaAnimaliRepo.findAll();
     }
 
+    @Override
+    public Anagrafica_Animali getById(int id) {
+        return anagraficaAnimaliRepo.findById(id).orElse(null);
+    }
+
 }
