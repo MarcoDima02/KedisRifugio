@@ -1,18 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nome.com</title>
 
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+    <link rel="stylesheet" th:href="@{../css/styles.css}" />
 </head>
 
 <body>
-    <div class="container">
-        <h1>Lista Animali</h1>
+
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+
+
+    <section class="hero-section">
+        <div class="hero-text">
+            <p>Un piccolo gesto può cambiare una vita… <br> Diamoci una zampa!</p>
+        </div>
+    </section>
+
+    <p class="green-center-text">Cerca qui il tuo nuovo compagno a 4 zampe</p>
+
+<section class="filter-section">
+  <div class="filter-box">
+    <form method="get">
+      <div class="grid">
+        <div class="filter-field">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Cerca per nome" />
+        </div>
+
+        <div class="filter-field">
+          <label for="specie">Specie</label>
+          <select id="specie" name="specie">
+            <option value="">Seleziona Specie</option>
+            <option value="cane">Cane</option>
+            <option value="gatto">Gatto</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="razza">Razza</label>
+          <select id="razza" name="razza">
+            <option value="">Seleziona Razza</option>
+            <option value="labrador">Labrador</option>
+            <option value="siamese">Siamese</option>
+          </select>
+        </div>
+        
+        <div class="filter-field">
+          <label for="sesso">Sesso</label>
+          <select id="sesso" name="sesso">
+            <option value="">Seleziona Sesso</option>
+            <option value="maschio">Maschio</option>
+            <option value="femmina">Femmina</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+    <section class="animal-cards-section">
+        <div class="animal-grid">
+            <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="animal-link" th:each="animale : ${animali}">
+                <div class="animal-card">
+                <img src="https://www.shutterstock.com/image-photo/happy-dog-running-isolated-on-600nw-2629594341.jpg" th:alt="${animale.nome}" />
+                    <div class="animal-info">
+                        <p class="animal-name" th:text="${animale.nome}">Nome Animale</p>
+                        <p class="animal-meta">
+                        <span th:text="${animale.sesso}">Sesso</span> • 
+                        <span th:text="${animale.razza.nome}">Razza</span>
+                        </p>
+                        <p class="animal-description" th:text="${animale.descrizioneBreve}">Descrizione breve</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </section>
+
+    <main class="container">
+        <h2>Lista Animali</h2>
         <table>
             <thead>
                 <tr>
@@ -24,12 +95,13 @@
                     <th>Data Nascita</th>
                     <th>Data Arrivo</th>
                     <th>Stato Animale</th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr th:each="animale:${animali}">
-                    <td th:text="${animale.nome}"></td>
+                <tr th:each="animale : ${animali}">
+                    <td th:text="${animale.idAnimale}"></td>
                     <td th:text="${animale.nome}"></td>   
                     <td th:text="${animale.specie.nome}"></td>   
                     <td th:text="${animale.razza.nome}"></td> 
@@ -37,16 +109,20 @@
                     <td th:text="${animale.DataNascita}"></td> 
                     <td th:text="${animale.DataArrivo}"></td> 
                     <td th:text="${animale.IdStatoAnimale.descrizione}"></td> 
-                    <td th:button="true">
-                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}">Dettagli</a>
+                    <td>
+                        <a class="contrast" th:href="@{/animale/{id}(id=${animale.idAnimale})}">Dettagli</a>
                     </td>
-                      
                 </tr>
             </tbody>
         </table>
-    </div>
+    </main>
 </body>
+
+<footer class="main-footer">
+  <div class="container">
+    <p>&copy; 2025 Nome.com — Tutti i diritti riservati</p>
+  </div>
+</footer>
+
+
 </html>
-
-
-

@@ -21,13 +21,25 @@ INSERT INTO razze (id_specie, nome) VALUES
 -- Inserimento dati per cartella_clinica
 INSERT INTO cartella_clinica (sterilizzato, vaccini, microchip, sverminazione, trattamento_antiparassitario) VALUES
 (TRUE, 3, '123456789', TRUE, FALSE),
-(FALSE, 1, '987654321', FALSE, TRUE);
+(FALSE, 1, '987654321', FALSE, TRUE),
+(TRUE, 2, '111222333', TRUE, TRUE),   -- ID = 3
+(TRUE, 3, '444555666', TRUE, TRUE),   -- ID = 4
+(FALSE, 0, '777888999', FALSE, FALSE),-- ID = 5
+(TRUE, 1, '222333444', TRUE, FALSE),  -- ID = 6
+(TRUE, 2, '555666777', TRUE, TRUE),   -- ID = 7
+(TRUE, 1, '888999000', TRUE, FALSE); -- ID = 8
 
 
 -- Inserimento dati per anagrafica_animali
 INSERT INTO anagrafica_animali (nome, id_specie, id_razza, sesso, data_nascita, data_arrivo, descrizione_breve, descrizione_lunga, id_cartella_clinica, id_stato_animale) VALUES
 ('Fido', 1, 1, 'M', '2020-01-01', '2021-01-01', 'Cane giocherellone', 'Ama giocare con la palla', 1, 1),
-('Micia', 2, 3, 'F', '2019-05-10', '2022-03-15', 'Gatta affettuosa', 'Molto dolce e coccolona', 2, 2);
+('Micia', 2, 3, 'F', '2019-05-10', '2022-03-15', 'Gatta affettuosa', 'Molto dolce e coccolona', 2, 2),
+('Luna', 2, 4, 'F', '2021-02-20', '2022-06-01', 'Gatta elegante', 'Ama dormire al sole e ricevere coccole', 3, 1),
+('Rocky', 1, 2, 'M', '2020-11-10', '2023-01-15', 'Cane forte', 'Molto protettivo ma affettuoso con chi conosce', 4, 1),
+('Milo', 1, 1, 'M', '2019-07-05', '2023-09-12', 'Cane anziano', 'Ha bisogno di attenzioni veterinarie costanti', 5, 3),
+('Zoe', 2, 3, 'F', '2022-03-18', '2023-05-10', 'Gattina vivace', 'Salta ovunque e gioca con tutto', 6, 1),
+('Toby', 1, 1, 'M', '2023-01-25', '2024-01-10', 'Cucciolo curioso', 'Sta imparando a socializzare con altri animali', 7, 1),
+('Nina', 2, 4, 'F', '2020-08-15', '2021-12-20', 'Gatta indipendente', 'Ama stare da sola ma è affettuosa quando vuole', 8, 1);
 -- Inserimento dati per utenti
 INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruolo) VALUES
 ('Mario', 'Rossi', 'RSSMRA80A01H501U', '3331234567', 'mario.rossi@email.com', 'password1', 'ADMIN'),
