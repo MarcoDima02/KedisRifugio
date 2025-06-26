@@ -12,12 +12,32 @@
 
 <body>
     <div class="container">
-        <h1>Dettagli dell'animale</h1>
+        <table>
+
+            <thead>
+
+                <th><a href="/">Home</a></th>
+
+            </thead>
+
+        </table>
+
+        <h1>Dettaglio Animale</h1>
 
         <h2 th:text="'Id : ' + ${animale.idAnimale}"></h2>
         <h2 th:text="'Nome : ' + ${animale.nome}"></h2>
-        <h2 th:text="'Nome : ' + ${animale.nome}"></h2>
+        <h2 th:text="'Specie : ' + ${animale.specie.nome}"></h2>
+        <h2 th:text="'Razza : ' + ${animale.razza.nome}"></h2>
+        <h2 th:text="'Sesso : ' + ${animale.sesso}"></h2>
+        <h2 th:text="'Data Nascita : ' + ${animale.DataArrivo}"></h2>
+        <h2 th:text="'Data Arrivo : ' + ${animale.DataNascita}"></h2>
+        <h2 th:text="'Descrizione Breve :'"></h2>
+        <p th:text="${animale.descrizioneBreve}"></p>
+        <h2 th:text="'Descrizione Lunga :'"></h2>
+        <p th:text="${animale.descrizioneLunga}"></p>
+        <h2 th:text="'Stato Animale : ' + ${animale.IdStatoAnimale.descrizione}"></h2>
 
+        
         
     </div>
 </body>

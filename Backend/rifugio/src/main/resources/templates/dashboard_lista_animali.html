@@ -29,9 +29,7 @@
 
             <tbody>
                 <tr th:each="animale:${animali}">
-                    <td>
-                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" th:text="${animale.nome}"></a>
-                    </td>
+                    <td th:text="${animale.nome}"></td>
                     <td th:text="${animale.nome}"></td>   
                     <td th:text="${animale.specie.nome}"></td>   
                     <td th:text="${animale.razza.nome}"></td> 
