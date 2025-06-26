@@ -12,17 +12,21 @@
 
 <body>
     <div class="container">
-        <h1>Titolo</h1>
+        <h1>Lista Animali</h1>
         <table>
             <thead>
                 <tr>
-                    <th>nomecolonna</th>     
+                    <th>Nome</th>     
+                    <th>Specie</th>
+                    <th>Razza</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr th:each="v:${Nometabella}">
-                    <td th:text="${v.nomecolonna}">></td>   
+                <tr th:each="animale:${animali}">
+                    <td th:text="${animale.nome}"></td>   
+                    <td th:text="${animale.specie.nome}"></td>   
+                    <td th:text="${animale.razza.nome}"></td>   
                 </tr>
             </tbody>
         </table>

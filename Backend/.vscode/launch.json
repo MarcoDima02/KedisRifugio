@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RifugioApplication<rifugio>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rifugio.rifugio.RifugioApplication",
+            "projectName": "rifugio",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

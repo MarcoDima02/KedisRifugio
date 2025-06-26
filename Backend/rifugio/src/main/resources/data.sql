@@ -9,35 +9,25 @@ INSERT INTO stato_animale (descrizione) VALUES
 -- Inserimento dati per specie
 INSERT INTO specie (nome) VALUES
 ('Cane'),
-('Gatto'),
-('Coniglio'),
-('Uccello'),
-('Criceto');
+('Gatto');
 
 -- Inserimento dati per razze
 INSERT INTO razze (id_specie, nome) VALUES
 (1, 'Labrador'),
 (1, 'Bulldog'),
 (2, 'Europeo'),
-(2, 'Siamese'),
-(3, 'Nano');
+(2, 'Siamese');
 
 -- Inserimento dati per cartella_clinica
 INSERT INTO cartella_clinica (sterilizzato, vaccini, microchip, sverminazione, trattamento_antiparassitario) VALUES
 (TRUE, 3, '123456789', TRUE, FALSE),
-(FALSE, 1, '987654321', FALSE, TRUE),
-(TRUE, 2, '555555555', TRUE, TRUE),
-(FALSE, 0, '111111111', FALSE, FALSE),
-(TRUE, 4, '222222222', TRUE, TRUE);
+(FALSE, 1, '987654321', FALSE, TRUE);
+
 
 -- Inserimento dati per anagrafica_animali
 INSERT INTO anagrafica_animali (nome, id_specie, id_razza, sesso, data_nascita, data_arrivo, descrizione_breve, descrizione_lunga, id_cartella_clinica, id_stato_animale) VALUES
 ('Fido', 1, 1, 'M', '2020-01-01', '2021-01-01', 'Cane giocherellone', 'Ama giocare con la palla', 1, 1),
-('Micia', 2, 3, 'F', '2019-05-10', '2022-03-15', 'Gatta affettuosa', 'Molto dolce e coccolona', 2, 2),
-('Bunny', 3, 5, 'F', '2021-06-20', '2022-07-01', 'Coniglio vivace', 'Salta ovunque', 3, 1),
-('Cip', 4, NULL, 'M', '2022-02-02', '2022-03-01', 'Uccellino canterino', 'Canta tutto il giorno', 4, 3),
-('Hammy', 5, NULL, 'M', '2023-01-15', '2023-02-10', 'Criceto curioso', 'Ama correre sulla ruota', 5, 1);
-
+('Micia', 2, 3, 'F', '2019-05-10', '2022-03-15', 'Gatta affettuosa', 'Molto dolce e coccolona', 2, 2);
 -- Inserimento dati per utenti
 INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruolo) VALUES
 ('Mario', 'Rossi', 'RSSMRA80A01H501U', '3331234567', 'mario.rossi@email.com', 'password1', 'ADMIN'),
@@ -65,15 +55,9 @@ INSERT INTO donazioni (importo, id_persona, data_donazione, descrizione) VALUES
 -- Inserimento dati per adozioni
 INSERT INTO adozioni (id_animale, id_persona, data_adozione, id_step_adozioni) VALUES
 (1, 2, '2024-03-10', 1),
-(2, 3, '2024-04-12', 2),
-(3, 4, '2024-05-20', 3),
-(4, 5, '2024-06-15', 4),
-(5, 1, '2024-07-01', 5);
+(2, 3, '2024-04-12', 2);
 
 -- Inserimento dati per visite_veterinarie
 INSERT INTO visite_veterinarie (data, ora, id_animale, motivo, esito) VALUES
 ('2024-04-01', '10:00:00', 1, 'Vaccinazione', 'Tutto ok'),
-('2024-04-15', '11:30:00', 2, 'Controllo annuale', 'In salute'),
-('2024-05-10', '09:00:00', 3, 'Visita di controllo', 'Guarito'),
-('2024-06-05', '15:00:00', 4, 'Problema respiratorio', 'In cura'),
-('2024-07-20', '08:30:00', 5, 'Controllo peso', 'Normale');
+('2024-04-15', '11:30:00', 2, 'Controllo annuale', 'In salute');
