@@ -49,7 +49,7 @@
             <option value="siamese">Siamese</option>
           </select>
         </div>
-        
+
         <div class="filter-field">
           <label for="sesso">Sesso</label>
           <select id="sesso" name="sesso">
@@ -67,7 +67,7 @@
         <div class="animal-grid">
             <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="animal-link" th:each="animale : ${animali}">
                 <div class="animal-card">
-                <img src="https://www.shutterstock.com/image-photo/happy-dog-running-isolated-on-600nw-2629594341.jpg" th:alt="${animale.nome}" />
+                <img src="../images/prova_foto.webp" th:alt="${animale.nome}" />
                     <div class="animal-info">
                         <p class="animal-name" th:text="${animale.nome}">Nome Animale</p>
                         <p class="animal-meta">
@@ -82,40 +82,6 @@
 
     </section>
 
-    <main class="container">
-        <h2>Lista Animali</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nome</th>     
-                    <th>Specie</th>
-                    <th>Razza</th>
-                    <th>Sesso</th>
-                    <th>Data Nascita</th>
-                    <th>Data Arrivo</th>
-                    <th>Stato Animale</th>
-                    <th>Azioni</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr th:each="animale : ${animali}">
-                    <td th:text="${animale.idAnimale}"></td>
-                    <td th:text="${animale.nome}"></td>   
-                    <td th:text="${animale.specie.nome}"></td>   
-                    <td th:text="${animale.razza.nome}"></td> 
-                    <td th:text="${animale.sesso}"></td> 
-                    <td th:text="${animale.DataNascita}"></td> 
-                    <td th:text="${animale.DataArrivo}"></td> 
-                    <td th:text="${animale.IdStatoAnimale.descrizione}"></td> 
-                    <td>
-                        <a class="contrast" th:href="@{/animale/{id}(id=${animale.idAnimale})}">Dettagli</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
 </body>
 
 <footer class="main-footer">
