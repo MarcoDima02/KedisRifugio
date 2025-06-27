@@ -1,12 +1,7 @@
 package com.rifugio.rifugio.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Razze")
@@ -14,39 +9,37 @@ public class Razza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id_Razza;
+    private int idRazza;
 
     @ManyToOne
-    @JoinColumn(name = "Id_Specie", referencedColumnName = "Id_Specie")
-    private Specie Specie;
+    @JoinColumn(name = "idSpecie", referencedColumnName = "idSpecie")
+    @JsonIgnoreProperties({"razze"}) // evita loop serializzazione se Specie ha lista di razze
+    private Specie specie;
 
-    private String Nome;
+    private String nome;
 
+    // Getter & Setter
     public int getIdRazza() {
-        return Id_Razza;
+        return idRazza;
     }
 
     public void setIdRazza(int idRazza) {
-        Id_Razza = idRazza;
+        this.idRazza = idRazza;
     }
 
     public Specie getSpecie() {
-        return Specie;
+        return specie;
     }
 
     public void setSpecie(Specie specie) {
-        Specie = specie;
+        this.specie = specie;
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        this.nome = nome;
     }
-
-    
-
-
 }
