@@ -8,7 +8,7 @@ import com.rifugio.rifugio.entities.Razza;
 import com.rifugio.rifugio.repos.RazzaRepo;
 
 @Service
-public class RazzaServiceImpl implements Razza_Service {
+public class RazzaServiceImpl implements RazzaService {
 
     private final RazzaRepo razzaRepo;
 
