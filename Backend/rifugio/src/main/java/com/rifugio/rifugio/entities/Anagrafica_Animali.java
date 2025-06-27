@@ -58,7 +58,6 @@ public class Anagrafica_Animali {
         Id_Stato_Animale = statoAnimale;
     }
 
-    
     public int getIdAnimale() {
         return Id_Animale;
     }
