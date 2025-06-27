@@ -3,12 +3,12 @@ package com.rifugio.rifugio.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.rifugio.rifugio.entities.Cartella_Clinica;
+import com.rifugio.rifugio.entities.CartellaClinica;
 
 public interface CartellaClinicaService {
-    List<Cartella_Clinica> getAllCartelleCliniche();
-    Optional<Cartella_Clinica> getCartellaById(int id);
-    Cartella_Clinica salva(Cartella_Clinica cartella);
-    Cartella_Clinica aggiorna(int id, Cartella_Clinica nuova);
+    List<CartellaClinica> getAllCartelleCliniche();
+    Optional<CartellaClinica> getCartellaById(int id);
+    CartellaClinica salva(CartellaClinica cartella);
+    CartellaClinica aggiorna(int id, CartellaClinica nuova);
     void elimina(int id);
 }

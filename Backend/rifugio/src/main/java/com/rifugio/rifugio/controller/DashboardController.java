@@ -1,6 +1,6 @@
 package com.rifugio.rifugio.controller;
 
-import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class DashboardController {
     
      @GetMapping("/animale/{id}")
     public String dettaglioAnimale(@PathVariable int id, Model model) {
-        Anagrafica_Animali animale = anagraficaAnimaleService.getById(id);
+        AnagraficaAnimali animale = anagraficaAnimaleService.getById(id);
         model.addAttribute("animale", animale);
         return "dettaglio_animale"; 
     }
