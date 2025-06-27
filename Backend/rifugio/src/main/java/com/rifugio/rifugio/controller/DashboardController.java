@@ -1,6 +1,6 @@
 package com.rifugio.rifugio.controller;
 
-import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
@@ -37,7 +37,7 @@ public class DashboardController {
     
     @GetMapping("/animale/{id}")
     public String dettaglioAnimale(@PathVariable int id, Model model) {
-        Anagrafica_Animali animale = anagraficaAnimaleService.getById(id);
+        AnagraficaAnimali animale = anagraficaAnimaleService.getById(id);
         model.addAttribute("animale", animale);
         return "dettaglio_animale"; 
     }

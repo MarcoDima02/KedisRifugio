@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rifugio.rifugio.entities.Cartella_Clinica;
+import com.rifugio.rifugio.entities.CartellaClinica;
 import com.rifugio.rifugio.services.CartellaClinicaService;
 
 @RestController
@@ -25,13 +25,13 @@ public class CartellaClinicaController {
 
     // GET - tutte le cartelle
     @GetMapping
-    public List<Cartella_Clinica> getAll() {
+    public List<CartellaClinica> getAll() {
         return cartellaClinicaService.getAllCartelleCliniche();
     }
 
     // GET - una cartella
     @GetMapping("/{id}")
-    public ResponseEntity<Cartella_Clinica> getById(@PathVariable int id) {
+    public ResponseEntity<CartellaClinica> getById(@PathVariable int id) {
         return cartellaClinicaService.getCartellaById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -39,14 +39,14 @@ public class CartellaClinicaController {
 
     // POST - crea
     @PostMapping
-    public ResponseEntity<Cartella_Clinica> create(@RequestBody Cartella_Clinica cartella) {
+    public ResponseEntity<CartellaClinica> create(@RequestBody CartellaClinica cartella) {
         return ResponseEntity.ok(cartellaClinicaService.salva(cartella));
     }
 
     // PUT - aggiorna
     @PutMapping("/{id}")
-    public ResponseEntity<Cartella_Clinica> update(@PathVariable int id, @RequestBody Cartella_Clinica nuova) {
-        Cartella_Clinica aggiornata = cartellaClinicaService.aggiorna(id, nuova);
+    public ResponseEntity<CartellaClinica> update(@PathVariable int id, @RequestBody CartellaClinica nuova) {
+        CartellaClinica aggiornata = cartellaClinicaService.aggiorna(id, nuova);
         if (aggiornata == null) {
             return ResponseEntity.notFound().build();
         }

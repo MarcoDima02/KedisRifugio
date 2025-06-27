@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.rifugio.rifugio.entities.Cartella_Clinica;
+import com.rifugio.rifugio.entities.CartellaClinica;
 import com.rifugio.rifugio.repos.CartellaClinicaRepo;
 
 @Service
@@ -18,22 +18,22 @@ public class CartellaClinicaServiceImpl implements CartellaClinicaService {
     }
 
     @Override
-    public List<Cartella_Clinica> getAllCartelleCliniche() {
+    public List<CartellaClinica> getAllCartelleCliniche() {
         return cartellaClinicaRepo.findAll();
     }
 
     @Override
-    public Optional<Cartella_Clinica> getCartellaById(int id) {
+    public Optional<CartellaClinica> getCartellaById(int id) {
         return cartellaClinicaRepo.findById(id);
     }
 
     @Override
-    public Cartella_Clinica salva(Cartella_Clinica cartella) {
+    public CartellaClinica salva(CartellaClinica cartella) {
         return cartellaClinicaRepo.save(cartella);
     }
 
     @Override
-    public Cartella_Clinica aggiorna(int id, Cartella_Clinica nuova) {
+    public CartellaClinica aggiorna(int id, CartellaClinica nuova) {
         return cartellaClinicaRepo.findById(id).map(cartella -> {
             cartella.setSterilizzato(nuova.isSterilizzato());
             cartella.setVaccinazioni(nuova.getVaccinazioni());

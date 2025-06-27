@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
 
 @Service
 public interface AnagraficaAnimaliService {
 
-    List<Anagrafica_Animali> getAllAnagraficaAnimali();
+    List<AnagraficaAnimali> getAllAnagraficaAnimali();
 
-    Anagrafica_Animali getById(int id);
+    AnagraficaAnimali getById(int id);
 
 }
