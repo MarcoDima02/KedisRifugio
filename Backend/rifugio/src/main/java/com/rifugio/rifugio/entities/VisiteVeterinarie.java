@@ -19,6 +19,7 @@ public class VisiteVeterinarie {
 
     private Time ora;
 
+    
     private int id_animale;
 
     private String motivo;
