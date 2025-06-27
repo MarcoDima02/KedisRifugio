@@ -34,28 +34,35 @@
 
         <div class="filter-field">
           <label for="specie">Specie</label>
-          <select id="specie" name="specie">
-            <option value="">Seleziona Specie</option>
-            <option value="cane">Cane</option>
-            <option value="gatto">Gatto</option>
+          <select name="specie" id="specie" th:field="*{selezionata}">
+            <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="specie : ${specieList}"
+                      th:value="${specie.nome}"
+                      th:text="${specie.nome}">
+            </option>
           </select>
         </div>
 
         <div class="filter-field">
           <label for="razza">Razza</label>
-          <select id="razza" name="razza">
-            <option value="">Seleziona Razza</option>
-            <option value="labrador">Labrador</option>
-            <option value="siamese">Siamese</option>
+          <select name="razza" id="razza" th:field="*{selezionata}">
+            <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="razza : ${razzaList}"
+                      th:value="${razza.nome}"
+                      th:text="${razza.nome}">
+            </option>
           </select>
         </div>
 
         <div class="filter-field">
           <label for="sesso">Sesso</label>
-          <select id="sesso" name="sesso">
-            <option value="">Seleziona Sesso</option>
-            <option value="maschio">Maschio</option>
-            <option value="femmina">Femmina</option>
+          <select name="sesso" id="sesso" th:field="*{selezionata}">
+            <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="sesso : ${sessoList}"
+                      th:value="${sesso[0]}"
+                      th:text="${sesso}">
+            </option>
+          </select>
           </select>
         </div>
       </div>
