@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ public class AnagraficaAnimaliController {
     private AnagraficaAnimaleServiceImpl anagraficaAnimaliService;
 
     @GetMapping
-    public List<Anagrafica_Animali> getAllAnagraficaAnimali() {
+    public List<AnagraficaAnimali> getAllAnagraficaAnimali() {
         return anagraficaAnimaliService.getAllAnagraficaAnimali();
     }
 
