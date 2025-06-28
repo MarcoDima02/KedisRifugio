@@ -8,7 +8,7 @@ import com.rifugio.rifugio.entities.CartellaClinica;
 public interface CartellaClinicaService {
     List<CartellaClinica> getAllCartelleCliniche();
     Optional<CartellaClinica> getCartellaById(int id);
-    CartellaClinica salva(CartellaClinica cartella);
-    CartellaClinica aggiorna(int id, CartellaClinica nuova);
-    void elimina(int id);
+    CartellaClinica create(CartellaClinica cartella);
+    CartellaClinica update(int id, CartellaClinica nuova);
+    void deleteById(int id);
 }

@@ -21,7 +21,7 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
     }
 
     @Override
-    public AnagraficaAnimali getById(int id) {
+    public AnagraficaAnimali getByIdAnagraficaAnimali(int id) {
         return anagraficaAnimaliRepo.findById(id).orElse(null);
     }
 
