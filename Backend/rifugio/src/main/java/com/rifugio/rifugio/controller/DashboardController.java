@@ -39,7 +39,7 @@ public class DashboardController {
         return "dashboard_lista_animali";
     }
 
-    @GetMapping("/specie/{id}")
+    @GetMapping("/speciee/{id}")
     public String dashboardAnimaliSpecie(Model model, @PathVariable int id) {
         String[] sessoList = {"Maschio", "Femmina"};
         model.addAttribute("animali", anagraficaAnimaleService.getByIdSpecie(id));
@@ -63,7 +63,7 @@ public class DashboardController {
         @RequestParam(required = false) int specie,
         Model model
     ) {
-        List<Anagrafica_Animali> animaliFiltrati = anagraficaAnimaleService.getByIdSpecie(specie);
+        List<AnagraficaAnimali> animaliFiltrati = anagraficaAnimaleService.getByIdSpecie(specie);
         model.addAttribute("animali", animaliFiltrati);
 
         // eventualmente ri-popolare le liste per i filtri

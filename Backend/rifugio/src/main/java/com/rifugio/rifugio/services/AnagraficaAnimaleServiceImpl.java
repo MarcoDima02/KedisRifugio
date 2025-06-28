@@ -26,26 +26,26 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
     }
 
     @Override
-    public List<Anagrafica_Animali> getByIdRazza(int id) {
+    public List<AnagraficaAnimali> getByIdRazza(int id) {
         return anagraficaAnimaliRepo.findAll().stream()
                 .filter(animale -> animale.getRazza() != null && animale.getRazza().getIdRazza() == id)
                 .toList();
     }
 
     @Override
-    public List<Anagrafica_Animali> getByIdSpecie(int id) {
+    public List<AnagraficaAnimali> getByIdSpecie(int id) {
         return anagraficaAnimaliRepo.findAll().stream()
                 .filter(animale -> animale.getSpecie() != null && animale.getSpecie().getIdSpecie() == id)
                 .toList();
     }
 
     @Override
-    public Anagrafica_Animali create(Anagrafica_Animali animale) {
+    public AnagraficaAnimali create(AnagraficaAnimali animale) {
         return anagraficaAnimaliRepo.save(animale);
     }
 
     @Override
-    public Anagrafica_Animali deleteById(int id) {
+    public AnagraficaAnimali deleteById(int id) {
         return anagraficaAnimaliRepo.findById(id)
                 .map(animale -> {
                     anagraficaAnimaliRepo.delete(animale);

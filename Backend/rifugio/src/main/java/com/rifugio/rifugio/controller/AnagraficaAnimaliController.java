@@ -28,17 +28,17 @@ public class AnagraficaAnimaliController {
     }
 
     @GetMapping("/razza/{id}")
-    public List<Anagrafica_Animali> getByIdRazza(@PathVariable int id) {
+    public List<AnagraficaAnimali> getByIdRazza(@PathVariable int id) {
         return anagraficaAnimaliService.getByIdRazza(id);
     }
 
     @GetMapping("/specie/{id}")
-    public List<Anagrafica_Animali> getByIdSpecie(@PathVariable int id) {
+    public List<AnagraficaAnimali> getByIdSpecie(@PathVariable int id) {
         return anagraficaAnimaliService.getByIdSpecie(id);
     }
 
     @PostMapping("/add")
-    public String creaAnimale(@RequestBody Anagrafica_Animali animale) {
+    public String creaAnimale(@RequestBody AnagraficaAnimali animale) {
 
         return anagraficaAnimaliService.create(animale).toString();
     }
