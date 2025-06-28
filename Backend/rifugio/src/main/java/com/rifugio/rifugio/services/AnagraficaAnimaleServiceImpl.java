@@ -54,4 +54,19 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
                 .orElse(null);
     }
 
+    @Override
+    public AnagraficaAnimali update(int id, AnagraficaAnimali animale) {
+        return anagraficaAnimaliRepo.findById(id)
+                .map(existingAnimale -> {
+                    existingAnimale.setNome(animale.getNome());
+                    existingAnimale.setRazza(animale.getRazza());
+                    existingAnimale.setSpecie(animale.getSpecie());
+                    existingAnimale.setSesso(animale.getSesso());
+                    existingAnimale.setDataNascita(animale.getDataNascita());
+                    existingAnimale.setIdCartellaClinica(animale.getIdCartellaClinica());
+                    return anagraficaAnimaliRepo.save(existingAnimale);
+                })
+                .orElse(null);
+    }
+
 }

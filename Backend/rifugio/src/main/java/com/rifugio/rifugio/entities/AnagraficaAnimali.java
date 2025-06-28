@@ -2,6 +2,7 @@ package com.rifugio.rifugio.entities;
 
 import java.sql.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,8 @@ public class AnagraficaAnimali {
 
     private String Nome;
 
-    @OneToOne
+    // cascade = CascadeType.ALL permette di creare una nuova cartella clinica se non esiste durante la creazione di un animale
+    @OneToOne(cascade = CascadeType.ALL) 
     @JoinColumn(name = "Id_Cartella_Clinica", referencedColumnName = "Id_Cartella_Clinica")
     private CartellaClinica Id_Cartella_Clinica;
 

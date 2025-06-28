@@ -21,4 +21,6 @@ public interface AnagraficaAnimaliService {
 
     AnagraficaAnimali deleteById(int id);
 
+    AnagraficaAnimali update(int id, AnagraficaAnimali animale);
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -43,14 +44,18 @@ public class AnagraficaAnimaliController {
     }
 
     @PostMapping("/")
-    public String create(@RequestBody AnagraficaAnimali animale) {
-
-        return anagraficaAnimaliService.create(animale).toString();
+    public AnagraficaAnimali create(@RequestBody AnagraficaAnimali animale) {
+        return anagraficaAnimaliService.create(animale);
     }
     
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable int id) {
         return anagraficaAnimaliService.deleteById(id).toString();
+    }
+
+    @PutMapping("/{id}")
+    public AnagraficaAnimali update(@PathVariable int id, @RequestBody AnagraficaAnimali animale) {
+        return anagraficaAnimaliService.update(id, animale);
     }
 
 
