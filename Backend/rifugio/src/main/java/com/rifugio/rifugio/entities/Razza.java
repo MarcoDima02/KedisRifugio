@@ -9,30 +9,31 @@ public class Razza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idRazza;
+    private int id_razza;
 
     @ManyToOne
-    @JoinColumn(name = "idSpecie", referencedColumnName = "idSpecie")
+    @JoinColumn(name = "idSpecie", referencedColumnName = "id_specie")
     @JsonIgnoreProperties({"razze"}) // evita loop serializzazione se Specie ha lista di razze
-    private Specie specie;
+
+    private Specie id_specie;
 
     private String nome;
 
     // Getter & Setter
     public int getIdRazza() {
-        return idRazza;
+        return id_razza;
     }
 
     public void setIdRazza(int idRazza) {
-        this.idRazza = idRazza;
+        this.id_razza = idRazza;
     }
 
     public Specie getSpecie() {
-        return specie;
+        return id_specie;
     }
 
     public void setSpecie(Specie specie) {
-        this.specie = specie;
+        this.id_specie = specie;
     }
 
     public String getNome() {
