@@ -1,0 +1,75 @@
+package com.rifugio.rifugio.services;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.Immagine;
+import com.rifugio.rifugio.repos.AnagraficaAnimaliRepo;
+import com.rifugio.rifugio.repos.ImmagineRepo;
+
+@Service
+public class ImmagineServiceImpl implements ImmagineService {
+
+    @Autowired
+    private ImmagineRepo immagineRepo;
+    
+    @Autowired
+    private AnagraficaAnimaliRepo anagraficaAnimaliRepo;
+
+    @Override
+    public List<Immagine> getAllImmagini() {
+        return immagineRepo.findAll();
+    }
+
+    @Override
+    public Optional<Immagine> getImmagineById(int id) {
+        return immagineRepo.findById(id);
+    }
+
+    @Override
+    public List<Immagine> getImmaginiByAnimale(int idAnimale) {
+        Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isPresent()) {
+            return immagineRepo.findByAnimale(animale.get());
+        }
+        return List.of(); // Ritorna una lista vuota se l'animale non esiste
+    }
+
+    @Override
+    public Immagine storeImmagine(MultipartFile file, int idAnimale) {
+        String fileName = file.getOriginalFilename();
+        String fileType = file.getContentType();
+        
+        try {
+            Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+            if (animale.isPresent()) {
+                Immagine immagine = new Immagine(
+                    fileName,
+                    fileType,
+                    file.getBytes(),
+                    Date.valueOf(LocalDate.now()),
+                    animale.get()
+                );
+                
+                return immagineRepo.save(immagine);
+            } else {
+                throw new RuntimeException("Animale non trovato con ID: " + idAnimale);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Impossibile salvare l'immagine: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteImmagine(int id) {
+        immagineRepo.deleteById(id);
+    }
+}
