@@ -11,7 +11,7 @@ public interface AnagraficaAnimaliService {
 
     List<AnagraficaAnimali> getAllAnagraficaAnimali();
 
-    AnagraficaAnimali getById(int id);
+    AnagraficaAnimali getByIdAnagraficaAnimali(int id);
 
     List<AnagraficaAnimali> getByIdRazza(int id);
 
@@ -20,5 +20,7 @@ public interface AnagraficaAnimaliService {
     List<AnagraficaAnimali> getByIdSpecie(int id);
 
     AnagraficaAnimali deleteById(int id);
+
+    AnagraficaAnimali update(int id, AnagraficaAnimali animale);
 
 }

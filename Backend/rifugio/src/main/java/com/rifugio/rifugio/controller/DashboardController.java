@@ -53,7 +53,7 @@ public class DashboardController {
     
     @GetMapping("/animale/{id}")
     public String dettaglioAnimale(@PathVariable int id, Model model) {
-        AnagraficaAnimali animale = anagraficaAnimaleService.getById(id);
+        AnagraficaAnimali animale = anagraficaAnimaleService.getByIdAnagraficaAnimali(id);
         model.addAttribute("animale", animale);
         return "dettaglio_animale"; 
     }

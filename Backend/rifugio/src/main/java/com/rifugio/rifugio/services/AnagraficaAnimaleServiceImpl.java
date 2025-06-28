@@ -21,7 +21,7 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
     }
 
     @Override
-    public AnagraficaAnimali getById(int id) {
+    public AnagraficaAnimali getByIdAnagraficaAnimali(int id) {
         return anagraficaAnimaliRepo.findById(id).orElse(null);
     }
 
@@ -50,6 +50,21 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
                 .map(animale -> {
                     anagraficaAnimaliRepo.delete(animale);
                     return animale;
+                })
+                .orElse(null);
+    }
+
+    @Override
+    public AnagraficaAnimali update(int id, AnagraficaAnimali animale) {
+        return anagraficaAnimaliRepo.findById(id)
+                .map(existingAnimale -> {
+                    existingAnimale.setNome(animale.getNome());
+                    existingAnimale.setRazza(animale.getRazza());
+                    existingAnimale.setSpecie(animale.getSpecie());
+                    existingAnimale.setSesso(animale.getSesso());
+                    existingAnimale.setDataNascita(animale.getDataNascita());
+                    existingAnimale.setIdCartellaClinica(animale.getIdCartellaClinica());
+                    return anagraficaAnimaliRepo.save(existingAnimale);
                 })
                 .orElse(null);
     }

@@ -40,13 +40,13 @@ public class CartellaClinicaController {
     // POST - crea
     @PostMapping
     public ResponseEntity<CartellaClinica> create(@RequestBody CartellaClinica cartella) {
-        return ResponseEntity.ok(cartellaClinicaService.salva(cartella));
+        return ResponseEntity.ok(cartellaClinicaService.create(cartella));
     }
 
     // PUT - aggiorna
     @PutMapping("/{id}")
     public ResponseEntity<CartellaClinica> update(@PathVariable int id, @RequestBody CartellaClinica nuova) {
-        CartellaClinica aggiornata = cartellaClinicaService.aggiorna(id, nuova);
+        CartellaClinica aggiornata = cartellaClinicaService.update(id, nuova);
         if (aggiornata == null) {
             return ResponseEntity.notFound().build();
         }
@@ -56,7 +56,7 @@ public class CartellaClinicaController {
     // DELETE - elimina
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        cartellaClinicaService.elimina(id);
+        cartellaClinicaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

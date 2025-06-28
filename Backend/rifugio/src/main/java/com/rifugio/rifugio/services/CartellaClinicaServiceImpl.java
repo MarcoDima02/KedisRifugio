@@ -28,12 +28,12 @@ public class CartellaClinicaServiceImpl implements CartellaClinicaService {
     }
 
     @Override
-    public CartellaClinica salva(CartellaClinica cartella) {
+    public CartellaClinica create(CartellaClinica cartella) {
         return cartellaClinicaRepo.save(cartella);
     }
 
     @Override
-    public CartellaClinica aggiorna(int id, CartellaClinica nuova) {
+    public CartellaClinica update(int id, CartellaClinica nuova) {
         return cartellaClinicaRepo.findById(id).map(cartella -> {
             cartella.setSterilizzato(nuova.isSterilizzato());
             cartella.setVaccinazioni(nuova.getVaccinazioni());
@@ -45,7 +45,7 @@ public class CartellaClinicaServiceImpl implements CartellaClinicaService {
     }
 
     @Override
-    public void elimina(int id) {
+    public void deleteById(int id) {
         cartellaClinicaRepo.deleteById(id);
     }
 }
