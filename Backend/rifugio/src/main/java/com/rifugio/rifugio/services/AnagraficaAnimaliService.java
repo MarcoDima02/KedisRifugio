@@ -13,4 +13,12 @@ public interface AnagraficaAnimaliService {
 
     Anagrafica_Animali getById(int id);
 
+    List<Anagrafica_Animali> getByIdRazza(int id);
+
+    Anagrafica_Animali create(Anagrafica_Animali animale);
+
+    List<Anagrafica_Animali> getByIdSpecie(int id);
+
+    Anagrafica_Animali deleteById(int id);
+
 }
