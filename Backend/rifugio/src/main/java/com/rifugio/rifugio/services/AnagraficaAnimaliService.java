@@ -23,4 +23,6 @@ public interface AnagraficaAnimaliService {
 
     AnagraficaAnimali update(int id, AnagraficaAnimali animale);
 
+    List<AnagraficaAnimali> getByIdStatoAnimale(int id);
+
 }
