@@ -9,7 +9,7 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 
-  <link rel="stylesheet" th:href="@{../css/styles.css}" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 
 <body>
@@ -21,8 +21,8 @@
     <img src="../images/prova_foto.webp" th:alt="${animale.nome}" />
   </div>
   <div class="animal-info-box">
-    <h2 class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
-    <p class="animal-short-desc" th:text="${animale.descrizioneBreve}">Descrizione breve</p>
+    <h2 style="color:black" class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
+    <p style="color:black" class="animal-short-desc" th:text="${animale.descrizioneBreve}">Descrizione breve</p>
   </div>
 </div>
 
@@ -38,24 +38,27 @@
 
         </table>
 
-        <h1>Dettaglio Animale</h1>
+        <h1 style="color:black">Dettaglio Animale</h1>
 
-        <h2 th:text="'Id : ' + ${animale.idAnimale}"></h2>
-        <h2 th:text="'Nome : ' + ${animale.nome}"></h2>
-        <h2 th:text="'Specie : ' + ${animale.specie.nome}"></h2>
-        <h2 th:text="'Razza : ' + ${animale.razza.nome}"></h2>
-        <h2 th:text="'Sesso : ' + ${animale.sesso}"></h2>
-        <h2 th:text="'Data Nascita : ' + ${animale.DataArrivo}"></h2>
-        <h2 th:text="'Data Arrivo : ' + ${animale.DataNascita}"></h2>
-        <h2 th:text="'Descrizione Breve :'"></h2>
-        <p th:text="${animale.descrizioneBreve}"></p>
-        <h2 th:text="'Descrizione Lunga :'"></h2>
-        <p th:text="${animale.descrizioneLunga}"></p>
-        <h2 th:text="'Stato Animale : ' + ${animale.IdStatoAnimale.descrizione}"></h2>
+        <h2 style="color:black" th:text="'Id : ' + ${animale.idAnimale}"></h2>
+        <h2 style="color:black" th:text="'Nome : ' + ${animale.nome}"></h2>
+        <h2 style="color:black" th:text="'Specie : ' + ${animale.specie.nome}"></h2>
+        <h2 style="color:black" th:text="'Razza : ' + ${animale.razza.nome}"></h2>
+        <h2 style="color:black" th:text="'Sesso : ' + ${animale.sesso}"></h2>
+        <h2 style="color:black" th:text="'Data Nascita : ' + ${animale.DataArrivo}"></h2>
+        <h2 style="color:black" th:text="'Data Arrivo : ' + ${animale.DataNascita}"></h2>
+        <h2 style="color:black" th:text="'Descrizione Breve :'"></h2>
+        <p style="color:black" th:text="${animale.descrizioneBreve}"></p>
+        <h2 style="color:black" th:text="'Descrizione Lunga :'"></h2>
+        <p style="color:black" th:text="${animale.descrizioneLunga}"></p>
+        <h2 style="color:black" th:text="'Stato Animale : ' + ${animale.IdStatoAnimale.descrizione}"></h2>
 
         
         
     </div>
 </body>
+
+<th:block th:replace="fragments/footer :: customFooter"></th:block>
+
 </html>
 
