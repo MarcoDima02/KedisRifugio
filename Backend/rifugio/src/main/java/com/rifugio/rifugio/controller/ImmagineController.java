@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,6 +66,20 @@ public class ImmagineController {
         }
     }
     
+    // Aggiorna un'immagine esistente
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateImmagine(
+            @PathVariable int id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("idAnimale") int idAnimale) {
+        try {
+            Immagine img = immagineService.updateImmagine(id, file, idAnimale);
+            return ResponseEntity.ok(img);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
     // Elimina un'immagine
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteImmagine(@PathVariable int id) {
@@ -87,6 +102,12 @@ public class ImmagineController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    // Endpoint per visualizzare la pagina di test upload immagine
+    @GetMapping("/test-upload")
+    public String testUpload() {
+        return "test_upload_immagine";
     }
     
     // Classe di risposta per le immagini (senza i dati binari)

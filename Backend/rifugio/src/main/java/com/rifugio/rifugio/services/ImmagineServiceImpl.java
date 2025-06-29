@@ -72,4 +72,27 @@ public class ImmagineServiceImpl implements ImmagineService {
     public void deleteImmagine(int id) {
         immagineRepo.deleteById(id);
     }
+
+    @Override
+    public Immagine updateImmagine(int id, MultipartFile file, int idAnimale) {
+        Optional<Immagine> existingOpt = immagineRepo.findById(id);
+        if (existingOpt.isEmpty()) {
+            throw new RuntimeException("Immagine non trovata con ID: " + id);
+        }
+        Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isEmpty()) {
+            throw new RuntimeException("Animale non trovato con ID: " + idAnimale);
+        }
+        Immagine existing = existingOpt.get();
+        try {
+            existing.setNome(file.getOriginalFilename());
+            existing.setTipo(file.getContentType());
+            existing.setDati(file.getBytes());
+            existing.setData_caricamento(java.sql.Date.valueOf(java.time.LocalDate.now()));
+            existing.setAnimale(animale.get());
+            return immagineRepo.save(existing);
+        } catch (IOException e) {
+            throw new RuntimeException("Impossibile aggiornare l'immagine: " + e.getMessage());
+        }
+    }
 }

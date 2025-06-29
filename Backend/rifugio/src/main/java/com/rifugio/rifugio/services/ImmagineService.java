@@ -20,4 +20,6 @@ public interface ImmagineService {
     Immagine storeImmagine(MultipartFile file, int idAnimale);
     
     void deleteImmagine(int id);
+    
+    Immagine updateImmagine(int id, MultipartFile file, int idAnimale);
 }
