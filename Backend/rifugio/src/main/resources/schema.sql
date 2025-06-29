@@ -69,7 +69,7 @@ CREATE TABLE utenti (
     numero VARCHAR(50),
     email VARCHAR(50),
     password VARCHAR(20) NOT NULL,
-    ruolo ENUM('ADMIN', 'USER') NOT NULL DEFAULT 'USER'
+    ruolo ENUM('ADMIN', 'USER') Not null DEFAULT 'USER'
 );
 
 -- Creazione tabella step_adozioni
