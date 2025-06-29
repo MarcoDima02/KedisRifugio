@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.rifugio.rifugio.entities.Specie;
 
 public interface SpecieRepo extends JpaRepository<Specie, Integer> {
-
 }

@@ -1,14 +1,14 @@
 package com.rifugio.rifugio.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.stereotype.Service;
+import com.rifugio.rifugio.entities.CartellaClinica;
 
-import com.rifugio.rifugio.entities.Cartella_Clinica;
-
-@Service
 public interface CartellaClinicaService {
-
-    List<Cartella_Clinica> getAllCartelleCliniche();
-
+    List<CartellaClinica> getAllCartelleCliniche();
+    Optional<CartellaClinica> getCartellaById(int id);
+    CartellaClinica create(CartellaClinica cartella);
+    CartellaClinica update(int id, CartellaClinica nuova);
+    void deleteById(int id);
 }
