@@ -298,9 +298,10 @@ body {
   margin: 2rem auto;
   border-radius: 12px;
   max-width: 1200px;
+
+  /* Ombra più evidente */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
-
-
 
 .section-title {
   color: white;
@@ -313,13 +314,13 @@ body {
   padding: 1rem 2rem;
   border-radius: 8px;
   display: inline-block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .available-animals-count {
   color: #004B23;
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin: 0;
 }
 
