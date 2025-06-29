@@ -84,6 +84,7 @@ public class RifugioController {
 
         return "dashboard_lista_animali"; // il nome del template Thymeleaf da mostrare
     }
+    
 
 
 }

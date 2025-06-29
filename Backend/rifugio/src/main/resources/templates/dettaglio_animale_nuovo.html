@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rifugio Zampa - Dettaglio Animale</title>
 
-    <link rel="stylesheet" th:href="@{../css/style.css}" href="../static/css/styles.css">
+        <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
     <!-- Header -->
@@ -27,7 +31,7 @@
         <!-- Scheda Animale -->
         <div class="animal-card">
             <div class="animal-header">
-                <img class="animal-photo" th:src="${animale.immagini != null && !animale.immagini.isEmpty() ? '/immagini/' + animale.immagini[0].id_immagine : '../images/placeholder.jpg'}" src="../images/prova_foto.webp" alt="Foto animale">
+                <img class="animal-photo" src="../images/prova_foto.webp" alt="Foto animale">
                 <div class="animal-info">
                     <h1 class="animal-name" th:text="${animale.nome}">Stella</h1>
                     <p class="animal-description" th:text="${animale.descrizioneBreve}">Dolce cucciola in cerca di una famiglia amorevole</p>
@@ -76,7 +80,7 @@
             <div class="info-card">
                 <h3 class="info-title">Cartella Clinica</h3>
                 <ul class="info-list">
-                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.vaccini > 0}">Vaccinato</li>
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.vaccinazioni > 0}">Vaccinato</li>
                     <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.sterilizzato}">Sterilizzato</li>
                     <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.sverminazione}">Sverminato</li>
                     <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.trattamentoAntiparassitario}">Trattamento antiparassitario</li>
