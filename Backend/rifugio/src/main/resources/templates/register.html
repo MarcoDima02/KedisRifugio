@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/register.css"/>
+    <title>Diamoci una zampa - Registrazione</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Diamoci una zampa Logo">
+        </div>
+        <h1 class="title">Registrazione</h1>
+        <div class="error-message" id="errorMessage" style="display:none;"></div>
+        <form id="registerForm" action="/register" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-container">
+                    <span class="input-icon">@</span>
+                    <input type="text" id="username" name="username" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-container">
+                    <span class="input-icon">✉️</span>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Conferma Password</label>
+                <div class="input-container">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-login">Registrati</button>
+                <button type="button" class="btn btn-register" onclick="window.location.href='/login'">Accedi</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                showError('Le password non coincidono.');
+            }
+        });
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

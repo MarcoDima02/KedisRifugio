@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{../css/login.css}" href="/css/login.css">
+<title>Diamoci una zampa- Area Personale</title>
+
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Diamoci una zampa Logo">
+        </div>
+
+        <h1 class="title">Area personale</h1>
+
+        <div class="success-message" id="successMessage" style="display:none;"></div>
+        <div class="error-message" id="errorMessage" th:if="${errorMessage != null}" th:text="${errorMessage}" style="display:none;"></div>
+
+        <form id="loginForm" action="/login" method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-container">
+                    <span class="input-icon">@</span>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+
+            <div class="register-text">Sei nuovo?</div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-login">Accedi</button>
+                <button type="button" class="btn btn-register" onclick="window.location.href='/register'">Registrati</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Gestione del form di login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (!email || !password) {
+                e.preventDefault();
+                // Mostra errore solo lato client se i campi sono vuoti
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = 'Inserisci email e password';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+                return;
+            }
+        });
+
+        // Mostra messaggio di registrazione avvenuta con successo
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registered') === 'true') {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = 'Registrazione avvenuta con successo! Ora puoi accedere.';
+            successDiv.style.display = 'block';
+        }
+        // Mostra errore dal backend se presente
+        if (document.getElementById('errorMessage').textContent.trim() !== "") {
+            document.getElementById('errorMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 5000);
+        }
+
+        // Animazione di caricamento sui bottoni
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.type === 'submit') {
+                    this.textContent = 'Accesso...';
+                    this.disabled = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
