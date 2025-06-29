@@ -16,7 +16,19 @@
     
     <th:block th:replace="fragments/header :: customHeader"></th:block>
 
-    <h1 style="color:black" th:text="'Animali disponibili: ' + ${animaliDisponibili}"></h1>
+    <th:block th:replace="fragments/hero :: customHero"></th:block>
+
+    <section class="available-animals-section">
+    <h2 class="section-title">Animali Disponibili</h2>
+
+    <div class="available-animals-box">
+        <p class="available-animals-count" th:text="${animaliDisponibili}">
+        Numero di animali disponibili: XX
+        </p>
+    </div>
+    </section>
+
+
 
     <th:block th:replace="fragments/footer :: customFooter"></th:block>
 
