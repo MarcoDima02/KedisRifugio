@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Upload Immagine</title>
+</head>
+<body>
+    <h2>Carica Immagine</h2>
+    <form action="/immagini/carica" method="post" enctype="multipart/form-data">
+        <label for="file">Immagine:</label>
+        <input type="file" name="file" id="file" required>
+        <label for="idAnimale">ID Animale:</label>
+        <input type="number" name="idAnimale" id="idAnimale" required>
+        <button type="submit">Carica</button>
+    </form>
+</body>
+</html>
