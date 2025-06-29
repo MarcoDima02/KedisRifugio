@@ -69,4 +69,11 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
                 .orElse(null);
     }
 
+    @Override
+    public List<AnagraficaAnimali> getByIdStatoAnimale(int id) {
+        return anagraficaAnimaliRepo.findAll().stream()
+                .filter(animale -> animale.getIdStatoAnimale() != null && animale.getIdStatoAnimale().getIdStatoAnimale() == id)
+                .toList();
+    }
+
 }

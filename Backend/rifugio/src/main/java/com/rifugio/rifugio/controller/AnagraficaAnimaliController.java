@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/animali")
+@RequestMapping("/api/animali")
 public class AnagraficaAnimaliController {
 
     @Autowired

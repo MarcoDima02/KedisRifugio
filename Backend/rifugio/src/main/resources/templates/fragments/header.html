@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="customHeader">
-    <header class="custom-header">
-      <div class="container">
-        <h1>Nome.com</h1>
-      </div>
-    </header>
-  </th:block>
-</html>
+<th:block th:fragment="customHeader">
+  <header class="custom-header">
+    <div class="container header-content">
+      <img th:src="@{/images/logoRifugio.png}" alt="Logo" class="header-logo" />
+      <nav class="header-nav">
+        <a th:href="@{/}" class="header-link">Home</a>
+        <a th:href="@{/animali}" class="header-link">Animali</a>
+      </nav>
+    </div>
+  </header>
+</th:block>

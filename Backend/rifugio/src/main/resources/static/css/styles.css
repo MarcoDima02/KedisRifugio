@@ -4,6 +4,8 @@
     padding: 1.5rem 0;
     color: white;
     text-align: center;
+    height: 90px;         /* altezza fissa */
+    overflow: hidden;     /* impedisce al contenuto di uscire */
 }
 
 .custom-header h1 {
@@ -148,6 +150,48 @@ body {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
+.custom-header .container.header-content {
+    display: flex;
+    align-items: center;           /* centra verticalmente tutto */
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: 0 auto;
+    gap: 1rem;
+    height: 100%;
+}
+
+
+.header-logo {
+    height: 60px;         /* logo più grande */
+    width: auto;
+    object-fit: contain;
+    /* opzionale: riduci un po' il margine verticale */
+    margin-top: -5px;     /* per centrare meglio il logo verticalmente */
+}
+
+.header-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;      /* centra verticalmente i link */
+    justify-content: center;  /* centra orizzontalmente i link dentro il loro container */
+    flex-grow: 1;             /* fa espandere la nav per occupare lo spazio disponibile */
+}
+
+
+.header-link {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.header-link:hover {
+    color: #28a745; /* verde chiaro al passaggio */
+}
+
+
+
 .animal-card img {
   width: 100%;
   height: 200px;
@@ -246,3 +290,37 @@ body {
   font-size: 1.1rem;
   color: #27ae60;
 }
+
+.available-animals-section {
+  background-color: #004B23;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin: 2rem auto;
+  border-radius: 12px;
+  max-width: 1200px;
+
+  /* Ombra più evidente */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.section-title {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.available-animals-box {
+  background-color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.available-animals-count {
+  color: #004B23;
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 0;
+}
+
