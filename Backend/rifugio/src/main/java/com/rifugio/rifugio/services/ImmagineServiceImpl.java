@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rifugio.rifugio.entities.Anagrafica_Animali;
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Immagine;
 import com.rifugio.rifugio.repos.AnagraficaAnimaliRepo;
 import com.rifugio.rifugio.repos.ImmagineRepo;
@@ -36,7 +36,7 @@ public class ImmagineServiceImpl implements ImmagineService {
 
     @Override
     public List<Immagine> getImmaginiByAnimale(int idAnimale) {
-        Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
         if (animale.isPresent()) {
             return immagineRepo.findByAnimale(animale.get());
         }
@@ -49,7 +49,7 @@ public class ImmagineServiceImpl implements ImmagineService {
         String fileType = file.getContentType();
         
         try {
-            Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+            Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
             if (animale.isPresent()) {
                 Immagine immagine = new Immagine(
                     fileName,
@@ -79,7 +79,7 @@ public class ImmagineServiceImpl implements ImmagineService {
         if (existingOpt.isEmpty()) {
             throw new RuntimeException("Immagine non trovata con ID: " + id);
         }
-        Optional<Anagrafica_Animali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
         if (animale.isEmpty()) {
             throw new RuntimeException("Animale non trovato con ID: " + idAnimale);
         }

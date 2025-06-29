@@ -28,13 +28,13 @@ public class Immagine {
     
     @ManyToOne
     @JoinColumn(name = "id_animale", referencedColumnName = "id_animale")
-    private Anagrafica_Animali animale;
+    private AnagraficaAnimali animale;
     
     // Constructors
     public Immagine() {
     }
     
-    public Immagine(String nome, String tipo, byte[] dati, Date data_caricamento, Anagrafica_Animali animale) {
+    public Immagine(String nome, String tipo, byte[] dati, Date data_caricamento, AnagraficaAnimali animale) {
         this.nome = nome;
         this.tipo = tipo;
         this.dati = dati;
@@ -83,11 +83,11 @@ public class Immagine {
         this.data_caricamento = data_caricamento;
     }
 
-    public Anagrafica_Animali getAnimale() {
+    public AnagraficaAnimali getAnimale() {
         return animale;
     }
 
-    public void setAnimale(Anagrafica_Animali animale) {
+    public void setAnimale(AnagraficaAnimali animale) {
         this.animale = animale;
     }
 }
