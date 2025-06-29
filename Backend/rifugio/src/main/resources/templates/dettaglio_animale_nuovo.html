@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifugio Zampa - Dettaglio Animale</title>
+
+    <link rel="stylesheet" th:href="@{../css/style.css}" href="../static/css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <img class="header-logo" src="../images/logo.png" alt="Rifugio Zampa" th:src="@{../images/logo.png}">
+        <nav class="nav-links">
+            <a href="/" th:href="@{/}">Home</a>
+            <a href="/adozioni" th:href="@{/adozioni}">Adozioni</a>
+            <a href="/chi-siamo" th:href="@{/chi-siamo}">Chi siamo</a>
+            <a href="/come-aiutare" th:href="@{/come-aiutare}">Come aiutare</a>
+            <a href="/contatti" th:href="@{/contatti}">Contatti</a>
+        </nav>
+        <div class="profile-icon">
+            <img src="../images/user.png" alt="Profilo" th:src="@{../images/user.png}">
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Scheda Animale -->
+        <div class="animal-card">
+            <div class="animal-header">
+                <img class="animal-photo" th:src="${animale.immagini != null && !animale.immagini.isEmpty() ? '/immagini/' + animale.immagini[0].id_immagine : '../images/placeholder.jpg'}" src="../images/prova_foto.webp" alt="Foto animale">
+                <div class="animal-info">
+                    <h1 class="animal-name" th:text="${animale.nome}">Stella</h1>
+                    <p class="animal-description" th:text="${animale.descrizioneBreve}">Dolce cucciola in cerca di una famiglia amorevole</p>
+                    
+                    <div class="animal-details">
+                        <div class="detail-item">
+                            <strong>Età</strong>
+                            <div th:text="${animale.dataNascita != null ? T(java.time.Period).between(animale.dataNascita.toLocalDate(), T(java.time.LocalDate).now()).getMonths() + ' mesi' : 'N/D'}">2 mesi</div>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Peso</strong>
+                            <div>6 kg</div>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Razza</strong>
+                            <div th:text="${animale.razza != null ? animale.razza.nome : 'N/D'}">Labrador</div>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Sesso</strong>
+                            <div th:text="${animale.sesso == 'F' ? 'Femmina' : 'Maschio'}">Femmina</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galleria Foto -->
+        <div class="photo-gallery">
+            <h2 class="gallery-title">Altre foto</h2>
+            <div class="gallery-container">
+                <img class="gallery-item" src="../images/prova_foto.webp" alt="Foto 1">
+                <img class="gallery-item" src="../images/prova_foto.webp" alt="Foto 2">
+                <img class="gallery-item" src="../images/prova_foto.webp" alt="Foto 3">
+                <img class="gallery-item" src="../images/prova_foto.webp" alt="Foto 4">
+                <img class="gallery-item" src="../images/prova_foto.webp" alt="Foto 5">
+            </div>
+        </div>
+
+        <!-- Sezioni Informative -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3 class="info-title">La Storia di Stella</h3>
+                <div class="info-content" th:text="${animale.descrizioneLunga}">Stella è arrivata da noi quando aveva solo poche settimane. È stata trovata abbandonata insieme ai suoi fratellini in una scatola di cartone vicino al nostro rifugio. Nonostante il difficile inizio, Stella ha dimostrato una forza e una dolcezza incredibili. È una cucciola molto giocosa e affettuosa, che ama stare in compagnia e giocare con gli altri animali del rifugio.</div>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-title">Cartella Clinica</h3>
+                <ul class="info-list">
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.vaccini > 0}">Vaccinato</li>
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.sterilizzato}">Sterilizzato</li>
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.sverminazione}">Sverminato</li>
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.trattamentoAntiparassitario}">Trattamento antiparassitario</li>
+                    <li th:if="${animale.idCartellaClinica != null && animale.idCartellaClinica.microchip != null}">Microchip: <span th:text="${animale.idCartellaClinica.microchip}"></span></li>
+                    <li>Prima visita veterinaria completata</li>
+                    <li>In ottima salute</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-section single-column">
+            <div class="info-card">
+                <h3 class="info-title">Segni Distintivi</h3>
+                <div class="info-content">
+                    Stella ha una piccola macchia bianca sul petto a forma di cuore e le orecchie leggermente più scure rispetto al resto del corpo. Ha gli occhi molto espressivi di colore nocciola e una coda sempre in movimento quando è felice.
+                </div>
+            </div>
+        </div>
+
+        <!-- Processo di Adozione -->
+        <div class="adoption-process">
+            <h2 class="process-title">Processo di Adozione</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Contatto Iniziale</div>
+                    <div class="step-description">Chiamaci o compila il modulo online per esprimere interesse</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Conoscenza</div>
+                    <div class="step-description">Vieni a conoscere Stella e trascorri del tempo insieme</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Valutazione</div>
+                    <div class="step-description">Colloquio con i nostri esperti per valutare la compatibilità</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Adozione</div>
+                    <div class="step-description">Firma del contratto e inizio della nuova vita insieme</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contatti</h3>
+                <p>Via delle Zampe, 123</p>
+                <p>Torino, 10100</p>
+                <p>011 123 4567</p>
+                <p>info@rifugiozampe.it</p>
+            </div>
+            <div class="footer-section">
+                <h3>Orari</h3>
+                <p>Lunedì - Venerdì: 9:00 - 18:00</p>
+                <p>Sabato: 9:00 - 16:00</p>
+                <p>Domenica: 10:00 - 15:00</p>
+                <p>Emergenze: 24/7</p>
+            </div>
+            <div class="footer-section">
+                <h3>Link Utili</h3>
+                <a href="/processo-adozione">Processo di Adozione</a>
+                <a href="/documenti">Documenti Necessari</a>
+                <a href="/faq">Domande Frequenti</a>
+            </div>
+            <div class="footer-section">
+                <h3>Seguici</h3>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

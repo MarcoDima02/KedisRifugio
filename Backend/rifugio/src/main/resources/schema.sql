@@ -111,3 +111,14 @@ CREATE TABLE visite_veterinarie (
     esito VARCHAR(150) NOT NULL,
     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
 );
+
+-- Creazione tabella immagini
+CREATE TABLE immagini (
+    id_immagine INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    dati LONGBLOB NOT NULL,
+    data_caricamento DATE NOT NULL,
+    id_animale INT,
+    FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
+);

@@ -73,3 +73,7 @@ INSERT INTO adozioni (id_animale, id_persona, data_adozione, id_step_adozioni) V
 INSERT INTO visite_veterinarie (data, ora, id_animale, motivo, esito) VALUES
 ('2024-04-01', '10:00:00', 1, 'Vaccinazione', 'Tutto ok'),
 ('2024-04-15', '11:30:00', 2, 'Controllo annuale', 'In salute');
+
+-- Inserimento dati per immagini di prova
+INSERT INTO immagini (nome, tipo, dati, data_caricamento, id_animale) VALUES
+('banner.png', 'image/png', 0xff, '2024-06-27', 1);
