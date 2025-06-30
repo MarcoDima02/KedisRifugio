@@ -75,27 +75,24 @@ public class RifugioController {
     @GetMapping("/filtrati")
     public String filtraAnimali(
         @RequestParam(required = false) Integer specie,
+        @RequestParam(required = false) Integer razza,
+        @RequestParam(required = false) Character sesso,
         Model model
     ) {
-        if(specie == null) {
-            // Se non è stata selezionata una specie, mostra tutti gli animali
-            return "redirect:/animali"; // Redirect alla pagina principale degli animali
-        }
-        List<AnagraficaAnimali> animaliFiltrati = anagraficaAnimaleService.getByIdSpecie(specie);
-        model.addAttribute("animali", animaliFiltrati);
+        // Otteniamo la lista filtrata
+        List<AnagraficaAnimali> animaliFiltrati = anagraficaAnimaleService.filtra(specie, razza, sesso);
 
-        // eventualmente ri-popolare le liste per i filtri
-        String[] sessoList = {"Maschio", "Femmina"};
-        model.addAttribute("animali", anagraficaAnimaleService.getByIdSpecie(specie));
+        // Ri-popoliamo le liste di selezione
+        String[] sessoList = {"M", "F"}; // Maschio = M, Femmina = F
+
+        model.addAttribute("animali", animaliFiltrati);
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
-        model.addAttribute("selezionata", ""); // valore selezionato di default
-        model.addAttribute("sessoList", sessoList); // valore selezionato di default
+        model.addAttribute("sessoList", sessoList);
 
-
-
-        return "dashboard_lista_animali"; // il nome del template Thymeleaf da mostrare
+        return "dashboard_lista_animali";
     }
+
 
     @GetMapping("/crea-animale")
     public String mostraFormCreazioneAnimale(Model model) {

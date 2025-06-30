@@ -25,4 +25,7 @@ public interface AnagraficaAnimaliService {
 
     List<AnagraficaAnimali> getByIdStatoAnimale(int id);
 
+    List<AnagraficaAnimali> filtra(Integer specie, Integer razza, Character sesso);
+
+
 }

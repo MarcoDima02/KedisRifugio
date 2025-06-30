@@ -2,6 +2,7 @@ package com.rifugio.rifugio.services;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,5 +76,16 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
                 .filter(animale -> animale.getIdStatoAnimale() != null && animale.getIdStatoAnimale().getIdStatoAnimale() == id)
                 .toList();
     }
+
+    @Override
+    public List<AnagraficaAnimali> filtra(Integer specie, Integer razza, Character sesso) {
+        return anagraficaAnimaliRepo.findAll().stream()
+            .filter(a -> specie == null || a.getSpecie().getIdSpecie().equals(specie))
+            .filter(a -> razza == null || a.getRazza().getIdRazza().equals(razza))
+            .filter(a -> sesso == null || a.getSesso() == sesso)
+            .collect(Collectors.toList());
+    }
+
+
 
 }
