@@ -482,3 +482,56 @@ body {
     margin-bottom: 1rem;
     padding-left: 1.2rem;
 }
+
+.page-title {
+    color: #004B23;        /* verde scuro */
+    text-align: center;
+    font-size: 3rem;
+    margin: 2rem 0;
+    font-weight: 700;
+    font-family: inherit;
+}
+
+.green-section {
+    background-color: #004B23; /* verde scuro */
+    padding: 2rem 1rem;
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    box-shadow: 0 8px 24px rgba(0, 75, 35, 0.4);
+    color: white;
+    text-align: center;
+}
+
+.animal-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 75, 35, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+.animal-table thead th {
+    background-color: #004B23; /* verde scuro */
+    color: white;               /* testo bianco */
+    font-weight: 700;
+    border: 1px solid white;
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+/* Celle corpo tabella */
+.animal-table tbody td {
+    background-color: white;
+    color: #004B23;             /* testo verde scuro solo nel corpo */
+    border: 1px solid white;
+    padding: 0.75rem 1rem;
+}
+
+/* Hover sulle righe */
+.animal-table tbody tr:hover {
+    background-color: #d4fadd;  /* verde chiaro al passaggio */
+    cursor: pointer;
+}
