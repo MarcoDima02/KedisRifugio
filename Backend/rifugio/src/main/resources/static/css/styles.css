@@ -455,3 +455,30 @@ body {
     padding: 0.4rem;         /* un po’ di padding per il testo */
     resize: vertical;        /* permette solo ridimensionamento verticale */
 }
+
+.additional-info-box {
+    margin-top: 2rem;
+    background-color: #004B23;  /* verde scuro */
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: #d4fadd;             /* testo chiaro per contrasto */
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 75, 35, 0.4);
+}
+
+.additional-info-box h2, /* titolo h2 all’interno */
+.additional-info-box strong {
+    color: #a1d99b; /* verde chiaro */
+}
+
+.additional-info-box p,
+.additional-info-box li {
+    color: #c7f0c7;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.additional-info-box ul {
+    margin-bottom: 1rem;
+    padding-left: 1.2rem;
+}

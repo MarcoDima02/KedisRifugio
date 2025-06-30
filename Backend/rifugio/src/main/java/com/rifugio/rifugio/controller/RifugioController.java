@@ -50,7 +50,7 @@ public class RifugioController {
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("selezionata", ""); // valore selezionato di default
         model.addAttribute("sessoList", sessoList); // valore selezionato di default
-        return "dashboard_lista_animali";
+        return "lista_animali";
     }
 
     @GetMapping("/speciee/{id}")
@@ -61,7 +61,7 @@ public class RifugioController {
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("selezionata", ""); // valore selezionato di default
         model.addAttribute("sessoList", sessoList); // valore selezionato di default
-        return "dashboard_lista_animali";
+        return "lista_animali";
     }
     
     
@@ -90,7 +90,7 @@ public class RifugioController {
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("sessoList", sessoList);
 
-        return "dashboard_lista_animali";
+        return "lista_animali";
     }
 
 
