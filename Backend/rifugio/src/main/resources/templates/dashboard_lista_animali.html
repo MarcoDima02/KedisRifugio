@@ -30,7 +30,7 @@
     <div class="filter-field">
       <label for="specie">Specie</label>
       <select name="specie" id="specie">
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" selected>Tutto</option>
         <option th:each="specie : ${specieList}"
                 th:value="${specie.IdSpecie}"
                 th:text="${specie.nome}">

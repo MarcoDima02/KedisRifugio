@@ -74,9 +74,13 @@ public class RifugioController {
 
     @GetMapping("/filtrati")
     public String filtraAnimali(
-        @RequestParam(required = false) int specie,
+        @RequestParam(required = false) Integer specie,
         Model model
     ) {
+        if(specie == null) {
+            // Se non è stata selezionata una specie, mostra tutti gli animali
+            return "redirect:/animali"; // Redirect alla pagina principale degli animali
+        }
         List<AnagraficaAnimali> animaliFiltrati = anagraficaAnimaleService.getByIdSpecie(specie);
         model.addAttribute("animali", animaliFiltrati);
 
