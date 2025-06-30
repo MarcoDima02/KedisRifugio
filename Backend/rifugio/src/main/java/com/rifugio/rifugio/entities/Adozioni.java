@@ -12,38 +12,38 @@ public class Adozioni {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_adozione;
+    private Integer id_adozione;
 
-    private int id_animale;
+    private Integer id_animale;
 
-    private int id_persona;
+    private Integer id_persona;
 
     private Date data_adozione;
 
-    private int id_step_adozioni;
+    private Integer id_step_adozioni;
 
 
-    public int getId_adozione() {
+    public Integer getId_adozione() {
         return id_adozione;
     }
 
-    public void setId_adozione(int id_adozione) {
+    public void setId_adozione(Integer id_adozione) {
         this.id_adozione = id_adozione;
     }
 
-    public int getId_animale() {
+    public Integer getId_animale() {
         return id_animale;
     }
 
-    public void setId_animale(int id_animale) {
+    public void setId_animale(Integer id_animale) {
         this.id_animale = id_animale;
     }
 
-    public int getId_persona() {
+    public Integer getId_persona() {
         return id_persona;
     }
 
-    public void setId_persona(int id_persona) {
+    public void setId_persona(Integer id_persona) {
         this.id_persona = id_persona;
     }
 
@@ -55,11 +55,11 @@ public class Adozioni {
         this.data_adozione = data_adozione;
     }
 
-    public int getId_step_adozioni() {
+    public Integer getId_step_adozioni() {
         return id_step_adozioni;
     }
 
-    public void setId_step_adozioni(int id_step_adozioni) {
+    public void setId_step_adozioni(Integer id_step_adozioni) {
         this.id_step_adozioni = id_step_adozioni;
     }
 

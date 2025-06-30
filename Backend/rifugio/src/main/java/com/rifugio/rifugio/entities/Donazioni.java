@@ -13,21 +13,21 @@ public class Donazioni {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id_donazione;
+    private Integer id_donazione;
     
     private double importo;
 
-    private int id_persona;
+    private Integer id_persona;
 
     private Date data_donazione;
 
     private String descrizione;
 
-    public int getId_donazione() {
+    public Integer getId_donazione() {
         return id_donazione;
     }
 
-    public void setId_donazione(int id_donazione) {
+    public void setId_donazione(Integer id_donazione) {
         this.id_donazione = id_donazione;
     }
 
@@ -39,11 +39,11 @@ public class Donazioni {
         this.importo = importo;
     }
 
-    public int getId_persona() {
+    public Integer getId_persona() {
         return id_persona;
     }
 
-    public void setId_persona(int id_persona) {
+    public void setId_persona(Integer id_persona) {
         this.id_persona = id_persona;
     }
 

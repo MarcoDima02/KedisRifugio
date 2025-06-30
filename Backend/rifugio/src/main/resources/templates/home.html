@@ -18,15 +18,33 @@
 
     <th:block th:replace="fragments/hero :: customHero"></th:block>
 
-    <section class="available-animals-section">
-    <h2 class="section-title">Animali Disponibili</h2>
+<section class="available-animals-section">
+  <h2 class="section-title">Animali Disponibili</h2>
 
-    <div class="available-animals-box">
-        <p class="available-animals-count" th:text="${animaliDisponibili}">
-        Numero di animali disponibili: XX
-        </p>
-    </div>
-    </section>
+  <div class="available-animals-box">
+      <p class="available-animals-count" th:text="${animaliDisponibili}">
+      Numero di animali disponibili: XX
+      </p>
+  </div>
+</section>
+
+<section class="available-animals-section">
+  <h2>Perché scegliere l'adozione?</h2>
+
+  <div class="available-animals-box additional-info-box">
+    <p>Adottare un animale è un gesto di grande responsabilità e amore. Oltre a regalare una nuova vita a un amico in difficoltà, l'adozione offre numerosi vantaggi:</p>
+    
+    <ul>
+      <li><strong>Salvi vite:</strong> offri una casa a chi ne ha veramente bisogno, contribuendo a ridurre il fenomeno del randagismo.</li>
+      <li><strong>Supporto continuo:</strong> il nostro team ti accompagna in ogni fase dell'adozione, fornendo consigli e assistenza personalizzata.</li>
+      <li><strong>Animali selezionati:</strong> tutti i nostri animali sono visitati da veterinari e preparati per l’ingresso in famiglia.</li>
+      <li><strong>Risparmio economico:</strong> l’adozione è spesso più economica rispetto all’acquisto, e molti costi iniziali (vaccini, microchip) sono già coperti.</li>
+      <li><strong>Un legame unico:</strong> chi adotta spesso sviluppa un legame speciale e duraturo con il proprio animale.</li>
+    </ul>
+
+    <p>Se stai pensando di adottare, ti invitiamo a visitare la nostra pagina dedicata o a contattarci per qualsiasi domanda. Siamo qui per aiutarti a fare la scelta migliore, insieme.</p>
+  </div>
+</section>
 
 
 

@@ -30,7 +30,7 @@
     <div class="filter-field">
       <label for="specie">Specie</label>
       <select name="specie" id="specie">
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" selected>Tutto</option>
         <option th:each="specie : ${specieList}"
                 th:value="${specie.IdSpecie}"
                 th:text="${specie.nome}">
@@ -41,9 +41,9 @@
     <div class="filter-field">
       <label for="razza">Razza</label>
       <select name="razza" id="razza">
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" selected>Tutto</option>
         <option th:each="razza : ${razzaList}"
-                th:value="${razza.nome}"
+                th:value="${razza.idRazza}"
                 th:text="${razza.nome}">
         </option>
       </select>
@@ -52,11 +52,10 @@
     <div class="filter-field">
       <label for="sesso">Sesso</label>
       <select name="sesso" id="sesso">
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" selected>Tutto</option>
         <option th:each="sesso : ${sessoList}"
                 th:value="${sesso[0]}"
-                th:text="${sesso}">
-        </option>
+                th:text="${sesso}"></option>
       </select>
     </div>
   </div>
