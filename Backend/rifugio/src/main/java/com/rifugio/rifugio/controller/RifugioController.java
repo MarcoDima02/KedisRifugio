@@ -104,7 +104,7 @@ public class RifugioController {
     }
     
     @PostMapping("/animali/save")
-public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+    public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
                            BindingResult bindingResult,
                            Model model) {
     if (bindingResult.hasErrors()) {
