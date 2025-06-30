@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+    <link rel="stylesheet" th:href="@{../css/styles.css}" />
+</head>
+<body>
+
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+
+    <h1 class="page-title">
+        Lista Anagrafica Animali
+    </h1>
+
+    <section class="green-section">
+        <table class="animal-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Specie</th>
+                    <th>Razza</th>
+                    <th>Sesso</th>
+                    <th>Data Nascita</th>
+                    <th>Data Arrivo</th>
+                    <th>Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="animale : ${animali}">
+                    <td th:text="${animale.idAnimale}">1</td>
+                    <td th:text="${animale.nome}">Nome</td>
+                    <td th:text="${animale.specie.nome}">Specie</td>
+                    <td th:text="${animale.razza.nome}">Razza</td>
+                    <td th:text="${animale.sesso}">Sesso</td>
+                    <td th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">01/01/2020</td>
+                    <td th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">01/06/2020</td>
+                    <td th:text="${animale.IdStatoAnimale.descrizione}">Stato</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    
+</body>
+</html>

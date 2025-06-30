@@ -482,3 +482,46 @@ body {
     margin-bottom: 1rem;
     padding-left: 1.2rem;
 }
+
+.page-title {
+    color: #004B23;        /* verde scuro */
+    text-align: center;
+    font-size: 3rem;
+    margin: 2rem 0;
+    font-weight: 700;
+    font-family: inherit;
+}
+
+.green-section {
+    background-color: #004B23; /* verde scuro */
+    padding: 2rem 1rem;
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    box-shadow: 0 8px 24px rgba(0, 75, 35, 0.4);
+    color: white;
+    text-align: center;
+}
+
+.animal-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.animal-table th {
+    border-bottom: 2px solid #28a745; /* verde chiaro */
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 700;
+}
+
+.animal-table th, 
+.animal-table td {
+    padding: 0.75rem 1rem;
+}
+
+.animal-table tbody tr:hover {
+    background-color: rgba(40, 167, 69, 0.2); /* leggera evidenza verde al passaggio */
+    cursor: pointer;
+}

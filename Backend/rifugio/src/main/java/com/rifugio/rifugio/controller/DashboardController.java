@@ -18,9 +18,9 @@ public class DashboardController {
     private AnagraficaAnimaleServiceImpl anagraficaAnimaleService;
 
     @GetMapping("/animali")
-    public String getAnimali(@RequestParam String param, Model model) {
+    public String getAnimali(Model model) {
         model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
-        return "lista_animali";
+        return "dashboard_lista_animali";
     }
     
 
