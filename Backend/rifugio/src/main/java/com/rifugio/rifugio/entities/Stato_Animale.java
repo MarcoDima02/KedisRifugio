@@ -12,13 +12,13 @@ public class Stato_Animale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id_Stato_Animale;
+    private Integer Id_Stato_Animale;
     private String Descrizione;
 
-    public int getIdStatoAnimale() {
+    public Integer getIdStatoAnimale() {
         return Id_Stato_Animale;
     }
-    public void setIdStatoAnimale(int idStatoAnimale) {
+    public void setIdStatoAnimale(Integer idStatoAnimale) {
         Id_Stato_Animale = idStatoAnimale;
     }
     public String getDescrizione() {

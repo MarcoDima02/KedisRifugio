@@ -11,7 +11,7 @@ public class Utenti {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     
-    private int id_persona;
+    private Integer id_persona;
    
     private String nome;
    
@@ -30,10 +30,10 @@ public class Utenti {
     
 
     
-    public int getId_persona() {
+    public Integer getId_persona() {
         return id_persona;
     }
-    public void setId_persona(int id_persona) {
+    public void setId_persona(Integer id_persona) {
         this.id_persona = id_persona;
     }
     public String getNome() {

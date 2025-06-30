@@ -11,17 +11,17 @@ public class StepAdozioni {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id_step_adozioni;
+    private Integer id_step_adozioni;
 
     private String nome_step;
 
     private String descrizione_step;
 
-    public int getId_step_adozioni() {
+    public Integer getId_step_adozioni() {
         return id_step_adozioni;
     }
 
-    public void setId_step_adozioni(int id_step_adozioni) {
+    public void setId_step_adozioni(Integer id_step_adozioni) {
         this.id_step_adozioni = id_step_adozioni;
     }
 
