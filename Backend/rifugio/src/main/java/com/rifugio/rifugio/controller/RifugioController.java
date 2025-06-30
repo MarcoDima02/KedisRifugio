@@ -45,7 +45,7 @@ public class RifugioController {
     @GetMapping("/animali")
     public String dashboardAnimali(Model model) {
         String[] sessoList = {"Maschio", "Femmina"};
-        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        model.addAttribute("animali", anagraficaAnimaleService.getByIdStatoAnimale(1)); // Serve per mostrare solo gli animali disponibili
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("selezionata", ""); // valore selezionato di default
