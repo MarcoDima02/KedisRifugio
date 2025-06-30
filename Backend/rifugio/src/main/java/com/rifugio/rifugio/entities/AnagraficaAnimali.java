@@ -18,7 +18,7 @@ public class AnagraficaAnimali {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id_Animale;
+    private Integer Id_Animale;
 
     private String Nome;
 
@@ -35,7 +35,7 @@ public class AnagraficaAnimali {
     @JoinColumn(name = "Id_Razza", referencedColumnName = "Id_Razza")
     private Razza Razza;
 
-    private char Sesso;
+    private Character Sesso;
     private Date Data_Nascita;
     private Date Data_Arrivo;
     private String Descrizione_Breve;
@@ -61,11 +61,11 @@ public class AnagraficaAnimali {
         Id_Stato_Animale = statoAnimale;
     }
 
-    public int getIdAnimale() {
+    public Integer getIdAnimale() {
         return Id_Animale;
     }
 
-    public void setIdAnimale(int idAnimale) {
+    public void setIdAnimale(Integer idAnimale) {
         Id_Animale = idAnimale;
     }
 
@@ -93,11 +93,11 @@ public class AnagraficaAnimali {
         this.Razza = razza;
     }
 
-    public char getSesso() {
+    public Character getSesso() {
         return Sesso;
     }
 
-    public void setSesso(char sesso) {
+    public void setSesso(Character sesso) {
         Sesso = sesso;
     }
 

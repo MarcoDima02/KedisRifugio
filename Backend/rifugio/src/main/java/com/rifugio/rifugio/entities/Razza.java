@@ -9,7 +9,7 @@ public class Razza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_razza;
+    private Integer id_razza;
 
     @ManyToOne
     @JoinColumn(name = "idSpecie", referencedColumnName = "id_specie")
@@ -20,11 +20,11 @@ public class Razza {
     private String nome;
 
     // Getter & Setter
-    public int getIdRazza() {
+    public Integer getIdRazza() {
         return id_razza;
     }
 
-    public void setIdRazza(int idRazza) {
+    public void setIdRazza(Integer idRazza) {
         this.id_razza = idRazza;
     }
 

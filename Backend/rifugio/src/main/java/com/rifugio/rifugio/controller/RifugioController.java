@@ -4,14 +4,19 @@ import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
+import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -27,6 +32,9 @@ public class RifugioController {
 
     @Autowired
     RazzaServiceImpl razzaService;
+
+    @Autowired
+    StatoAnimaleServiceImpl statoAnimaleService;
 
     @GetMapping("/")
     public String homePagine(Model model){
@@ -84,7 +92,30 @@ public class RifugioController {
 
         return "dashboard_lista_animali"; // il nome del template Thymeleaf da mostrare
     }
-    
 
+    @GetMapping("/crea-animale")
+    public String mostraFormCreazioneAnimale(Model model) {
+    model.addAttribute("animale", new AnagraficaAnimali());  // oggetto vuoto per il form
+    model.addAttribute("specieList", specieService.getAllSpecie());  // per dropdown specie
+    model.addAttribute("razzaList", razzaService.getAllRazze());    // per dropdown razza
+    model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());  // per dropdown stato animale
+    return "creazione_animale";  // nome del template Thymeleaf
+    }
+    
+    @PostMapping("/animali/save")
+public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+                           BindingResult bindingResult,
+                           Model model) {
+    if (bindingResult.hasErrors()) {
+        // se ci sono errori di validazione, ritorna al form
+        model.addAttribute("specieList", specieService.getAllSpecie());
+        model.addAttribute("razzaList", razzaService.getAllRazze());
+        model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
+        return "creazione_animale";
+    }
+
+    anagraficaAnimaleService.create(animale); // salva l'animale
+    return "redirect:/animali"; // redirect alla lista animali dopo il salvataggio
+}
 
 }

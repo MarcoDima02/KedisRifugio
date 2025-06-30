@@ -13,24 +13,24 @@ public class VisiteVeterinarie {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_visita;
+    private Integer id_visita;
 
     private Date data;
 
     private Time ora;
 
     
-    private int id_animale;
+    private Integer id_animale;
 
     private String motivo;
 
     private String esito;
 
-    public int getId_visita() {
+    public Integer getId_visita() {
         return id_visita;
     }
 
-    public void setId_visita(int id_visita) {
+    public void setId_visita(Integer id_visita) {
         this.id_visita = id_visita;
     }
 
@@ -50,11 +50,11 @@ public class VisiteVeterinarie {
         this.ora = ora;
     }
 
-    public int getId_animale() {
+    public Integer getId_animale() {
         return id_animale;
     }
 
-    public void setId_animale(int id_animale) {
+    public void setId_animale(Integer id_animale) {
         this.id_animale = id_animale;
     }
 

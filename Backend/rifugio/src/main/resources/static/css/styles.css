@@ -324,3 +324,134 @@ body {
   margin: 0;
 }
 
+/* Solo per la pagina inserisci animale */
+.animale-form-box {
+    max-width: 900px; /* contenuto più stretto solo qui */
+    padding: 2.5rem 3rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #006400;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.animale-form-box input[type="text"],
+.animale-form-box input[type="date"],
+.animale-form-box input[type="number"],
+.animale-form-box select,
+.animale-form-box textarea {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+}
+
+.animale-form-box input[type="text"]:focus,
+.animale-form-box input[type="date"]:focus,
+.animale-form-box input[type="number"]:focus,
+.animale-form-box select:focus,
+.animale-form-box textarea:focus {
+    border-color: #28a745;
+    outline: none;
+    box-shadow: 0 0 6px #28a745aa;
+}
+
+.animale-form-box label {
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #d4fadd;
+}
+
+.animale-form-box button {
+  padding: 0.75rem 1.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.35s ease, transform 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.animale-form-box button[type="submit"] {
+  background-color: #28a745;
+  box-shadow: 0 4px 12px #28a745bb;
+}
+
+.animale-form-box button[type="submit"]:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px #218838cc;
+}
+
+.animale-form-box button[type="reset"] {
+  background-color: #dc3545;
+  box-shadow: 0 4px 12px #dc3545bb;
+}
+
+.animale-form-box button[type="reset"]:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px #c82333cc;
+}
+
+.animale-form fieldset {
+    border: 1.5px solid #28a745;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+    color: #d4fadd;
+}
+
+.animale-form legend {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #28a745;
+}
+
+/* Miglior responsive solo per form */
+@media (max-width: 768px) {
+    .animale-form-box {
+        padding: 1.5rem 1.5rem;
+        max-width: 100%;
+    }
+}
+
+.animale-form {
+  margin-top: 2rem; /* spazio sopra la sezione del form */
+}
+
+.animale-form .form-title {
+  color: white;
+  font-size: 2rem; /* più grande */
+  text-align: center;
+  margin: 1rem 0 2rem 0;
+  font-weight: 700;
+}
+
+.animale-form fieldset {
+  border: 2px solid white; /* bordo bianco più spesso */
+  color: white;            /* testo bianco */
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.animale-form fieldset legend {
+  color: white;            /* testo bianco per il titolo della fieldset */
+  font-weight: 700;
+  padding: 0 0.5rem;
+}
+
+.filter-box textarea {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc; /* opzionale, per uniformare i bordi */
+    border-radius: 4px;      /* opzionale, per armonizzare */
+    padding: 0.4rem;         /* un po’ di padding per il testo */
+    resize: vertical;        /* permette solo ridimensionamento verticale */
+}

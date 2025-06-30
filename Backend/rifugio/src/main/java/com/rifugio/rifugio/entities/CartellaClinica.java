@@ -12,17 +12,17 @@ public class CartellaClinica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id_Cartella_Clinica;
+    private Integer Id_Cartella_Clinica;
     private boolean Sterilizzato;
-    private int Vaccini;
+    private Integer Vaccini;
     private String Microchip;
     private boolean Sverminazione;
     private boolean Trattamento_Antiparassitario;
 
-    public int getIdCartellaClinica() {
+    public Integer getIdCartellaClinica() {
         return Id_Cartella_Clinica;
     }
-    public void setIdCartellaClinica(int idCartellaClinica) {
+    public void setIdCartellaClinica(Integer idCartellaClinica) {
         Id_Cartella_Clinica = idCartellaClinica;
     }
 
@@ -32,10 +32,10 @@ public class CartellaClinica {
     public void setSterilizzato(boolean sterilizzato) {
         Sterilizzato = sterilizzato;
     }
-    public int getVaccinazioni() {
+    public Integer getVaccinazioni() {
         return Vaccini;
     }
-    public void setVaccinazioni(int vaccinazioni) {
+    public void setVaccinazioni(Integer vaccinazioni) {
         Vaccini = vaccinazioni;
     }
     public String getMicrochip() {
