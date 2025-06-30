@@ -80,9 +80,10 @@ public class AnagraficaAnimaleServiceImpl implements AnagraficaAnimaliService {
     @Override
     public List<AnagraficaAnimali> filtra(Integer specie, Integer razza, Character sesso) {
         return anagraficaAnimaliRepo.findAll().stream()
-            .filter(a -> specie == null || a.getSpecie().getIdSpecie().equals(specie))
-            .filter(a -> razza == null || a.getRazza().getIdRazza().equals(razza))
-            .filter(a -> sesso == null || a.getSesso() == sesso)
+            .filter(animale -> specie == null || animale.getSpecie().getIdSpecie().equals(specie))
+            .filter(animale -> razza == null || animale.getRazza().getIdRazza().equals(razza))
+            .filter(animale -> sesso == null || animale.getSesso() == sesso)
+            .filter(animale -> animale.getIdStatoAnimale() != null && animale.getIdStatoAnimale().getIdStatoAnimale() == 1)  // solo disponibili
             .collect(Collectors.toList());
     }
 
