@@ -52,18 +52,6 @@ public class RifugioController {
         model.addAttribute("sessoList", sessoList); // valore selezionato di default
         return "lista_animali";
     }
-
-    @GetMapping("/speciee/{id}")
-    public String dashboardAnimaliSpecie(Model model, @PathVariable int id) {
-        String[] sessoList = {"Maschio", "Femmina"};
-        model.addAttribute("animali", anagraficaAnimaleService.getByIdSpecie(id));
-        model.addAttribute("specieList", specieService.getAllSpecie());
-        model.addAttribute("razzaList", razzaService.getAllRazze());
-        model.addAttribute("selezionata", ""); // valore selezionato di default
-        model.addAttribute("sessoList", sessoList); // valore selezionato di default
-        return "lista_animali";
-    }
-    
     
     @GetMapping("/animale/{id}")
     public String dettaglioAnimale(@PathVariable int id, Model model) {
