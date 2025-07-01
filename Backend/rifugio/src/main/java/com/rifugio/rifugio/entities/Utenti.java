@@ -17,7 +17,7 @@ public class Utenti {
    
     private String cognome;
    
-    private String codice_fiscale;
+    private String codiceFiscale;
    
     private String numero;
    
@@ -48,11 +48,11 @@ public class Utenti {
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
-    public String getCodice_fiscale() {
-        return codice_fiscale;
+    public String getCodiceFiscale() {
+        return codiceFiscale;
     }
-    public void setCodice_fiscale(String codice_fiscale) {
-        this.codice_fiscale = codice_fiscale;
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
     }
     public String getNumero() {
         return numero;

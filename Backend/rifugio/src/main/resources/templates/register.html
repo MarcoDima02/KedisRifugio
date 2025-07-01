@@ -1,54 +1,75 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/register.css"/>
+    <link rel="stylesheet" th:href="@{/css/register.css}"/>
     <title>Diamoci una zampa - Registrazione</title>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
-            <img src="/images/logo.png" alt="Diamoci una zampa Logo">
+            <img th:src="@{/images/logo.png}" alt="Diamoci una zampa Logo">
         </div>
         <h1 class="title">Registrazione</h1>
-        <div class="error-message" id="errorMessage" style="display:none;"></div>
-        <form id="registerForm" action="/register" method="POST">
+        <div class="error-message" id="errorMessage" th:if="${errorMessage}" th:text="${errorMessage}" style="display:block;"></div>
+        <form id="registerForm" th:action="@{/register}" method="POST" th:object="${utente}">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="nome">Nome</label>
                 <div class="input-container">
-                    <span class="input-icon">@</span>
-                    <input type="text" id="username" name="username" required>
+                    <span class="input-icon"></span>
+                    <input type="text" id="nome" name="nome" th:field="*{nome}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cognome">Cognome</label>
+                <div class="input-container">
+                    <span class="input-icon"></span>
+                    <input type="text" id="cognome" name="cognome" th:field="*{cognome}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="codiceFiscale">Codice Fiscale</label>
+                <div class="input-container">
+                    <span class="input-icon"></span>
+                    <input type="text" id="codiceFiscale" name="codiceFiscale" th:field="*{codiceFiscale}" required maxlength="16" pattern="[A-Z0-9]{16}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="numero">Numero di Telefono</label>
+                <div class="input-container">
+                    <span class="input-icon"></span>
+                    <input type="tel" id="numero" name="numero" th:field="*{numero}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <div class="input-container">
-                    <span class="input-icon">✉️</span>
-                    <input type="email" id="email" name="email" required>
+                    <span class="input-icon"></span>
+                    <input type="email" id="email" name="email" th:field="*{email}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <div class="input-container">
-                    <span class="input-icon">🔒</span>
-                    <input type="password" id="password" name="password" required>
+                    <span class="input-icon"></span>
+                    <input type="password" id="password" name="password" th:field="*{password}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Conferma Password</label>
                 <div class="input-container">
-                    <span class="input-icon">🔒</span>
+                    <span class="input-icon"></span>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
             </div>
             <div class="button-group">
                 <button type="submit" class="btn btn-login">Registrati</button>
-                <button type="button" class="btn btn-register" onclick="window.location.href='/login'">Accedi</button>
+                <button type="button" class="btn btn-register" th:onclick="'window.location.href=\'' + @{/login} + '\''">Accedi</button>
             </div>
         </form>
     </div>
-    <script>
+    <script th:inline="javascript">
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
@@ -56,7 +77,15 @@
                 e.preventDefault();
                 showError('Le password non coincidono.');
             }
+            
+            // Validazione codice fiscale (16 caratteri alfanumerici)
+            const codiceFiscale = document.getElementById('codiceFiscale').value;
+            if (!/^[A-Z0-9]{16}$/.test(codiceFiscale)) {
+                e.preventDefault();
+                showError('Il codice fiscale deve contenere 16 caratteri alfanumerici.');
+            }
         });
+        
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
@@ -65,6 +94,10 @@
                 errorDiv.style.display = 'none';
             }, 5000);
         }
+        
+        /*<![CDATA[*/
+        // Eventuali variabili Thymeleaf possono essere utilizzate qui
+        /*]]>*/
     </script>
 </body>
 </html>

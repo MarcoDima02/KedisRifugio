@@ -33,8 +33,13 @@ public class RegisterController {
             return "register";
         }
         // Qui puoi aggiungere controlli su email/username duplicati
+
+        //Imposta il ruolo dell'utente
+        utente.setRuolo("USER");
         utentiRepo.save(utente);
         // Redirect alla pagina di login con messaggio di successo
         return "redirect:/login?registered=true";
     }
+
+
 }
