@@ -32,14 +32,32 @@ public class RegisterController {
             model.addAttribute("errorMessage", "Le password non coincidono.");
             return "register";
         }
-        // Qui puoi aggiungere controlli su email/username duplicati
 
-        //Imposta il ruolo dell'utente
+        if (utente.getPassword().contains(" ") || confirmPassword.contains(" ")) {
+            model.addAttribute("errorMessage", "La password non può contenere spazi.");
+            return "register";
+        }
+
         utente.setRuolo("USER");
+        utente.setCodiceFiscale(utente.getCodiceFiscale().toUpperCase().trim());
+        utente.setNome(capitalizeEachWord(utente.getNome().trim()));
+        utente.setCognome(capitalizeEachWord(utente.getCognome().trim()));
+        utente.setPassword(confirmPassword.trim());
         utentiRepo.save(utente);
-        // Redirect alla pagina di login con messaggio di successo
-        return "redirect:/login?registered=true";
+
+        return "login";
     }
+
+    private String capitalizeEachWord(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return java.util.Arrays.stream(str.trim().toLowerCase().split("\\s+"))
+            .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+            .reduce((w1, w2) -> w1 + " " + w2)
+            .orElse("");
+    }
+
 
 
 }
