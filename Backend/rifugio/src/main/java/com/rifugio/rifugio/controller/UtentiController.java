@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.rifugio.rifugio.entities.Utenti;
-import com.rifugio.rifugio.services.UtentiService;
 import com.rifugio.rifugio.repos.UtentiRepo;
+import com.rifugio.rifugio.services.UtentiService;
 
 @Controller
 @RequestMapping("/utenti")
