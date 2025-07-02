@@ -16,10 +16,10 @@
 
         <h1 class="title">Area personale</h1>
 
-        <div class="success-message" id="successMessage" style="display:none;"></div>
+        <div class="success-message" id="successMessage" style="display:none; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 1.1em; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: all 0.3s;"></div>
         <div class="error-message" id="errorMessage" th:if="${errorMessage != null}" th:text="${errorMessage}" style="display:none;"></div>
 
-        <form id="loginForm" action="/login" method="POST">
+        <form id="loginForm" th:action="@{/utenti/login}" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
                 <div class="input-container">
@@ -40,7 +40,7 @@
             
             <div class="button-group">
                 <button type="submit" class="btn btn-login">Accedi</button>
-                <button type="button" class="btn btn-register" onclick="window.location.href='/register'">Registrati</button>
+                <button type="button" class="btn btn-register" th:onclick="'window.location.href=\'' + @{/utenti/register} + '\''">Registrati</button>
             </div>
         </form>
     </div>
@@ -67,8 +67,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('registered') === 'true') {
             const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = 'Registrazione avvenuta con successo! Ora puoi accedere.';
+            successDiv.innerHTML = '<span style="font-size:1.3em;font-weight:bold;">✔️ Registrazione completata!</span><br>Ora puoi accedere con le tue credenziali.';
             successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.opacity = '0.7';
+            }, 3000);
         }
         // Mostra errore dal backend se presente
         if (document.getElementById('errorMessage').textContent.trim() !== "") {
