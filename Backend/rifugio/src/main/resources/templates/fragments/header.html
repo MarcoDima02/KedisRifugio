@@ -7,7 +7,28 @@
         <a th:href="@{/animali}" class="header-link">Animali</a>
         <a th:href="@{/donazioni}" class="header-link">Come aiutare</a>
         <a th:href="@{/contatti}" class="header-link">Contatti</a>
-        <a th:href="@{/utenti/login}" class="header-link">Accedi</a>
+        <span class="header-user-area">
+          <a th:if="${userFullName == null}" th:href="@{/utenti/login}" class="header-link header-login-btn">
+            <span class="user-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" fill="#2d7d3e"/>
+                <ellipse cx="12" cy="17" rx="7" ry="4" fill="#2d7d3e"/>
+              </svg>
+            </span>
+            Accedi
+          </a>
+          <div th:if="${userFullName != null}" style="display: flex; align-items: center; gap: 10px;">
+            <a th:href="@{/area-utente}" class="header-link user-fullname-btn">
+              <span class="user-initials-badge" th:title="${userFullName}">
+                <span class="user-initials" th:text="${userInitials}"></span>
+              </span>
+              <span class="user-fullname" th:text="${userFullName}"></span>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
+              <button type="submit" class="header-link logout-btn" style="background:none; border:none; color:#fff; font-weight:600; cursor:pointer; padding:0 10px;">Logout</button>
+            </form>
+          </div>
+        </span>
       </nav>
     </div>
   </header>

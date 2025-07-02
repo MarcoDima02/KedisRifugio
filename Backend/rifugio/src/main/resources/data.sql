@@ -46,7 +46,8 @@ INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruol
 ('Luca', 'Bianchi', 'BNCLCU85B02F205Z', '3339876543', 'luca.bianchi@email.com', 'password2', 'USER'),
 ('Anna', 'Verdi', 'VRDANN90C03H501X', '3335555555', 'anna.verdi@email.com', 'password3', 'USER'),
 ('Giulia', 'Neri', 'NERGLI95D04F205Y', '3334444444', 'giulia.neri@email.com', 'password4', 'USER'),
-('Paolo', 'Russo', 'RSSPLA85E05H501Z', '3332222222', 'paolo.russo@email.com', 'password5', 'ADMIN');
+('Paolo', 'Russo', 'RSSPLA85E05H501Z', '3332222222', 'paolo.russo@email.com', 'password5', 'ADMIN'),
+('Marco','Dima','DMIMCN02E15C722Q','3467617419','dimamarco02@gmail.com','Md02@25w','USER');
 
 -- Inserimento dati per step_adozioni
 INSERT INTO step_adozioni (nome_step, descrizione_step) VALUES

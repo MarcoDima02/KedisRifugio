@@ -1,3 +1,44 @@
+.logout-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 10px;
+    font-size: 1em;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.logout-btn:hover {
+    color: #ffb3b3;
+    background: none;
+}
+.user-fullname-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-left: 10px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+}
+.user-fullname-btn:hover .user-initials-badge {
+    background: #238c47;
+}
+.user-fullname {
+    margin-left: 4px;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
 .password-hint {
     color: #fff;
     font-size: 12px;

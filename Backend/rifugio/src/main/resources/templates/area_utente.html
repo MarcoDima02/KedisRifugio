@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Area Utente</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+
 </head>
 <body>
-    <h1>Benvenuto nell'area utente!</h1>
-    <p>Questa è la pagina di destinazione dopo il login. Personalizzala come preferisci.</p>
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+    <div style="text-align:center; margin-top: 40px;">
+        <h1>Benvenuto nell'area utente!</h1>
+        <p>Questa è la pagina di destinazione dopo il login. Personalizzala come preferisci.</p>
+        <div th:if="${userFullName != null}" style="margin-top: 20px; font-size:1.1em; color:#2d7d3e;">
+            Utente loggato: <b th:text="${userFullName}"></b>
+        </div>
+    </div>
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
 </body>
 </html>

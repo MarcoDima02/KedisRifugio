@@ -77,19 +77,36 @@ public class UtentiController {
     @PostMapping("/login")
     public String doLogin(@RequestParam("email") String Email,
                          @RequestParam("password") String password,
-                         Model model) {
+                         Model model,
+                         jakarta.servlet.http.HttpSession session) {
         Optional<Utenti> utenteOpt = utentiRepo.findAll().stream()
                 .filter(u -> (u.getEmail().equalsIgnoreCase(Email))
                         && u.getPassword().equals(password))
                 .findFirst();
         if (utenteOpt.isPresent()) {
-            model.addAttribute("utente", utenteOpt.get());
-            return "redirect:/area-utente";
+            Utenti utente = utenteOpt.get();
+            model.addAttribute("utente", utente);
+            // Salva nome e iniziali in sessione
+            String initials = getUserInitials(utente);
+            session.setAttribute("userInitials", initials);
+            session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
+            return "redirect:/";
         } else {
             model.addAttribute("errorMessage", "Credenziali non valide. Riprova.");
             return "login";
         }
     }
+
+    // Utility per ottenere le iniziali dell'utente
+    private String getUserInitials(Utenti utente) {
+        String nome = utente.getNome() != null ? utente.getNome().trim() : "";
+        String cognome = utente.getCognome() != null ? utente.getCognome().trim() : "";
+        String initialNome = nome.isEmpty() ? "" : nome.substring(0, 1).toUpperCase();
+        String initialCognome = cognome.isEmpty() ? "" : cognome.substring(0, 1).toUpperCase();
+        return initialNome + initialCognome;
+    }
+
+
 
     // Utility per capitalizzare
     private String capitalizeEachWord(String str) {
