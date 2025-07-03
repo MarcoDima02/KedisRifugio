@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>Diamoci una zampa - Inserisci Animale</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<th:block th:replace="fragments/header :: customHeader"></th:block>
+
+<section class="filter-section animale-form">
+
+  <form th:action="@{/dashboard/donazioni/update/{id}(id=${donazione.id_donazione})}" th:object="${donazione}" method="post" class="filter-box animale-form-box" novalidate>
+
+    <h2 class="form-title">Modifica Donazione</h2>
+
+    <div class="filter-field">
+      <label for="nome">Importo:</label>
+      <input type="text" id="importo" th:field="*{importo}" required />
+    </div>
+
+    <div class="filter-field">
+      <label for="data_donazione">Data di Donazione:</label>
+      <input type="date" id="data_donazione" th:field="*{data_donazione}" required />
+    </div>
+
+    <div class="filter-field">
+      <label for="descrizione">Descrizione:</label>
+      <input type="text" id="descrizione" th:field="*{descrizione}" required />
+    </div>
+
+    <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
+      <button type="submit">Salva Donazione</button>
+      <button type="reset" class="secondary">Reset</button>
+    </div>
+
+  </form>
+</section>
+
+<th:block th:replace="fragments/footer :: customFooter"></th:block>
+
+</body>
+</html>

@@ -11,4 +11,8 @@ public interface DonazioniService {
 
     List<Donazioni> getAllDonazioni();
 
+    Donazioni getByIdDonazione(int id);
+
+    Donazioni update(int id, Donazioni donazione);
+
 }

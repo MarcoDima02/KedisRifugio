@@ -26,6 +26,7 @@
                     <th>Id Persona</th>
                     <th>Data Donazione</th>
                     <th>Descrizione</th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,11 @@
                     <td th:text="${donazione.persona.id_persona}">1</td>
                     <td th:text="${#dates.format(donazione.data_donazione, 'dd/MM/yyyy')}">01/01/2020</td>
                     <td th:text="${donazione.descrizione}">Descrizione</td>
+                    <td>
+                        <a th:href="@{/dashboard/donazioni/update/{id}(id=${donazione.id_donazione})}" class="button secondary">
+                            Modifica
+                        </a>
+                    </td>
                 </tr>
             </tbody>
 

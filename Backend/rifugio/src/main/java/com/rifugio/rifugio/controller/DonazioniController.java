@@ -16,14 +16,4 @@ import com.rifugio.rifugio.services.DonazioniService;
 @RequestMapping("/donazioni")
 public class DonazioniController {
 
-    @Autowired
-    private DonazioniService donazioniService;
-
-    @GetMapping
-    public String getAllDonazioni(Model model) {
-        List<Donazioni> donazioni = donazioniService.getAllDonazioni();
-        model.addAttribute("donazioni", donazioni);
-        return "dashboard_lista_donazioni";
-    }
-
 }
