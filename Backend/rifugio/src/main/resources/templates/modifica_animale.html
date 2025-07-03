@@ -1,4 +1,4 @@
-rifugio/src/main/resources/templates/creazione_animale.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8" />
@@ -19,7 +19,7 @@ rifugio/src/main/resources/templates/creazione_animale.html<!DOCTYPE html>
 <!-- Aggiunta classe "animale-form" per isolare il CSS -->
 <section class="filter-section animale-form">
   <!-- Aggiunta classe "animale-form-box" al form -->
-  <form th:action="@{/animali/update/{id}(id=${animale.idAnimale})}" th:object="${animale}" method="post" class="filter-box animale-form-box" novalidate>
+  <form th:action="@{/dashboard/animali/update/{id}(id=${animale.idAnimale})}" th:object="${animale}" method="post" class="filter-box animale-form-box" novalidate>
 
     <h2 class="form-title">Modifica Animale</h2>
 
