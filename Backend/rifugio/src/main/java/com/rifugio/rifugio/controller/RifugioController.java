@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 
@@ -82,16 +83,6 @@ public class RifugioController {
 
         return "lista_animali";
     }
-
-
-    @GetMapping("/crea-animale")
-    public String mostraFormCreazioneAnimale(Model model) {
-    model.addAttribute("animale", new AnagraficaAnimali());  // oggetto vuoto per il form
-    model.addAttribute("specieList", specieService.getAllSpecie());  // per dropdown specie
-    model.addAttribute("razzaList", razzaService.getAllRazze());    // per dropdown razza
-    model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());  // per dropdown stato animale
-    return "creazione_animale";  // nome del template Thymeleaf
-    }
     
     @PostMapping("/animali/save")
     public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
@@ -108,5 +99,22 @@ public class RifugioController {
     anagraficaAnimaleService.create(animale); // salva l'animale
     return "redirect:/animali"; // redirect alla lista animali dopo il salvataggio
 }
+
+    @PostMapping("/animali/update/{id}")
+    public String aggiornaAnimale(@PathVariable Integer id,
+                                   @Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+                                   BindingResult bindingResult,
+                                   Model model) {
+    if (bindingResult.hasErrors()) {
+        // se ci sono errori di validazione, ritorna al form
+        model.addAttribute("specieList", specieService.getAllSpecie());
+        model.addAttribute("razzaList", razzaService.getAllRazze());
+        model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
+        return "modifica_animale";
+    }
+
+    anagraficaAnimaleService.update(id, animale); // aggiorna l'animale
+    return "redirect:/dashboard/animali"; // redirect alla lista animali dopo l'aggiornamento
+    }
 
 }
