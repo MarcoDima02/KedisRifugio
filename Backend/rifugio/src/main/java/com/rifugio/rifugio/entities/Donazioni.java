@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Donazioni {
@@ -17,7 +19,9 @@ public class Donazioni {
     
     private double importo;
 
-    private Integer id_persona;
+    @ManyToOne
+    @JoinColumn(name = "Id_Persona", referencedColumnName = "Id_Persona")
+    private Utenti idPersona;
 
     private Date data_donazione;
 
@@ -39,12 +43,12 @@ public class Donazioni {
         this.importo = importo;
     }
 
-    public Integer getId_persona() {
-        return id_persona;
+    public Utenti getIdPersona() {
+        return idPersona;
     }
 
-    public void setId_persona(Integer id_persona) {
-        this.id_persona = id_persona;
+    public void setIdPersona(Utenti idPersona) {
+        this.idPersona = idPersona;
     }
 
     public Date getData_donazione() {

@@ -10,7 +10,6 @@ public class Utenti {
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     private Integer id_persona;
    
     private String nome;
