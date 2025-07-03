@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+    <link rel="stylesheet" th:href="@{../css/styles.css}" />
+</head>
+<body>
+
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+
+    <h1 class="page-title">
+        Lista Donazioni
+    </h1>
+
+    <section class="green-section">
+        <table class="animal-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Importo</th>
+                    <th>Id Persona</th>
+                    <th>Data Donazione</th>
+                    <th>Descrizione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="donazione : ${donazioni}">
+                    <td th:text="${donazione.id_donazione}">1</td>
+                    <td th:text="${donazione.importo}">100.00</td>
+                    <td th:text="${donazione.persona.id_persona}">1</td>
+                    <td th:text="${#dates.format(donazione.data_donazione, 'dd/MM/yyyy')}">01/01/2020</td>
+                    <td th:text="${donazione.descrizione}">Descrizione</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </section>
+
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    
+</body>
+</html>
+

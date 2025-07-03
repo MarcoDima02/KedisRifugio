@@ -20,8 +20,8 @@ public class Donazioni {
     private double importo;
 
     @ManyToOne
-    @JoinColumn(name = "Id_Persona", referencedColumnName = "Id_Persona")
-    private Utenti idPersona;
+    @JoinColumn(name = "id_persona", referencedColumnName = "Id_Persona")
+    private Utenti persona;
 
     private Date data_donazione;
 
@@ -43,12 +43,12 @@ public class Donazioni {
         this.importo = importo;
     }
 
-    public Utenti getIdPersona() {
-        return idPersona;
+    public Utenti getPersona() {
+        return persona;
     }
 
-    public void setIdPersona(Utenti idPersona) {
-        this.idPersona = idPersona;
+    public void setPersona(Utenti persona) {
+        this.persona = persona;
     }
 
     public Date getData_donazione() {

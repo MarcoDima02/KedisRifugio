@@ -1,29 +1,19 @@
 package com.rifugio.rifugio.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
-import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
 import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
 import com.rifugio.rifugio.services.UtentiService;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
