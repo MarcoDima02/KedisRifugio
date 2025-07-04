@@ -18,4 +18,29 @@ public class VisiteVeterinarieServiceImpl implements VisiteVeterinarieService {
     public List<VisiteVeterinarie> getAllVisiteVeterinarie() {
         return visiteVeterinarieRepo.findAll();
     }
+
+    @Override
+    public VisiteVeterinarie getVisitaById(Integer id) {
+        return visiteVeterinarieRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public VisiteVeterinarie addVisita(VisiteVeterinarie visita) {
+        return visiteVeterinarieRepo.save(visita);
+    }
+
+    @Override
+    public VisiteVeterinarie updateVisita(VisiteVeterinarie visita) {
+        return visiteVeterinarieRepo.save(visita);
+    }
+
+    @Override
+    public void deleteVisita(Integer id) {
+        visiteVeterinarieRepo.deleteById(id);
+    }
+
+    
+
+
+
 }
