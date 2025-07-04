@@ -18,7 +18,13 @@
             Accedi
           </a>
           <div th:if="${userFullName != null}" style="display: flex; align-items: center; gap: 10px;">
-            <a th:href="@{/area-utente}" class="header-link user-fullname-btn">
+            <a th:if="${userRuolo == 'ADMIN'}" th:href="@{/dashboard/admin}" class="header-link user-fullname-btn">
+              <span class="user-initials-badge" th:title="${userFullName}">
+                <span class="user-initials" th:text="${userInitials}"></span>
+              </span>
+              <span class="user-fullname" th:text="${userFullName}"></span>
+            </a>
+            <a th:if="${userRuolo != 'ADMIN'}" th:href="@{/area-utente}" class="header-link user-fullname-btn">
               <span class="user-initials-badge" th:title="${userFullName}">
                 <span class="user-initials" th:text="${userInitials}"></span>
               </span>

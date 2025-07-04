@@ -1,0 +1,18 @@
+<!-- Sidebar Fragment -->
+<div th:fragment="sidebar">
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo" />
+            <span>Dashboard gestionale</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="/dashboard/admin" class="active"><i class="icon-dashboard"></i> Dashboard</a></li>
+            <li><a href="/dashboard/admin/animali"><i class="icon-animali"></i> Gestione animali</a></li>
+            <li><a href="/dashboard/admin/adozioni"><i class="icon-adozioni"></i> Adozioni</a></li>
+            <li><a href="/dashboard/admin/visite-veterinarie"><i class="icon-visite"></i> Visite veterinarie</a></li>
+            <li><a href="/dashboard/admin/donazioni"><i class="icon-donazioni"></i> Donazioni</a></li>
+            <li><a href="/dashboard/admin/report"><i class="icon-report"></i> Report</a></li>
+            <li><a href="/dashboard/admin/impostazioni"><i class="icon-settings"></i> Impostazioni</a></li>
+        </ul>
+    </nav>
+</div>
