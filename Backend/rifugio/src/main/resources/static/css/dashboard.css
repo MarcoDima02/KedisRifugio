@@ -1,0 +1,251 @@
+/* Sidebar styles */
+.sidebar {
+    width: 240px;
+    background: #004B23;
+    color: #fff;
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+    z-index: 100;
+}
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    padding: 24px 20px 16px 20px;
+    border-bottom: 1px solid #1e7a4b;
+}
+.sidebar-logo img {
+    height: 48px;
+    margin-right: 12px;
+}
+.sidebar-logo span {
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+.sidebar-menu li {
+    margin: 0;
+}
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.sidebar-menu a.active, .sidebar-menu a:hover {
+    background: #1e7a4b;
+    color: #fff;
+}
+.sidebar-menu i {
+    margin-right: 12px;
+    font-size: 1.2em;
+}
+
+/* Dashboard main content */
+.dashboard-main {
+    margin-left: 240px;
+    padding: 32px 40px 32px 40px;
+    background: #f6f8fa;
+    min-height: 100vh;
+}
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #004B23;
+}
+.dashboard-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.dashboard-user .user-initials {
+    background: #e6f2ea;
+    color: #004B23;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.dashboard-user .user-role {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Card styles */
+.dashboard-cards {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.dashboard-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 24px 32px;
+    min-width: 180px;
+    flex: 1 1 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+.dashboard-card .card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #e6f2ea;
+    color: #17613a;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.dashboard-card .card-icon {
+    font-size: 2.2em;
+    margin-bottom: 8px;
+}
+.dashboard-card .card-value {
+    font-size: 1.7em;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+.dashboard-card .card-label {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Quick actions */
+.dashboard-actions {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.dashboard-action {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 24px 32px;
+    min-width: 180px;
+    flex: 1 1 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    text-align: center;
+}
+.dashboard-action:hover {
+    box-shadow: 0 4px 16px rgba(23,97,58,0.10);
+}
+.dashboard-action .action-icon {
+    font-size: 2em;
+    margin-bottom: 8px;
+    color: #17613a;
+}
+.dashboard-action .action-label {
+    font-size: 1em;
+    color: #17613a;
+    font-weight: 500;
+}
+
+/* Table styles */
+.dashboard-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+.dashboard-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.dashboard-table th, .dashboard-table td {
+    padding: 12px 8px;
+    text-align: left;
+}
+.dashboard-table th {
+    color: #17613a;
+    font-weight: 600;
+    border-bottom: 2px solid #e6f2ea;
+}
+.dashboard-table tr:not(:last-child) td {
+    border-bottom: 1px solid #f0f0f0;
+}
+.dashboard-table .badge {
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #fff;
+    display: inline-block;
+}
+.badge-success { background: #1e7a4b; }
+.badge-warning { background: #f7b924; }
+.badge-danger { background: #e74c3c; }
+.badge-info { background: #3498db; }
+
+.dashboard-home-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    color: #17613a;
+    border: 1.5px solid #17613a;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(23,97,58,0.04);
+    transition: background 0.18s, color 0.18s, border 0.18s;
+    text-decoration: none;
+}
+.dashboard-home-btn:hover {
+    background: #17613a;
+    color: #fff;
+    border-color: #17613a;
+}
+.dashboard-home-btn i {
+    font-size: 1.1em;
+}
+
+@media (max-width: 900px) {
+    .dashboard-cards, .dashboard-actions {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .dashboard-main {
+        padding: 24px 8px 24px 8px;
+    }
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+    }
+}

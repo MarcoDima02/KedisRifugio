@@ -90,6 +90,7 @@ public class UtentiController {
             String initials = getUserInitials(utente);
             session.setAttribute("userInitials", initials);
             session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
+            session.setAttribute("userRuolo", utente.getRuolo());
             return "redirect:/";
         } else {
             model.addAttribute("errorMessage", "Credenziali non valide. Riprova.");

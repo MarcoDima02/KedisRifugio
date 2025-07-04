@@ -24,13 +24,11 @@ import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
 import com.rifugio.rifugio.services.UtentiService;
 import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
 
-
-
+import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/dashboard")
+@RequestMapping("/dashboard/admin")
 public class DashboardController {
-
 
     @Autowired
     SpecieServiceImpl specieService;
@@ -53,17 +51,35 @@ public class DashboardController {
     @Autowired
     private VisiteVeterinarieServiceImpl visiteVeterinarieService;
 
+    // Controllo ruolo admin
+    private boolean isAdmin(HttpSession session) {
+        Object ruolo = session.getAttribute("userRuolo");
+        return ruolo != null && ruolo.toString().equalsIgnoreCase("ADMIN");
+    }
 
+    @GetMapping
+    public String dashboardAdmin(HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        return "dashboard_admin";
+    }
 
     @GetMapping("/animali")
-    public String getAnimali(Model model) {
+    public String getAnimali(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
         model.addAttribute("razzaList", razzaService.getAllRazze());    
         return "dashboard_lista_animali";
     }
     
     @GetMapping("/animali/crea")
-    public String mostraFormCreazioneAnimale(Model model) {
+    public String mostraFormCreazioneAnimale(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("animale", new AnagraficaAnimali()); 
         model.addAttribute("specieList", specieService.getAllSpecie());  
         model.addAttribute("razzaList", razzaService.getAllRazze());    
@@ -72,7 +88,10 @@ public class DashboardController {
     }
 
     @GetMapping("/animali/update/{id}")
-    public String aggiornaAnimale(@PathVariable Integer id, Model model) {
+    public String aggiornaAnimale(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
@@ -84,28 +103,36 @@ public class DashboardController {
     public String aggiornaAnimale(@PathVariable Integer id,
                                     @Validated @ModelAttribute("animale") AnagraficaAnimali animale,
                                     BindingResult bindingResult,
-                                    Model model) {
+                                    Model model,
+                                    HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         if (bindingResult.hasErrors()) {
-            // se ci sono errori di validazione, ritorna al form
             model.addAttribute("specieList", specieService.getAllSpecie());
             model.addAttribute("razzaList", razzaService.getAllRazze());
             model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
             return "modifica_animale";
         }
-
         anagraficaAnimaleService.update(id, animale); // aggiorna l'animale
-        return "redirect:/dashboard/animali"; // redirect alla lista animali dopo l'aggiornamento
+        return "redirect:/dashboard/admin/animali";
     }
 
     @GetMapping("/donazioni")
-    public String getAllDonazioni(Model model) {
+    public String getAllDonazioni(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         List<Donazioni> donazioni = donazioniService.getAllDonazioni();
         model.addAttribute("donazioni", donazioni);
         return "dashboard_lista_donazioni";
     }
 
     @GetMapping("/donazioni/update/{id}")
-    public String aggiornaDonazione(@PathVariable Integer id, Model model) {
+    public String aggiornaDonazione(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("donazione", donazioniService.getByIdDonazione(id));
         return "modifica_donazione";
     }
@@ -114,36 +141,43 @@ public class DashboardController {
     public String aggiornaDonazione(@PathVariable Integer id,
                                       @Validated @ModelAttribute("donazione") Donazioni donazione,
                                       BindingResult bindingResult,
-                                      Model model) {
+                                      Model model,
+                                      HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         if (bindingResult.hasErrors()) {
-            // se ci sono errori di validazione, ritorna al form
             model.addAttribute("donazione", donazioniService.getByIdDonazione(id));
             return "modifica_donazione";
         }
-
         donazioniService.update(id, donazione); // aggiorna la donazione
-        return "redirect:/dashboard/donazioni"; // redirect alla lista donazioni dopo l'aggiornamento
+        return "redirect:/dashboard/admin/donazioni";
     }
 
     @GetMapping("/visite-veterinarie")
-    public String getVisiteVeterinarie(Model model) {
-    model.addAttribute("visiteVeterinarie", visiteVeterinarieService.getAllVisiteVeterinarie());
-
+    public String getVisiteVeterinarie(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("visiteVeterinarie", visiteVeterinarieService.getAllVisiteVeterinarie());
         return "dashboard_lista_visite_veterinarie";
     }
 
     @GetMapping("/visite-veterinarie/crea")
-    public String mostraFormCreazioneVisita(Model model) {
+    public String mostraFormCreazioneVisita(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("visita", new VisiteVeterinarie());
-        
-
         return "creazione_visita_veterinaria";  // nome del template Thymeleaf
     }
 
     @GetMapping("/visite-veterinarie/update/{id}")
-    public String aggiornaVisita(@PathVariable Integer id, Model model) {
+    public String aggiornaVisita(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
-
         return "modifica_visita_veterinaria";
     }
 
@@ -151,16 +185,16 @@ public class DashboardController {
     public String aggiornaVisita(@PathVariable Integer id,
                                     @Validated @ModelAttribute("visita") VisiteVeterinarie visita,
                                     BindingResult bindingResult,
-                                    Model model) {
+                                    Model model,
+                                    HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
             return "modifica_visita_veterinaria";
         }
-        // Aggiorna la visita
         visiteVeterinarieService.updateVisita(visita);
-        return "redirect:/dashboard/visite-veterinarie";
+        return "redirect:/dashboard/admin/visite-veterinarie";
     }
-
-
-
 }

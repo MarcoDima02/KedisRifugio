@@ -63,6 +63,12 @@
                 }, 5000);
                 return;
             }
+            // Animazione di caricamento solo qui
+            const loginBtn = document.querySelector('.btn-login');
+            if (loginBtn) {
+                loginBtn.textContent = 'Accesso...';
+                loginBtn.disabled = true;
+            }
         });
 
         // Mostra messaggio di registrazione avvenuta con successo
@@ -83,14 +89,13 @@
             }, 5000);
         }
 
-        // Animazione di caricamento sui bottoni
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (this.type === 'submit') {
-                    this.textContent = 'Accesso...';
-                    this.disabled = true;
-                }
-            });
+        // Al caricamento pagina, resetta il bottone login
+        window.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.querySelector('.btn-login');
+            if (loginBtn) {
+                loginBtn.textContent = 'Accedi';
+                loginBtn.disabled = false;
+            }
         });
     </script>
 </body>
