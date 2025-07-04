@@ -13,4 +13,6 @@ public class TestPageController {
     @GetMapping("/test-animali")
     public String testAnimali() {
 
+        return "test_animali";
+    }
 }

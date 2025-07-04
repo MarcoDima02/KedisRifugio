@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
-
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
-import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
-
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
 import com.rifugio.rifugio.services.DonazioniService;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
@@ -157,8 +155,11 @@ public class DashboardController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
             return "modifica_visita_veterinaria";
-                                    }
-                                }
+        }
+        // Aggiorna la visita
+        visiteVeterinarieService.updateVisita(visita);
+        return "redirect:/dashboard/visite-veterinarie";
+    }
 
 
 

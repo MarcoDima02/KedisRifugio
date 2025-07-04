@@ -10,7 +10,7 @@ public class PROVA {
     public String prova() {
 
         
-
+        return "Prova funzionante!";
     }
 
 }
