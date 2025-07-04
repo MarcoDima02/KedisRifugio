@@ -1,7 +1,7 @@
 package com.rifugio.rifugio.controller;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
-import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
 import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 public class RifugioController {
 
     @Autowired
-    AnagraficaAnimaleServiceImpl anagraficaAnimaleService;
+    AnagraficaAnimaliServiceImpl anagraficaAnimaleService;
 
     @Autowired
     SpecieServiceImpl specieService;

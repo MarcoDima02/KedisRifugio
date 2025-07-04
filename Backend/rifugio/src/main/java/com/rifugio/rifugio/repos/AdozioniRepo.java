@@ -7,5 +7,4 @@ import com.rifugio.rifugio.entities.Adozioni;
 
 @Repository
 public interface AdozioniRepo extends JpaRepository<Adozioni, Integer> {
-    
 }
