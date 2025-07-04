@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
-import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
+
+import com.rifugio.rifugio.entities.VisiteVeterinarie;
+import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
+
 import com.rifugio.rifugio.services.DonazioniService;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
 import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
 import com.rifugio.rifugio.services.UtentiService;
+import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
 
 
 
@@ -47,6 +51,9 @@ public class DashboardController {
 
     @Autowired
     private DonazioniService donazioniService;
+
+    @Autowired
+    private VisiteVeterinarieServiceImpl visiteVeterinarieService;
 
 
 
@@ -119,6 +126,40 @@ public class DashboardController {
         donazioniService.update(id, donazione); // aggiorna la donazione
         return "redirect:/dashboard/donazioni"; // redirect alla lista donazioni dopo l'aggiornamento
     }
+
+    @GetMapping("/visite-veterinarie")
+    public String getVisiteVeterinarie(Model model) {
+    model.addAttribute("visiteVeterinarie", visiteVeterinarieService.getAllVisiteVeterinarie());
+
+        return "dashboard_lista_visite_veterinarie";
+    }
+
+    @GetMapping("/visite-veterinarie/crea")
+    public String mostraFormCreazioneVisita(Model model) {
+        model.addAttribute("visita", new VisiteVeterinarie());
+        
+
+        return "creazione_visita_veterinaria";  // nome del template Thymeleaf
+    }
+
+    @GetMapping("/visite-veterinarie/update/{id}")
+    public String aggiornaVisita(@PathVariable Integer id, Model model) {
+        model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
+
+        return "modifica_visita_veterinaria";
+    }
+
+    @PostMapping("/visite-veterinarie/update/{id}")
+    public String aggiornaVisita(@PathVariable Integer id,
+                                    @Validated @ModelAttribute("visita") VisiteVeterinarie visita,
+                                    BindingResult bindingResult,
+                                    Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
+            return "modifica_visita_veterinaria";
+                                    }
+                                }
+
 
 
 }
