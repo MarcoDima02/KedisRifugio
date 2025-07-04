@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class VisiteVeterinarie {
@@ -19,8 +21,9 @@ public class VisiteVeterinarie {
 
     private Time ora;
 
-    
-    private Integer id_animale;
+    @ManyToOne
+    @JoinColumn (name = "id_animale", referencedColumnName = "id_animale")
+    private AnagraficaAnimali id_animale;
 
     private String motivo;
 
@@ -50,11 +53,11 @@ public class VisiteVeterinarie {
         this.ora = ora;
     }
 
-    public Integer getId_animale() {
+    public AnagraficaAnimali getId_animale() {
         return id_animale;
     }
 
-    public void setId_animale(Integer id_animale) {
+    public void setId_animale(AnagraficaAnimali id_animale) {
         this.id_animale = id_animale;
     }
 
