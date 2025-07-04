@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
-import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
 import com.rifugio.rifugio.services.DonazioniService;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
 import com.rifugio.rifugio.services.SpecieServiceImpl;
@@ -43,7 +43,7 @@ public class DashboardController {
     UtentiService utentiService;
 
     @Autowired
-    private AnagraficaAnimaleServiceImpl anagraficaAnimaleService;
+    private AnagraficaAnimaliServiceImpl anagraficaAnimaleService;
 
     @Autowired
     private DonazioniService donazioniService;
