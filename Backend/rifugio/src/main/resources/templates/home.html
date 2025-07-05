@@ -21,11 +21,13 @@
 <section class="available-animals-section">
   <h2 class="section-title">Animali Disponibili</h2>
 
-  <div class="available-animals-box">
-      <p class="available-animals-count" th:text="${animaliDisponibili}">
-      Numero di animali disponibili: XX
-      </p>
-  </div>
+  <a th:href="@{/animali}">
+    <div class="available-animals-box">
+        <p class="available-animals-count" th:text="${animaliDisponibili}">
+        Numero di animali disponibili: XX
+        </p>
+    </div>
+  </a>
 </section>
 
 <section class="available-animals-section">
