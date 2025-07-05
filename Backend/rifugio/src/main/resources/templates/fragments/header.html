@@ -30,8 +30,8 @@
               </span>
               <span class="user-fullname" th:text="${userFullName}"></span>
             </a>
-            <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
-              <button type="submit" class="header-link logout-btn" style="background:none; border:none; color:#fff; font-weight:600; cursor:pointer; padding:0 10px;">Logout</button>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+              <button type="submit" class="header-link logout-btn">Logout</button>
             </form>
           </div>
         </span>

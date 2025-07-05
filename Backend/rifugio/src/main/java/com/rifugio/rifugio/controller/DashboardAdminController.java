@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/dashboard/admin")
-public class DashboardController {
+public class DashboardAdminController {
 
     @Autowired
     SpecieServiceImpl specieService;

@@ -169,13 +169,80 @@ body {
     margin-top: -5px;     /* per centrare meglio il logo verticalmente */
 }
 
+/* Per il contenitore .header-nav: già esistente, ma ricontrolla */
 .header-nav {
     display: flex;
     gap: 2rem;
-    align-items: center;      /* centra verticalmente i link */
-    justify-content: center;  /* centra orizzontalmente i link dentro il loro container */
-    flex-grow: 1;             /* fa espandere la nav per occupare lo spazio disponibile */
+    align-items: center;      /* QUESTO è essenziale per l’allineamento verticale */
+    justify-content: center;
+    flex-grow: 1;
 }
+
+/* Form del logout: togli comportamenti anomali */
+.logout-form {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.logout-form button {
+  all: unset; /* Rimuove stili predefiniti del browser */
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin-left: 20px; /* se vuoi distanza dagli altri */
+}
+
+/* Effetto hover */
+.logout-btn:hover {
+    color: #28a745;
+}
+
+
+.logout-btn:hover {
+  color: #28a745; /* stesso effetto hover dei link */
+}
+
+/* Per il contenitore .header-nav: già esistente, ma ricontrolla */
+.header-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;      /* QUESTO è essenziale per l’allineamento verticale */
+    justify-content: center;
+    flex-grow: 1;
+}
+
+/* Form del logout: togli comportamenti anomali */
+.logout-form {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile coerente con gli altri link */
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Effetto hover */
+.logout-btn:hover {
+    color: #28a745;
+}
+
 
 
 .header-link {

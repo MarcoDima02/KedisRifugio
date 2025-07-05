@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
 
     <h1 class="page-title">
         Lista Anagrafica Animali
@@ -48,7 +48,7 @@
                     <td th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">01/06/2020</td>
                     <td th:text="${animale.idStatoAnimale.descrizione}">Stato</td>
                     <td>
-                        <a th:href="@{/dashboard/animali/update/{id}(id=${animale.idAnimale})}" class="button secondary">
+                        <a th:href="@{/dashboard/admin/animali/update/{id}(id=${animale.idAnimale})}" class="button secondary">
                             Modifica
                         </a>
                     </td>
@@ -63,7 +63,7 @@
         </table>
 
         <div class="button-container">
-            <a href="/dashboard/animali/crea" class="button primary">Aggiungi Nuovo Animale</a>
+            <a th:href="@{/dashboard/admin/animali/crea}" class="button primary">Aggiungi Nuovo Animale</a>
 
     </section>
 
