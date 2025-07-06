@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
+import com.rifugio.rifugio.services.AdozioniServiceImpl;
 import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
 import com.rifugio.rifugio.services.DonazioniService;
 import com.rifugio.rifugio.services.RazzaServiceImpl;
@@ -25,6 +26,8 @@ import com.rifugio.rifugio.services.UtentiService;
 import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/dashboard/admin")
@@ -50,6 +53,9 @@ public class DashboardAdminController {
 
     @Autowired
     private VisiteVeterinarieServiceImpl visiteVeterinarieService;
+
+    @Autowired
+    private AdozioniServiceImpl adozioniService;
 
     // Controllo ruolo admin
     private boolean isAdmin(HttpSession session) {
@@ -207,5 +213,15 @@ public class DashboardAdminController {
     }
 
     // DASHBOARD ADOZIONI
+
+    @GetMapping("/adozioni")
+    public String getAdozioni(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("adozioni", adozioniService.getAllAdozioni());
+        return "dashboard_lista_adozioni";
+    }
+    
 
 }

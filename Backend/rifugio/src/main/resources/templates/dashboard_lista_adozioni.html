@@ -32,10 +32,10 @@
             <tbody>
                 <tr th:each="adozione : ${adozioni}">
                     <td th:text="${adozione.id}">1</td>
-                    <td th:text="${adozione.animale.id_animale}">1</td>
+                    <td th:text="${adozione.animale.idAnimale}">1</td>
                     <td th:text="${adozione.persona.id_persona}">1</td>
                     <td th:text="${#dates.format(adozione.dataAdozione, 'dd/MM/yyyy')}">1/1/2000</td>
-                    <td th:text="${adozione.stepAdozione.nomeStep}">Nome Step</td>
+                    <td th:text="${adozione.stepAdozione.nome_step}">Nome Step</td>
                     <td>
                         <a th:href="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.id})}" class="button secondary">
                             Modifica
