@@ -57,6 +57,8 @@ public class DashboardAdminController {
         return ruolo != null && ruolo.toString().equalsIgnoreCase("ADMIN");
     }
 
+    // DASHBOARD HOME
+
     @GetMapping
     public String dashboardAdmin(HttpSession session) {
         if (!isAdmin(session)) {
@@ -64,6 +66,8 @@ public class DashboardAdminController {
         }
         return "dashboard_admin";
     }
+
+    // DASHBOARD ANIMALI
 
     @GetMapping("/animali")
     public String getAnimali(Model model, HttpSession session) {
@@ -118,6 +122,8 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/animali";
     }
 
+    // DASHBOARD DONAZIONI
+
     @GetMapping("/donazioni")
     public String getAllDonazioni(Model model, HttpSession session) {
         if (!isAdmin(session)) {
@@ -153,6 +159,8 @@ public class DashboardAdminController {
         donazioniService.update(id, donazione); // aggiorna la donazione
         return "redirect:/dashboard/admin/donazioni";
     }
+
+    // DASHBOARD VISITE VETERINARIE
 
     @GetMapping("/visite-veterinarie")
     public String getVisiteVeterinarie(Model model, HttpSession session) {
@@ -197,4 +205,7 @@ public class DashboardAdminController {
         visiteVeterinarieService.updateVisita(visita);
         return "redirect:/dashboard/admin/visite-veterinarie";
     }
+
+    // DASHBOARD ADOZIONI
+
 }
