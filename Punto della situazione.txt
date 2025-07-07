@@ -1,0 +1,39 @@
+homepage: 
+-manca il "come aiutare"
+
+parte:
+- form donazione
+- form adozione 
+- animali preferiti
+- miglioramento pagina dell'animale
+- completare dashboard utente
+
+
+dasboard admin:
+- attività recenti da rendere dinamico
+- aggiunta adozione
+- aggiunta donazione
+- aggiunta visita veterinaria
+- colore sulla sezione dashboard
+- impostazioni per l'admin
+- capire se report ha senso
+- aggiungere utenti nella sidebar
+
+form aggiunta animali:
+-revisione controlli e messaggi di notifica
+- controllo data arrivo e data di nascita
+- menù a tendina per n vaccinazioni
+- microchip da 15 numeri obbligatori, numero seriale non obbligatorio
+- mancano le foto
+
+utenti:
+- hashing password
+
+API:
+- nascondere api non visibili per l'utente
+
+Competenze:
+- separare competente di codice dai file (css, html, js...)
+
+opzionali:
+in base alla specie, dare la razza adatta
