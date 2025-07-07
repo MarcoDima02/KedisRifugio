@@ -1,3 +1,4 @@
+
 package com.rifugio.rifugio.controller;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,15 +88,63 @@ public class UtentiController {
         if (utenteOpt.isPresent()) {
             Utenti utente = utenteOpt.get();
             model.addAttribute("utente", utente);
-            // Salva nome e iniziali in sessione
+            // Salva nome, iniziali e ruolo in sessione
             String initials = getUserInitials(utente);
             session.setAttribute("userInitials", initials);
             session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
-            return "redirect:/";
+            session.setAttribute("userRuolo", utente.getRuolo());
+            // Redirigi in base al ruolo
+            if (utente.getRuolo() != null && utente.getRuolo().equalsIgnoreCase("ADMIN")) {
+                return "redirect:/admin/dashboard";
+            } else {
+                return "redirect:/area-utente";
+            }
         } else {
             model.addAttribute("errorMessage", "Credenziali non valide. Riprova.");
             return "login";
         }
+    }
+
+
+    //visualizza dettagli utente
+    @GetMapping("/dettaglio/{id}")
+    public String dettaglioUtente(@PathVariable Integer id, Model model) {
+        Optional<Utenti> utenteOpt = utentiRepo.findById(id);
+        if (utenteOpt.isPresent()) {
+            model.addAttribute("utente", utenteOpt.get());
+            return "dettaglio_utente";
+        } else {
+            model.addAttribute("errorMessage", "Utente non trovato.");
+            return "redirect:/utenti";
+        }
+    }
+
+    // form modifica utente
+    @GetMapping("/modifica/{id}")
+    public String mostraFormModificaUtente(@PathVariable Integer id, Model model) {
+        Optional<Utenti> utenteOpt = utentiRepo.findById(id);
+        if (utenteOpt.isPresent()) {
+            model.addAttribute("utente", utenteOpt.get());
+            return "modifica_utente";
+        } else {
+            model.addAttribute("errorMessage", "Utente non trovato.");
+            return "redirect:/utenti";
+        }
+    }
+
+    // Salva modifica utente
+    @PostMapping("/modifica/{id}")
+    public String salvaModificaUtente(@PathVariable Integer id, @ModelAttribute Utenti utente, Model model) {
+        utente.setId_persona(id);
+        utentiRepo.save(utente);
+        return "redirect:/utenti";
+    }
+
+    // Elimina utente
+    @PostMapping("/elimina/{id}")
+    public String eliminaUtente(@PathVariable Integer id) {
+        utentiRepo.deleteById(id);
+        return "redirect:/utenti";
     }
 
     // Utility per ottenere le iniziali dell'utente
@@ -105,8 +155,6 @@ public class UtentiController {
         String initialCognome = cognome.isEmpty() ? "" : cognome.substring(0, 1).toUpperCase();
         return initialNome + initialCognome;
     }
-
-
 
     // Utility per capitalizzare
     private String capitalizeEachWord(String str) {
