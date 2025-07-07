@@ -17,7 +17,7 @@ import com.rifugio.rifugio.entities.Specie;
 import com.rifugio.rifugio.services.SpecieService;
 
 @RestController
-@RequestMapping("/specie")
+@RequestMapping("/api/specie")
 public class SpecieController {
 
     @Autowired

@@ -26,7 +26,6 @@ import com.rifugio.rifugio.services.UtentiService;
 import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller

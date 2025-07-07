@@ -10,7 +10,7 @@ import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.services.AdozioniService;
 
 @RestController
-@RequestMapping("/adozioni")
+@RequestMapping("/api/adozioni")
 public class AdozioniController {
 
     @Autowired
