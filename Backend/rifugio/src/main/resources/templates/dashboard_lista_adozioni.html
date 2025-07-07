@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+
+    <h1 class="page-title">
+        Lista Adozioni
+    </h1>
+
+    <section class="green-section">
+        <table class="animal-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Id Animale</th>
+                    <th>Id Persona</th>
+                    <th>Data Adozione</th>
+                    <th>Step Adozione</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="adozione : ${adozioni}">
+                    <td th:text="${adozione.id}">1</td>
+                    <td th:text="${adozione.animale.idAnimale}">1</td>
+                    <td th:text="${adozione.persona.id_persona}">1</td>
+                    <td th:text="${#dates.format(adozione.dataAdozione, 'dd/MM/yyyy')}">1/1/2000</td>
+                    <td th:text="${adozione.stepAdozione.nome_step}">Nome Step</td>
+                    <td>
+                        <a th:href="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.id})}" class="button secondary">
+                            Modifica
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/dashboard/admin/adozioni/{id}(id=${adozione.id})}" class="button secondary">
+                            Dettagli
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div class="button-container">
+            <a th:href="@{/dashboard/admin/animali/crea}" class="button primary">Aggiungi Nuovo Animale</a>
+
+    </section>
+
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    
+</body>
+</html>
+

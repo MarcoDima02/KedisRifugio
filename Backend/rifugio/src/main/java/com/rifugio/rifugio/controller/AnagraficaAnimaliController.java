@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
-import com.rifugio.rifugio.services.AnagraficaAnimaleServiceImpl;
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AnagraficaAnimaliController {
 
     @Autowired
-    private AnagraficaAnimaleServiceImpl anagraficaAnimaliService;
+    private AnagraficaAnimaliServiceImpl anagraficaAnimaliService;
 
     @GetMapping
     public List<AnagraficaAnimali> getAllAnagraficaAnimali() {

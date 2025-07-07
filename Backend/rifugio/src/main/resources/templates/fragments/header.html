@@ -18,14 +18,20 @@
             Accedi
           </a>
           <div th:if="${userFullName != null}" style="display: flex; align-items: center; gap: 10px;">
-            <a th:href="@{/area-utente}" class="header-link user-fullname-btn">
+            <a th:if="${userRuolo == 'ADMIN'}" th:href="@{/dashboard/admin}" class="header-link user-fullname-btn">
               <span class="user-initials-badge" th:title="${userFullName}">
                 <span class="user-initials" th:text="${userInitials}"></span>
               </span>
               <span class="user-fullname" th:text="${userFullName}"></span>
             </a>
-            <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
-              <button type="submit" class="header-link logout-btn" style="background:none; border:none; color:#fff; font-weight:600; cursor:pointer; padding:0 10px;">Logout</button>
+            <a th:if="${userRuolo != 'ADMIN'}" th:href="@{/area-utente}" class="header-link user-fullname-btn">
+              <span class="user-initials-badge" th:title="${userFullName}">
+                <span class="user-initials" th:text="${userInitials}"></span>
+              </span>
+              <span class="user-fullname" th:text="${userFullName}"></span>
+            </a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+              <button type="submit" class="header-link logout-btn">Logout</button>
             </form>
           </div>
         </span>

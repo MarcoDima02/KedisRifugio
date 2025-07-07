@@ -9,4 +9,10 @@ public class TestPageController {
     public String testUpload() {
         return "test_upload_immagine";
     }
+
+    @GetMapping("/test-animali")
+    public String testAnimali() {
+
+        return "test_animali";
+    }
 }

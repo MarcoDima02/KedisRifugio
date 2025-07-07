@@ -11,6 +11,12 @@ public interface VisiteVeterinarieService {
 
     List<VisiteVeterinarie> getAllVisiteVeterinarie();
 
+    VisiteVeterinarie getVisitaById(Integer id_visita);
 
+    VisiteVeterinarie addVisita(VisiteVeterinarie visita);
+
+    VisiteVeterinarie updateVisita(VisiteVeterinarie visita);
+    
+    void deleteVisita(Integer id_visita);
 
 }

@@ -28,6 +28,27 @@
       <input type="text" id="nome" th:field="*{nome}" required />
     </div>
 
+        <div class="filter-field">
+      <label for="specie">Specie:</label>
+      <select id="specie" th:field="*{specie.idSpecie}" required>
+        <option value="" disabled selected>-- Seleziona --</option>
+        <option th:each="specie : ${specieList}"
+                th:value="${specie.IdSpecie}"
+                th:text="${specie.nome}"></option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="razza">Razza:</label>
+      <select name="razza" id="razza">
+        <option value="" disabled selected>-- Seleziona --</option>
+        <option th:each="razza : ${razzaList}"
+                th:value="${razza.idRazza}"
+                th:text="${razza.nome}">
+        </option>
+      </select>
+    </div>
+
     <div class="filter-field">
       <label for="sesso">Sesso:</label>
       <select id="sesso" th:field="*{sesso}" required>
@@ -96,27 +117,6 @@
         <input type="checkbox" id="trattamentoAntiparassitario" th:field="*{idCartellaClinica.trattamentoAntiparassitario}" />
       </div>
     </fieldset>
-
-    <div class="filter-field">
-      <label for="specie">Specie:</label>
-      <select id="specie" th:field="*{specie.idSpecie}" required>
-        <option value="" disabled selected>-- Seleziona --</option>
-        <option th:each="specie : ${specieList}"
-                th:value="${specie.IdSpecie}"
-                th:text="${specie.nome}"></option>
-      </select>
-    </div>
-
-    <div class="filter-field">
-      <label for="razza">Razza:</label>
-      <select name="razza" id="razza">
-        <option value="" disabled selected>-- Seleziona --</option>
-        <option th:each="razza : ${razzaList}"
-                th:value="${razza.idRazza}"
-                th:text="${razza.nome}">
-        </option>
-      </select>
-    </div>
 
     <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
       <button type="submit">Salva Animale</button>
