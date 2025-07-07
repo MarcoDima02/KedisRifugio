@@ -36,7 +36,7 @@
                     <td th:text="${#dates.format(donazione.data_donazione, 'dd/MM/yyyy')}">01/01/2020</td>
                     <td th:text="${donazione.descrizione}">Descrizione</td>
                     <td>
-                        <a th:href="@{/dashboard/donazioni/update/{id}(id=${donazione.id_donazione})}" class="button secondary">
+                        <a th:href="@{/dashboard/admin/donazioni/update/{id}(id=${donazione.id_donazione})}" class="button secondary">
                             Modifica
                         </a>
                     </td>

@@ -95,7 +95,7 @@ public class UtentiController {
             session.setAttribute("userRuolo", utente.getRuolo());
             // Redirigi in base al ruolo
             if (utente.getRuolo() != null && utente.getRuolo().equalsIgnoreCase("ADMIN")) {
-                return "redirect:/admin/dashboard";
+                return "redirect:/dashboard/admin";
             } else {
                 return "redirect:/area-utente";
             }
