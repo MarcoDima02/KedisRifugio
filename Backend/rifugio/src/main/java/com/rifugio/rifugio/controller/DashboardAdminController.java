@@ -66,10 +66,19 @@ public class DashboardAdminController {
     // DASHBOARD HOME
 
     @GetMapping
-    public String dashboardAdmin(HttpSession session) {
+    public String dashboardAdmin(Model model, HttpSession session) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        // Statistiche rapide
+        int numUtenti = utentiService.getAllUtenti().size();
+        int numAnimali = anagraficaAnimaleService.getAllAnagraficaAnimali().size();
+        int numAdozioni = adozioniService.getAllAdozioni().size();
+        double totDonazioni = donazioniService.getAllDonazioni().stream().mapToDouble(d -> d.getImporto()).sum();
+        model.addAttribute("numUtenti", numUtenti);
+        model.addAttribute("numAnimali", numAnimali);
+        model.addAttribute("numAdozioni", numAdozioni);
+        model.addAttribute("totDonazioni", String.format("%.2f", totDonazioni));
         return "dashboard_admin";
     }
 
