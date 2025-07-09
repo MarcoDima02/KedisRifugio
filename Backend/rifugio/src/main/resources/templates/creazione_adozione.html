@@ -12,7 +12,7 @@
     <div th:replace="fragments/sidebar :: customSidebar"></div>
 
     <section class="filter-section animale-form">
-    <form th:action="@{/adozioni/save}" th:object="${adozione}" method="post" class="filter-box animale-form-box" novalidate>
+    <form th:action="@{/dashboard/admin/adozioni/save}" th:object="${adozione}" method="post" class="filter-box animale-form-box" novalidate>
 
         <h2 class="form-title">Inserisci Nuova Adozione</h2>
 
@@ -23,6 +23,31 @@
                 <option th:each="animale : ${animali}"
                         th:value="${animale.idAnimale}"
                         th:text="${animale.idAnimale}"></option>
+            </select>
+        </div>
+        
+        <div class="filter-field">
+            <label for="idPersona">Id Utente</label>
+            <select id="idPersona" th:field="*{persona.id_persona}" required>
+                <option value="" disabled selected>-- Seleziona --</option>
+                <option th:each="utente : ${utenti}"
+                        th:value="${utente.id_persona}"
+                        th:text="${utente.id_persona}"></option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="dataAdozione">Data Adozione</label>
+            <input type="date" id="dataAdozione" th:field="*{dataAdozione}" required>
+        </div>
+        
+        <div class="filter-field">
+            <label for="idStepAdozione">Step Adozione</label>
+            <select id="idStepAdozione" th:field="*{stepAdozione.id_step_adozioni}" required>
+                <option value="" disabled selected>-- Seleziona --</option>
+                <option th:each="step : ${stepAdozioni}"
+                        th:value="${step.id_step_adozioni}"
+                        th:text="${step.nome_step}"></option>
             </select>
         </div>
 

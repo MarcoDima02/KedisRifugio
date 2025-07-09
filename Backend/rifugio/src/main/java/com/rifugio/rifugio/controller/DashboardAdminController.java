@@ -25,9 +25,11 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/dashboard/admin")
 public class DashboardAdminController {
 
-    private final AnagraficaAnimaliService anagraficaAnimaliService;
+    @Autowired
+    StepAdozioniService stepAdozioniService;
 
-    private final StepAdozioniServiceImpl stepAdozioniServiceImpl;
+    @Autowired
+    AnagraficaAnimaliService anagraficaAnimaliService;
 
     @Autowired
     SpecieServiceImpl specieService;
@@ -52,11 +54,6 @@ public class DashboardAdminController {
 
     @Autowired
     private AdozioniServiceImpl adozioniService;
-
-    DashboardAdminController(StepAdozioniServiceImpl stepAdozioniServiceImpl, AnagraficaAnimaliService anagraficaAnimaliService) {
-        this.stepAdozioniServiceImpl = stepAdozioniServiceImpl;
-        this.anagraficaAnimaliService = anagraficaAnimaliService;
-    }
 
     // Controllo ruolo admin
     private boolean isAdmin(HttpSession session) {
@@ -272,9 +269,29 @@ public class DashboardAdminController {
             return "redirect:/";
         }
         model.addAttribute("adozione", new Adozioni());
-        model.addAttribute("animali", anagraficaAnimaliService.getAllAnagraficaAnimali());
+        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
         model.addAttribute("utenti", utentiService.getAllUtenti());
+        model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
         return "creazione_adozione";
+    }
+
+    @PostMapping("/adozioni/save")
+    public String creaAdozione(@Validated @ModelAttribute("adozione") Adozioni adozione,
+                         BindingResult bindingResult,
+                         Model model,
+                         HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("utenti", utentiService.getAllUtenti());
+            model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
+            System.out.println("Validation errors: " + bindingResult.getAllErrors());
+            return "creazione_adozione";
+        }
+        adozioniService.createAdozione(adozione);
+        return "redirect:/dashboard/admin/adozioni";
     }
 
     @GetMapping("/adozioni/update/{id}")
