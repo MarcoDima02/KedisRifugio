@@ -19,24 +19,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
-import com.rifugio.rifugio.services.AdozioniServiceImpl;
-import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
-import com.rifugio.rifugio.services.DonazioniService;
-import com.rifugio.rifugio.services.RazzaServiceImpl;
-import com.rifugio.rifugio.services.SpecieServiceImpl;
-import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
-import com.rifugio.rifugio.services.UtentiService;
-import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
-
+import com.rifugio.rifugio.services.*;
 import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 @RequestMapping("/dashboard/admin")
 public class DashboardAdminController {
+
+    @Autowired
+    StepAdozioniService stepAdozioniService;
+
+    @Autowired
+    AnagraficaAnimaliService anagraficaAnimaliService;
 
     @Autowired
     SpecieServiceImpl specieService;
@@ -99,7 +98,7 @@ public class DashboardAdminController {
         return "dashboard_lista_animali";
     }
     
-    @GetMapping("/animali/crea")
+    @GetMapping("/animali/save")
     public String mostraFormCreazioneAnimale(Model model, HttpSession session) {
         if (!isAdmin(session)) {
             return "redirect:/";
@@ -109,6 +108,22 @@ public class DashboardAdminController {
         model.addAttribute("razzaList", razzaService.getAllRazze());    
         model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());  
         return "creazione_animale";  // nome del template Thymeleaf
+    }
+
+    @PostMapping("/animali/save")
+    public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+                           BindingResult bindingResult,
+                           Model model) {
+    if (bindingResult.hasErrors()) {
+        // se ci sono errori di validazione, ritorna al form
+        model.addAttribute("specieList", specieService.getAllSpecie());
+        model.addAttribute("razzaList", razzaService.getAllRazze());
+        model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
+        return "creazione_animale";
+    }
+
+    anagraficaAnimaleService.create(animale); // salva l'animale
+    return "redirect:/animali"; // redirect alla lista animali dopo il salvataggio
     }
 
     @GetMapping("/animali/update/{id}")
@@ -282,6 +297,63 @@ public class DashboardAdminController {
         }
         model.addAttribute("adozioni", adozioniService.getAllAdozioni());
         return "dashboard_lista_adozioni";
+    }
+
+    @GetMapping("/adozioni/save")
+    public String mostraFormCreazioneAdozione(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("adozione", new Adozioni());
+        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        model.addAttribute("utenti", utentiService.getAllUtenti());
+        model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
+        return "creazione_adozione";
+    }
+
+    @PostMapping("/adozioni/save")
+    public String creaAdozione(@Validated @ModelAttribute("adozione") Adozioni adozione,
+                         BindingResult bindingResult,
+                         Model model,
+                         HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("utenti", utentiService.getAllUtenti());
+            model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
+            System.out.println("Validation errors: " + bindingResult.getAllErrors());
+            return "creazione_adozione";
+        }
+        adozioniService.createAdozione(adozione);
+        return "redirect:/dashboard/admin/adozioni";
+    }
+
+    @GetMapping("/adozioni/update/{id}")
+    public String aggiornaAdozione(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("adozione", adozioniService.getAdozioneById(id));
+        return "modifica_adozione";
+    }
+
+    @PostMapping("/adozioni/update/{id}")
+    public String aggiornaAdozione(@PathVariable Integer id,
+                                    @Validated @ModelAttribute("adozione") Adozioni adozione,
+                                    BindingResult bindingResult,
+                                    Model model,
+                                    HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("adozione", adozioniService.getAdozioneById(id));
+            return "modifica_adozione";
+        }
+        adozioniService.updateAdozione(id, adozione);
+        return "redirect:/dashboard/admin/adozioni";
     }
     
     @GetMapping("/utenti")
