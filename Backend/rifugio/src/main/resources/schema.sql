@@ -108,7 +108,7 @@ CREATE TABLE visite_veterinarie (
     ora TIME NOT NULL,
     id_animale INT NOT NULL,
     motivo VARCHAR(150) NOT NULL,
-    esito VARCHAR(150) NOT NULL,
+    esito VARCHAR(150) NOT NULL Default 'In attesa',
     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
 );
 

@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -22,7 +23,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Importo</th>
-                    <th>Id Persona</th>
+                    <th>Donatore</th>
                     <th>Data Donazione</th>
                     <th>Descrizione</th>
                     <th>Azioni</th>
@@ -32,18 +33,24 @@
                 <tr th:each="donazione : ${donazioni}">
                     <td th:text="${donazione.id_donazione}">1</td>
                     <td th:text="${donazione.importo}">100.00</td>
-                    <td th:text="${donazione.persona.id_persona}">1</td>
+                    <td th:text="${donazione.persona.nome + ' ' + donazione.persona.cognome}">Mario Rossi</td>
                     <td th:text="${#dates.format(donazione.data_donazione, 'dd/MM/yyyy')}">01/01/2020</td>
                     <td th:text="${donazione.descrizione}">Descrizione</td>
                     <td>
-                        <a th:href="@{/dashboard/admin/donazioni/update/{id}(id=${donazione.id_donazione})}" class="button secondary">
-                            Modifica
-                        </a>
-                    </td>
+                                <a th:href="@{/dashboard/admin/donazioni/update/{id}(id=${donazione.id_donazione})}" class="action-icon-btn" title="Modifica">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                
+                            </td>
                 </tr>
             </tbody>
 
         </table>
+
+        
+        <a th:href="@{/dashboard/admin/utenti/crea}" class="add-btn">Aggiungi Nuova Donazione</a>
+        
+
     </section>
 
 

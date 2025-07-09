@@ -1,4 +1,3 @@
-
 .custom-header {
     background-color: #004B23;
     padding: 1.5rem 0;
@@ -602,3 +601,158 @@ body {
     background-color: #d4fadd;  /* verde chiaro al passaggio */
     cursor: pointer;
 }
+
+/* Wrapper per centrare il contenuto rispetto alla sidebar */
+.main-content {
+    margin-left: 220px; /* imposta qui la larghezza effettiva della tua sidebar */
+    padding: 0 2rem;
+    /* opzionale: per centrare meglio anche su schermi larghi */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content .green-section {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.main-content .page-title {
+    text-align: center;
+}
+
+/* Add button style - massima specificità e copertura */
+button.add-btn, a.add-btn, .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 30px;
+    background: #17613a !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 22px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    box-shadow: 0 2px 8px rgba(23,97,58,0.07) !important;
+    transition: background 0.18s, color 0.18s;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+button.add-btn:active, a.add-btn:active, .add-btn:active,
+button.add-btn:focus, a.add-btn:focus, .add-btn:focus {
+    color: #fff !important;
+    background: #17613a !important;
+    outline: none !important;
+    text-decoration: none !important;
+}
+button.add-btn:hover, a.add-btn:hover, .add-btn:hover {
+    background: #218c4a !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+button.add-btn i, a.add-btn i, .add-btn i {
+    font-size: 1.1em !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+/* Pulsanti azione solo icona, moderni e circolari */
+.action-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #17613a;
+    color: #fff !important;
+    border: none;
+    margin: 0 4px;
+    font-size: 1.25rem;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(23,97,58,0.07);
+    cursor: pointer;
+    text-decoration: none !important;
+    outline: none;
+}
+.action-icon-btn:hover, .action-icon-btn:focus {
+    background: #218c4a;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(33,140,74,0.15);
+}
+.action-icon-btn i {
+    font-size: 1.2em;
+    pointer-events: none;
+}
+
+/* Stili dettaglio visita veterinaria uniformati */
+.visita-card {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: #004B23;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  color: #fff;
+}
+.visita-card h2, .visita-card h2 i {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+.visita-details {
+  margin-bottom: 2.5rem;
+}
+.visita-details dt {
+  font-weight: 600;
+  color: #a1d99b;
+  margin-top: 1rem;
+}
+.visita-details dd {
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.08em;
+  color: #fff;
+}
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.action-buttons a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 1.05em;
+  border-radius: 2em;
+  padding: 0.6em 1.4em;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  color: #fff !important;
+}
+.action-buttons a.secondary {
+  background: #17613a;
+  color: #fff !important;
+  border: 1px solid #218c4a;
+}
+.action-buttons a.secondary:hover {
+  background: #218c4a;
+  color: #fff !important;
+}
+.action-buttons a.primary {
+  background: #28a745;
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.action-buttons a.primary:hover {
+  background: #218838;
+  color: #fff !important;
+}
+.visita-details dt i, .visita-card h2 i {
+  color: #fff;
+}
+
+
+

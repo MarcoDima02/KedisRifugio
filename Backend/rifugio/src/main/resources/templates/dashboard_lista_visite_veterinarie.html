@@ -7,50 +7,57 @@
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
 
-    <h1 class="page-title">
-        Lista Visite Veterinarie
-    </h1>
+        <div class="main-content">
+            <h1 class="page-title">
+                Lista Visite Veterinarie
+            </h1>
 
-    <section class="green-section">
-        <table class="animal-table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Data</th>
-                    <th>Ora</th>
-                    <th>Id Animale</th>
-                    <th>Azioni</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="visita : ${visiteVeterinarie}">
-                    <td th:text="${visita.id_visita}">1</td>
-                    <td th:text="${#dates.format(visita.data, 'dd/MM/yyyy')}">Data</td>
-                    <td th:text="${visita.ora}">Ora</td>
-                    <td th:text="${visita.id_animale.IdAnimale}">Id Animale</td>
-                    <td>
-                        <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="button secondary">
-                            Modifica
-                        </a>
-                        <a th:href="@{/dashboard/admin/visite-veterinarie/{id}(id=${visita.id_visita})}" class="button secondary">
-                            Dettagli
-                        </a>
-                        
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
-        <div class="button-container">
-            <a th:href="@{/dashboard/admin/visite-veterinarie/crea}" class="button primary">Aggiungi Nuova Visita</a>
+            <div th:if="${successMessage}" class="alert alert-success" style="margin-bottom:1rem;">
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <section class="green-section">
+                <table class="animal-table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Data</th>
+                            <th>Ora</th>
+                            <th>Id Animale</th>
+                            <th>Nome Animale</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="visita : ${visiteVeterinarie}">
+                            <td th:text="${visita.id_visita}">1</td>
+                            <td th:text="${#temporals.format(visita.data, 'dd/MM/yyyy')}">Data</td>
+                            <td th:text="${#temporals.format(visita.ora, 'HH:mm')}">Ora</td>
+                            <td th:text="${visita.id_animale.idAnimale}">Id Animale</td>
+                            <td th:text="${visita.id_animale.nome}">Nome Animale</td>
+                            <td>
+                                <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="action-icon-btn" title="Modifica">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a th:href="@{/dashboard/admin/visite-veterinarie/{id}(id=${visita.id_visita})}" class="action-icon-btn" title="Dettagli">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a th:href="@{/dashboard/admin/visite-veterinarie/crea}" class="add-btn">Aggiungi Nuova Visita</a>
+            </section>
         </div>
-    </section>
 
-</body>
+    </body>
 </html>
 

@@ -1,5 +1,8 @@
 package com.rifugio.rifugio.controller;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
@@ -216,6 +222,7 @@ public class DashboardAdminController {
             return "redirect:/";
         }
         model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
+        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
         return "modifica_visita_veterinaria";
     }
 
@@ -228,8 +235,23 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        if (visita.getData() == null) {
+            bindingResult.rejectValue("data", "error.visita", "La data è obbligatoria.");
+        }
+        if (visita.getOra() == null) {
+            bindingResult.rejectValue("ora", "error.visita", "L'ora è obbligatoria.");
+        }
+        if (visita.getId_animale() == null) {
+            bindingResult.rejectValue("id_animale", "error.visita", "Seleziona un animale.");
+        }
+        if (visita.getMotivo() == null || visita.getMotivo().isEmpty()) {
+            bindingResult.rejectValue("motivo", "error.visita", "Il motivo è obbligatorio.");
+        }
+        if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
+            bindingResult.rejectValue("esito", "error.visita", "Seleziona un esito.");
+        }
         if (bindingResult.hasErrors()) {
-            model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
             return "modifica_visita_veterinaria";
         }
         visiteVeterinarieService.updateVisita(visita);
@@ -240,7 +262,8 @@ public class DashboardAdminController {
     public String creaVisita(@Validated @ModelAttribute("visita") VisiteVeterinarie visita,
                          BindingResult bindingResult,
                          Model model,
-                         HttpSession session) {
+                         HttpSession session,
+                         RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
@@ -248,8 +271,21 @@ public class DashboardAdminController {
             model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
             return "creazione_visita_veterinaria";
         }
+        if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
+            visita.setEsito("In attesa");
+        }
         visiteVeterinarieService.addVisita(visita);
+        redirectAttributes.addFlashAttribute("successMessage", "Visita veterinaria registrata con successo!");
         return "redirect:/dashboard/admin/visite-veterinarie";
+    }
+
+    @GetMapping("/visite-veterinarie/{id}")
+    public String dettaglioVisita(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("visita", visiteVeterinarieService.getVisitaById(id));
+        return "dettaglio_visita_veterinaria";
     }
 
     // DASHBOARD ADOZIONI
@@ -327,6 +363,25 @@ public class DashboardAdminController {
         }
         model.addAttribute("utenti", utentiService.getAllUtenti());
         return "dashboard_lista_utenti";
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                }
+            }
+            @Override
+            public String getAsText() {
+                LocalDate value = (LocalDate) getValue();
+                return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
+            }
+        });
     }
 
 }

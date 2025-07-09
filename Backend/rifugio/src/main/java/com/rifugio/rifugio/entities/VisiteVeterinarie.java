@@ -1,7 +1,7 @@
 package com.rifugio.rifugio.entities;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,9 +17,9 @@ public class VisiteVeterinarie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_visita;
 
-    private Date data;
+    private LocalDate data;
 
-    private Time ora;
+    private LocalTime ora;
 
     @ManyToOne
     @JoinColumn (name = "id_animale", referencedColumnName = "id_animale")
@@ -37,19 +37,19 @@ public class VisiteVeterinarie {
         this.id_visita = id_visita;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-    public Time getOra() {
+    public LocalTime getOra() {
         return ora;
     }
 
-    public void setOra(Time ora) {
+    public void setOra(LocalTime ora) {
         this.ora = ora;
     }
 
