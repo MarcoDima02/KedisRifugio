@@ -40,7 +40,7 @@
 
     <div class="filter-field">
       <label for="razza">Razza:</label>
-      <select name="razza" id="razza">
+      <select th:field="*{razza.idRazza}" id="razza">
         <option value="" disabled selected>-- Seleziona --</option>
         <option th:each="razza : ${razzaList}"
                 th:value="${razza.idRazza}"
