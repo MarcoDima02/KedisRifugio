@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diamoci una zampa</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
@@ -24,7 +23,7 @@
                     <th>Id</th>
                     <th>Data</th>
                     <th>Ora</th>
-                    <th>Id_Animale</th>
+                    <th>Id Animale</th>
                     <th>Azioni</th>
                 </tr>
             </thead>
@@ -33,28 +32,25 @@
                     <td th:text="${visita.id_visita}">1</td>
                     <td th:text="${#dates.format(visita.data, 'dd/MM/yyyy')}">Data</td>
                     <td th:text="${visita.ora}">Ora</td>
-                    <td th:text="${visita.id_visita}">Id</td>
+                    <td th:text="${visita.id_animale}">Id Animale</td>
                     <td>
                         <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="button secondary">
                             Modifica
                         </a>
-                    </td>
-                    <td>
                         <a th:href="@{/dashboard/admin/visite-veterinarie/{id}(id=${visita.id_visita})}" class="button secondary">
                             Dettagli
                         </a>
+                        
                     </td>
                 </tr>
             </tbody>
-
         </table>
 
         <div class="button-container">
-            <a th:href="@{/dashboard/admin/animali/crea}" class="button primary">Aggiungi Nuovo Animale</a>
-
+            <a th:href="@{/dashboard/admin/visite-veterinarie/crea}" class="button primary">Aggiungi Nuova Visita</a>
+        </div>
     </section>
 
-    
 </body>
 </html>
 

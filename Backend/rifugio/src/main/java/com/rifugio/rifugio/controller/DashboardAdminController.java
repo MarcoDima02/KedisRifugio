@@ -191,7 +191,8 @@ public class DashboardAdminController {
             return "redirect:/";
         }
         model.addAttribute("visita", new VisiteVeterinarie());
-        return "creazione_visita_veterinaria";  // nome del template Thymeleaf
+        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        return "creazione_visita_veterinaria";
     }
 
     @GetMapping("/visite-veterinarie/update/{id}")
@@ -220,6 +221,22 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/visite-veterinarie";
     }
 
+    @PostMapping("/visite-veterinarie/crea")
+    public String creaVisita(@Validated @ModelAttribute("visita") VisiteVeterinarie visita,
+                         BindingResult bindingResult,
+                         Model model,
+                         HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            return "creazione_visita_veterinaria";
+        }
+        visiteVeterinarieService.addVisita(visita);
+        return "redirect:/dashboard/admin/visite-veterinarie";
+    }
+
     // DASHBOARD ADOZIONI
 
     @GetMapping("/adozioni")
@@ -231,5 +248,13 @@ public class DashboardAdminController {
         return "dashboard_lista_adozioni";
     }
     
+    @GetMapping("/utenti")
+    public String getUtenti(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("utenti", utentiService.getAllUtenti());
+        return "dashboard_lista_utenti";
+    }
 
 }

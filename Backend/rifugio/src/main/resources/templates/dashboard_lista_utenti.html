@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Lista Utenti</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+
+    <h1 class="page-title">
+        Lista Utenti
+    </h1>
+
+    <section class="green-section">
+        <table class="animal-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Email</th>
+                    <th>Codice Fiscale</th>
+                    <th>Ruolo</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="utente : ${utenti}">
+                    <td th:text="${utente.id_persona}">1</td>
+                    <td>
+                        <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}"
+                           th:text="${utente.nome}"
+                           class="animal-link">
+                        </a>
+                    </td>
+                    <td th:text="${utente.cognome}">Cognome</td>
+                    <td th:text="${utente.email}">email@email.com</td>
+                    <td th:text="${utente.codiceFiscale}">CodiceFiscale</td>
+                    <td th:text="${utente.ruolo}">Ruolo</td>
+                    <td>
+                        <a th:href="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" class="button secondary">
+                            Modifica
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}" class="button secondary">
+                            Dettagli
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{/dashboard/admin/utenti/elimina/{id}(id=${utente.id_persona})}" method="post" style="display:inline;">
+                            <button type="submit" class="button danger" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-container">
+            <a th:href="@{/dashboard/admin/utenti/crea}" class="button primary">Aggiungi Nuovo Utente</a>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>Diamoci una zampa - Inserisci Visita Veterinaria</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<th:block th:replace="fragments/header :: customHeader"></th:block>
+
+<section class="filter-section animale-form">
+  <form th:action="@{/dashboard/admin/visite-veterinarie/crea}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
+    <h2 class="form-title">Inserisci Nuova Visita Veterinaria</h2>
+
+    <div class="filter-field">
+      <label for="data">Data:</label>
+      <input type="date" id="data" th:field="*{data}" required />
+    </div>
+
+    <div class="filter-field">
+      <label for="ora">Ora:</label>
+      <input type="time" id="ora" th:field="*{ora}" required />
+    </div>
+
+    <div class="filter-field">
+      <label for="id_animale">Animale:</label>
+      <select id="id_animale" th:field="*{id_animale.idAnimale}" required>
+        <option value="" disabled selected>-- Seleziona --</option>
+        <option th:each="animale : ${animali}"
+                th:value="${animale.idAnimale}"
+                th:text="${animale.nome} + ' (' + ${animale.idAnimale} + ')'"></option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="motivo">Motivo:</label>
+      <input type="text" id="motivo" th:field="*{motivo}" maxlength="100" required />
+    </div>
+
+    <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
+      <button type="submit">Salva Visita</button>
+      <button type="reset" class="secondary">Reset</button>
+    </div>
+  </form>
+</section>
+
+<th:block th:replace="fragments/footer :: customFooter"></th:block>
+
+</body>
+</html>
