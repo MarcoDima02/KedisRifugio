@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamoci una zampa</title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diamoci una zampa</title>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
+        <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
 
-    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
 
-    <h1 class="page-title">
-        Lista Anagrafica Animali
-    </h1>
+        <div class="main-content">
+            <h1 class="page-title">
+                Lista Anagrafica Animali
+            </h1>
 
-    <section class="green-section">
-        <table class="animal-table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nome</th>
-                    <th>Specie</th>
-                    <th>Razza</th>
-                    <th>Sesso</th>
-                    <th>Data Nascita</th>
-                    <th>Data Arrivo</th>
-                    <th>Stato</th>
-                    <th>Azioni</th> <!-- Nuova colonna per il pulsante -->
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="animale : ${animali}">
-                    <td th:text="${animale.idAnimale}">1</td>
-                    <td>
-                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}"
-                        th:text="${animale.nome}"
-                        class="animal-link">
-                        </a>
-                    </td>
-                    <td th:text="${animale.specie.nome}">Specie</td>
-                    <td th:text="${animale.razza.nome}">Razza</td>
-                    <td th:text="${animale.sesso}">Sesso</td>
-                    <td th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">01/01/2020</td>
-                    <td th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">01/06/2020</td>
-                    <td th:text="${animale.idStatoAnimale.descrizione}">Stato</td>
-                    <td>
-                        <a th:href="@{/dashboard/admin/animali/update/{id}(id=${animale.idAnimale})}" class="button secondary">
-                            Modifica
-                        </a>
-                    </td>
-                    <td>
-                        <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="button secondary">
-                            Dettagli
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
+            <section class="green-section">
+                <table class="animal-table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nome</th>
+                            <th>Specie</th>
+                            <th>Razza</th>
+                            <th>Sesso</th>
+                            <th>Data Nascita</th>
+                            <th>Data Arrivo</th>
+                            <th>Stato</th>
+                            <th>Azioni</th> <!-- Nuova colonna per il pulsante -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="animale : ${animali}">
+                            <td th:text="${animale.idAnimale}">1</td>
+                            <td>
+                                <a th:href="@{/animale/{id}(id=${animale.idAnimale})}"
+                                th:text="${animale.nome}"
+                                class="animal-link">
+                                </a>
+                            </td>
+                            <td th:text="${animale.specie.nome}">Specie</td>
+                            <td th:text="${animale.razza.nome}">Razza</td>
+                            <td th:text="${animale.sesso}">Sesso</td>
+                            <td th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">01/01/2020</td>
+                            <td th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">01/06/2020</td>
+                            <td th:text="${animale.idStatoAnimale.descrizione}">Stato</td>
+                            <td>
+                                <a th:href="@{/dashboard/admin/animali/update/{id}(id=${animale.idAnimale})}" class="action-icon-btn" title="Modifica">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="action-icon-btn" title="Dettagli">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
 
-        </table>
+                </table>
 
-        <div class="button-container">
-            <a th:href="@{/dashboard/admin/animali/crea}" class="button primary">Aggiungi Nuovo Animale</a>
+                
+                <a th:href="@{/dashboard/admin/utenti/crea}" class="add-btn">Aggiungi Nuovo Animale</a>
+                
+            </section>
+        </div>
 
-    </section>
-
-    
-</body>
+    </body>
 </html>
 
