@@ -206,7 +206,7 @@ public class DashboardAdminController {
         return "dashboard_lista_visite_veterinarie";
     }
 
-    @GetMapping("/visite-veterinarie/crea")
+    @GetMapping("/visite-veterinarie/save")
     public String mostraFormCreazioneVisita(Model model, HttpSession session) {
         if (!isAdmin(session)) {
             return "redirect:/";
@@ -258,7 +258,7 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/visite-veterinarie";
     }
 
-    @PostMapping("/visite-veterinarie/crea")
+    @PostMapping("/visite-veterinarie/save")
     public String creaVisita(@Validated @ModelAttribute("visita") VisiteVeterinarie visita,
                          BindingResult bindingResult,
                          Model model,
