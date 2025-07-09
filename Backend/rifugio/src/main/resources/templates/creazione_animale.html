@@ -19,7 +19,7 @@
 <!-- Aggiunta classe "animale-form" per isolare il CSS -->
 <section class="filter-section animale-form">
   <!-- Aggiunta classe "animale-form-box" al form -->
-  <form th:action="@{/animali/save}" th:object="${animale}" method="post" class="filter-box animale-form-box" novalidate>
+  <form th:action="@{/dashboard/admin/animali/save}" th:object="${animale}" method="post" class="filter-box animale-form-box" novalidate>
 
     <h2 class="form-title">Inserisci Nuovo Animale</h2>
 

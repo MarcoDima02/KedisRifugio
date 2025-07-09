@@ -92,7 +92,7 @@ public class DashboardAdminController {
         return "dashboard_lista_animali";
     }
     
-    @GetMapping("/animali/crea")
+    @GetMapping("/animali/save")
     public String mostraFormCreazioneAnimale(Model model, HttpSession session) {
         if (!isAdmin(session)) {
             return "redirect:/";
@@ -102,6 +102,22 @@ public class DashboardAdminController {
         model.addAttribute("razzaList", razzaService.getAllRazze());    
         model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());  
         return "creazione_animale";  // nome del template Thymeleaf
+    }
+
+    @PostMapping("/animali/save")
+    public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+                           BindingResult bindingResult,
+                           Model model) {
+    if (bindingResult.hasErrors()) {
+        // se ci sono errori di validazione, ritorna al form
+        model.addAttribute("specieList", specieService.getAllSpecie());
+        model.addAttribute("razzaList", razzaService.getAllRazze());
+        model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
+        return "creazione_animale";
+    }
+
+    anagraficaAnimaleService.create(animale); // salva l'animale
+    return "redirect:/animali"; // redirect alla lista animali dopo il salvataggio
     }
 
     @GetMapping("/animali/update/{id}")
@@ -247,7 +263,7 @@ public class DashboardAdminController {
         return "dashboard_lista_adozioni";
     }
 
-    @GetMapping("/adozioni/crea")
+    @GetMapping("/adozioni/save")
     public String mostraFormCreazioneAdozione(Model model, HttpSession session) {
         if (!isAdmin(session)) {
             return "redirect:/";
