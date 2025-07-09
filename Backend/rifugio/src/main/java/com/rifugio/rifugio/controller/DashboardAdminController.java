@@ -25,6 +25,8 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/dashboard/admin")
 public class DashboardAdminController {
 
+    private final AnagraficaAnimaliService anagraficaAnimaliService;
+
     private final StepAdozioniServiceImpl stepAdozioniServiceImpl;
 
     @Autowired
@@ -51,8 +53,9 @@ public class DashboardAdminController {
     @Autowired
     private AdozioniServiceImpl adozioniService;
 
-    DashboardAdminController(StepAdozioniServiceImpl stepAdozioniServiceImpl) {
+    DashboardAdminController(StepAdozioniServiceImpl stepAdozioniServiceImpl, AnagraficaAnimaliService anagraficaAnimaliService) {
         this.stepAdozioniServiceImpl = stepAdozioniServiceImpl;
+        this.anagraficaAnimaliService = anagraficaAnimaliService;
     }
 
     // Controllo ruolo admin
@@ -268,7 +271,9 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("adozioni", new Adozioni());
+        model.addAttribute("adozione", new Adozioni());
+        model.addAttribute("animali", anagraficaAnimaliService.getAllAnagraficaAnimali());
+        model.addAttribute("utenti", utentiService.getAllUtenti());
         return "creazione_adozione";
     }
 

@@ -32,7 +32,7 @@
                     <td th:text="${visita.id_visita}">1</td>
                     <td th:text="${#dates.format(visita.data, 'dd/MM/yyyy')}">Data</td>
                     <td th:text="${visita.ora}">Ora</td>
-                    <td th:text="${visita.id_animale}">Id Animale</td>
+                    <td th:text="${visita.id_animale.IdAnimale}">Id Animale</td>
                     <td>
                         <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="button secondary">
                             Modifica
