@@ -2,33 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Diamoci una zampa - Inserisci Visita Veterinaria</title>
+    <title>Modifica Visita Veterinaria</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-
 <th:block th:replace="fragments/header :: customHeader"></th:block>
-
 <section class="filter-section animale-form">
-  <form th:action="@{/dashboard/admin/visite-veterinarie/crea}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
-    <h2 class="form-title">Inserisci Nuova Visita Veterinaria</h2>
-
+  <form th:action="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
+    <input type="hidden" th:field="*{id_visita}" />
+    <h2 class="form-title">Modifica Visita Veterinaria</h2>
     <div th:if="${#fields.hasErrors()}" class="alert alert-danger" style="margin-bottom:1rem;">
       <ul>
         <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
       </ul>
     </div>
-
     <div class="filter-field">
       <label for="data">Data:</label>
-      <input type="date" id="data" th:field="*{data}" required />
+      <input type="text" id="data" th:field="*{data}" required pattern="\d{2}/\d{2}/\d{4}" placeholder="gg/mm/aaaa" />
       <div th:if="${#fields.hasErrors('data')}">
         <span class="error-message" th:errors="*{data}"></span>
       </div>
+      <div th:if="${visita.data == null}">
+        <span class="error-message">Attenzione: la data non è valorizzata, inseriscila per continuare.</span>
+      </div>
     </div>
-
     <div class="filter-field">
       <label for="ora">Ora:</label>
       <input type="time" id="ora" th:field="*{ora}" required />
@@ -36,11 +35,10 @@
         <span class="error-message" th:errors="*{ora}"></span>
       </div>
     </div>
-
     <div class="filter-field">
       <label for="id_animale">Animale:</label>
       <select id="id_animale" th:field="*{id_animale}" required>
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" disabled>-- Seleziona --</option>
         <option th:each="animale : ${animali}"
                 th:value="${animale.idAnimale}"
                 th:text="${animale.nome} + ' (' + ${animale.idAnimale} + ')'">
@@ -50,7 +48,6 @@
         <span class="error-message" th:errors="*{id_animale}"></span>
       </div>
     </div>
-
     <div class="filter-field">
       <label for="motivo">Motivo:</label>
       <input type="text" id="motivo" th:field="*{motivo}" maxlength="100" required />
@@ -58,15 +55,26 @@
         <span class="error-message" th:errors="*{motivo}"></span>
       </div>
     </div>
-
+    <div class="filter-field">
+      <label for="esito">Esito:</label>
+      <select id="esito" th:field="*{esito}" required>
+        <option value="">-- Seleziona --</option>
+        <option value="Posticipata">Posticipata</option>
+        <option value="In attesa">In attesa</option>
+        <option value="Annullata">Annullata</option>
+        <option value="Effettuata">Effettuata</option>
+      </select>
+      <div th:if="${#fields.hasErrors('esito')}">
+        <span class="error-message" th:errors="*{esito}"></span>
+      </div>
+    </div>
     <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
-      <button type="submit">Salva Visita</button>
-      <button type="reset" class="secondary">Reset</button>
+      <button type="submit">Salva Modifiche</button>
+      <a th:href="@{/dashboard/admin/visite-veterinarie}" class="secondary">Annulla</a>
     </div>
   </form>
+  
 </section>
-
 <th:block th:replace="fragments/footer :: customFooter"></th:block>
-
 </body>
 </html>
