@@ -12,7 +12,7 @@
 <th:block th:replace="fragments/header :: customHeader"></th:block>
 
 <section class="filter-section animale-form">
-  <form th:action="@{/dashboard/admin/visite-veterinarie/crea}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
+  <form th:action="@{/dashboard/admin/visite-veterinarie/save}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
     <h2 class="form-title">Inserisci Nuova Visita Veterinaria</h2>
 
     <div th:if="${#fields.hasErrors()}" class="alert alert-danger" style="margin-bottom:1rem;">
