@@ -23,7 +23,17 @@ import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
-import com.rifugio.rifugio.services.*;
+import com.rifugio.rifugio.services.AdozioniServiceImpl;
+import com.rifugio.rifugio.services.AnagraficaAnimaliService;
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
+import com.rifugio.rifugio.services.DonazioniService;
+import com.rifugio.rifugio.services.RazzaServiceImpl;
+import com.rifugio.rifugio.services.SpecieServiceImpl;
+import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
+import com.rifugio.rifugio.services.StepAdozioniService;
+import com.rifugio.rifugio.services.UtentiService;
+import com.rifugio.rifugio.services.VisiteVeterinarieServiceImpl;
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -370,6 +380,50 @@ public class DashboardAdminController {
         return "dashboard_lista_utenti";
     }
 
+    @GetMapping("/utenti/update/{id}")
+    public String mostraFormModificaUtente(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("utente", utentiService.getUtenteById(id));
+        return "modifica_utente";
+    }
+
+    @PostMapping("/utenti/update/{id}")
+    public String aggiornaUtente(@PathVariable Integer id,
+                                 @ModelAttribute("utente") com.rifugio.rifugio.entities.Utenti utente,
+                                 BindingResult result,
+                                 Model model,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        // Validazione custom lato server (aggiungi qui se serve)
+        if (result.hasErrors()) {
+            model.addAttribute("utente", utente);
+            return "modifica_utente";
+        }
+        // Capitalizzazione e upper case come in registrazione
+        utente.setNome(capitalizeEachWord(utente.getNome() != null ? utente.getNome().trim() : ""));
+        utente.setCognome(capitalizeEachWord(utente.getCognome() != null ? utente.getCognome().trim() : ""));
+        utente.setCodiceFiscale(utente.getCodiceFiscale() != null ? utente.getCodiceFiscale().toUpperCase().trim() : "");
+        utentiService.updateUtente(id, utente);
+        redirectAttributes.addFlashAttribute("successMessage", "Utente aggiornato con successo.");
+        return "redirect:/dashboard/admin/utenti";
+    }
+
+    // Utility per capitalizzare ogni parola (già presente in UtentiController, la copio qui)
+    private String capitalizeEachWord(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return java.util.Arrays.stream(str.trim().toLowerCase().split("\\s+"))
+            .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+            .reduce((w1, w2) -> w1 + " " + w2)
+            .orElse("");
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
@@ -387,6 +441,16 @@ public class DashboardAdminController {
                 return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
             }
         });
+    }
+
+    @GetMapping("/animali/{id}")
+    public String dettaglioAnimaleAdmin(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
+        model.addAttribute("adminView", true);
+        return "dettaglio_animale";
     }
 
 }

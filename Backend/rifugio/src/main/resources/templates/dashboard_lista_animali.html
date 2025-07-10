@@ -38,7 +38,7 @@
                         <tr th:each="animale : ${animali}">
                             <td th:text="${animale.idAnimale}">1</td>
                             <td>
-                                <a th:href="@{/animale/{id}(id=${animale.idAnimale})}"
+                                <a th:href="@{/dashboard/admin/animali/{id}(id=${animale.idAnimale})}"
                                 th:text="${animale.nome}"
                                 class="animal-link">
                                 </a>
@@ -53,7 +53,7 @@
                                 <a th:href="@{/dashboard/admin/animali/update/{id}(id=${animale.idAnimale})}" class="action-icon-btn" title="Modifica">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="action-icon-btn" title="Dettagli">
+                                <a th:href="@{/dashboard/admin/animali/{id}(id=${animale.idAnimale})}" class="action-icon-btn" title="Dettagli">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 

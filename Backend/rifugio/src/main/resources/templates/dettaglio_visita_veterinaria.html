@@ -4,13 +4,11 @@
     <meta charset="UTF-8" />
     <title>Dettaglio Visita Veterinaria</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <!-- Stili custom spostati in styles.css -->
 </head>
 <body>
-<th:block th:replace="fragments/header :: customHeader"></th:block>
 <section>
   <div class="visita-card">
     <h2 class="form-title"><i class="fa-solid fa-notes-medical"></i> Dettaglio Visita Veterinaria</h2>
@@ -34,6 +32,5 @@
     </div>
   </div>
 </section>
-<th:block th:replace="fragments/footer :: customFooter"></th:block>
 </body>
 </html>

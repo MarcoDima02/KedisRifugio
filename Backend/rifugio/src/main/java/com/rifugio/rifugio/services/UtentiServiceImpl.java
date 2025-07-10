@@ -21,5 +21,24 @@ public class UtentiServiceImpl implements UtentiService {
         return utentiRepo.findAll();
     }
 
+    @Override
+    public Utenti getUtenteById(Integer id) {
+        return utentiRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateUtente(Integer id, Utenti utente) {
+        Utenti existing = utentiRepo.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setNome(utente.getNome());
+            existing.setCognome(utente.getCognome());
+            existing.setCodiceFiscale(utente.getCodiceFiscale());
+            existing.setNumero(utente.getNumero());
+            existing.setEmail(utente.getEmail());
+            existing.setPassword(utente.getPassword());
+            existing.setRuolo(utente.getRuolo());
+            utentiRepo.save(existing);
+        }
+    }
 
 }

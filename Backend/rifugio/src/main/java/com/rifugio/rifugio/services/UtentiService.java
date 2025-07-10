@@ -10,5 +10,6 @@ import com.rifugio.rifugio.entities.Utenti;
 public interface UtentiService {
 
     List<Utenti> getAllUtenti();
-
+    Utenti getUtenteById(Integer id);
+    void updateUtente(Integer id, Utenti utente);
 }

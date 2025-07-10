@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dettaglio Utente</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      body {
+        background: #fff;
+        min-height: 100vh;
+        margin: 0;
+      }
+      section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        background: #fff;
+      }
+      .visita-card {
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        border-radius: 1.2rem;
+        background: #004B23;
+        color: #fff;
+        padding: 2.5rem 2rem 2rem 2rem;
+        max-width: 480px;
+        width: 100%;
+        margin: 2rem auto;
+      }
+      .form-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #fff;
+        font-size: 2rem;
+      }
+      .visita-details dt {
+        font-weight: 600;
+        color: #a1d99b;
+        margin-top: 1rem;
+      }
+      .visita-details dd {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+        font-size: 1.08em;
+        color: #fff;
+      }
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+      .action-buttons a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        font-size: 1.05em;
+        border-radius: 2em;
+        padding: 0.6em 1.4em;
+        transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+        color: #fff !important;
+      }
+      .action-buttons a.secondary {
+        background: #17613a;
+        color: #fff !important;
+        border: 1px solid #218c4a;
+      }
+      .action-buttons a.secondary:hover {
+        background: #218c4a;
+        color: #fff !important;
+      }
+      .action-buttons a.primary {
+        background: #28a745;
+        color: #fff !important;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      }
+      .action-buttons a.primary:hover {
+        background: #218838;
+        color: #fff !important;
+      }
+      .visita-details dt i, .visita-card h2 i {
+        color: #fff;
+      }
+      @media (max-width: 600px) {
+        .visita-card {
+          padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        }
+      }
+    </style>
+</head>
+<body style="min-height:100vh;background:#fff;">
+<section style="width:100vw;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;">
+  <div class="visita-card">
+    <h2 class="form-title"><i class="fa-solid fa-user"></i> Dettaglio Utente</h2>
+    <dl class="visita-details">
+      <dt><i class="fa-solid fa-user"></i> Nome</dt>
+      <dd th:text="${utente.nome}"></dd>
+      <dt><i class="fa-solid fa-user"></i> Cognome</dt>
+      <dd th:text="${utente.cognome}"></dd>
+      <dt><i class="fa-solid fa-envelope"></i> Email</dt>
+      <dd th:text="${utente.email}"></dd>
+      <dt><i class="fa-solid fa-id-card"></i> Codice Fiscale</dt>
+      <dd th:text="${utente.codiceFiscale}"></dd>
+      <dt><i class="fa-solid fa-phone"></i> Numero</dt>
+      <dd th:text="${utente.numero}"></dd>
+      <dt><i class="fa-solid fa-user-shield"></i> Ruolo</dt>
+      <dd th:text="${utente.ruolo}"></dd>
+    </dl>
+    <div class="action-buttons">
+      <a th:href="@{/dashboard/admin/utenti}" class="secondary"><i class="fa-solid fa-arrow-left"></i> Torna alla lista</a>
+      <a th:href="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" class="primary"><i class="fa-solid fa-pen-to-square"></i> Modifica Utente</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

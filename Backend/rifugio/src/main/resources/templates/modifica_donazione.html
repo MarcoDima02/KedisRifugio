@@ -4,18 +4,14 @@
     <meta charset="UTF-8" />
     <title>Diamoci una zampa - Inserisci Animale</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
 </head>
 <body>
 
-<div th:replace="fragments/sidebar :: customSidebar"></div>
+<th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
 
+<div class="main-content">
 <section class="filter-section animale-form">
 
   <form th:action="@{/dashboard/admin/donazioni/update/{id}(id=${donazione.id_donazione})}" th:object="${donazione}" method="post" class="filter-box animale-form-box" novalidate>
@@ -44,8 +40,8 @@
 
   </form>
 </section>
+</div>
 
-<th:block th:replace="fragments/footer :: customFooter"></th:block>
 
 </body>
 </html>

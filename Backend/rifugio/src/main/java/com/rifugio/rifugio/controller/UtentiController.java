@@ -1,4 +1,3 @@
-
 package com.rifugio.rifugio.controller;
 
 import java.util.List;
@@ -112,7 +111,7 @@ public class UtentiController {
         Optional<Utenti> utenteOpt = utentiRepo.findById(id);
         if (utenteOpt.isPresent()) {
             model.addAttribute("utente", utenteOpt.get());
-            return "dettaglio_utente";
+            return "dettagli_utente";
         } else {
             model.addAttribute("errorMessage", "Utente non trovato.");
             return "redirect:/utenti";

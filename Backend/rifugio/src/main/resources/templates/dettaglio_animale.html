@@ -6,51 +6,149 @@
     <title>Diamoci una zampa</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
 
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-
   <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+  <link rel="stylesheet" th:href="@{/css/dettaglio_animale.css}" />
 </head>
 
 <body>
-
-    <th:block th:replace="fragments/header :: customHeader"></th:block>
-
-    <div class="animal-detail-wrapper">
-  <div class="animal-image-box">
-    <img src="../images/prova_foto.webp" th:alt="${animale.nome}" />
-  </div>
-  <div class="animal-info-box">
-    <h2 style="color:black" class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
-    <p style="color:black" class="animal-short-desc" th:text="${animale.descrizioneBreve}">Descrizione breve</p>
-  </div>
-</div>
-
-
-    <div class="container">
-
-        <h1 style="color:black">Dettaglio Animale</h1>
-
-        <h2 style="color:black" th:text="'Id : ' + ${animale.idAnimale}"></h2>
-        <h2 style="color:black" th:text="'Nome : ' + ${animale.nome}"></h2>
-        <h2 style="color:black" th:text="'Specie : ' + ${animale.specie.nome}"></h2>
-        <h2 style="color:black" th:text="'Razza : ' + ${animale.razza.nome}"></h2>
-        <h2 style="color:black" th:text="'Sesso : ' + ${animale.sesso}"></h2>
-        <h2 style="color:black" th:text="'Data Nascita : ' + ${animale.DataArrivo}"></h2>
-        <h2 style="color:black" th:text="'Data Arrivo : ' + ${animale.DataNascita}"></h2>
-        <h2 style="color:black" th:text="'Descrizione Breve :'"></h2>
-        <p style="color:black" th:text="${animale.descrizioneBreve}"></p>
-        <h2 style="color:black" th:text="'Descrizione Lunga :'"></h2>
-        <p style="color:black" th:text="${animale.descrizioneLunga}"></p>
-        <h2 style="color:black" th:text="'Stato Animale : ' + ${animale.IdStatoAnimale.descrizione}"></h2>
-
-        
-        
-    </div>
+    <th:block th:if="${adminView}">
+        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+        <div class="main-content animal-detail-main" style="margin-left: 260px;">
+            <div class="animal-detail-container" style="max-width: 900px; margin: 36px auto 0 auto; background: #f8f8f8; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); padding: 32px 24px;">
+                <!-- Tutto il contenuto ANIMALE qui, una sola volta -->
+                <div class="animal-detail-card">
+                  <div class="animal-image-box">
+                    <img src="/images/prova_foto.webp" alt="Foto animale" />
+                  </div>
+                  <div class="animal-info-box">
+                    <h2 class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
+                    <p class="animal-short-desc" th:text="${animale.descrizioneBreve}">Breve descrizione</p>
+                    <div class="animal-attributes">
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Specie</span>
+                        <span class="animal-attr-value" th:if="${animale.specie != null}" th:text="${animale.specie.nome}">Specie</span>
+                        <span class="animal-attr-value" th:unless="${animale.specie != null}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Razza</span>
+                        <span class="animal-attr-value" th:if="${animale.razza != null}" th:text="${animale.razza.nome}">Razza</span>
+                        <span class="animal-attr-value" th:unless="${animale.razza != null}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Sesso</span>
+                        <span class="animal-attr-value" th:text="${animale.sesso}">Sesso</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Data di nascita</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Data di arrivo</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Stato</span>
+                        <span class="animal-attr-value" th:if="${animale.idStatoAnimale != null}" th:text="${animale.idStatoAnimale.descrizione}">Stato</span>
+                        <span class="animal-attr-value" th:unless="${animale.idStatoAnimale != null}">-</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="animal-gallery-section">
+                  <h3>Altre foto</h3>
+                  <div class="animal-gallery">
+                    <span>Nessuna foto aggiuntiva disponibile.</span>
+                  </div>
+                </div>
+                <div class="animal-detail-grid">
+                  <div class="animal-detail-box">
+                    <h4 th:text="|La Storia di ${animale.nome}|">La Storia di Stella</h4>
+                    <span th:text="${animale.descrizioneLunga}">Descrizione lunga</span>
+                  </div>
+                  <div class="animal-detail-box">
+                    <h4>Cartella Clinica</h4>
+                    <ul>
+                      <li><b>Sterilizzato:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.sterilizzato} ? 'Sì' : 'No'"></span></li>
+                      <li><b>Vaccinazioni:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.vaccinazioni != null} ? ${animale.idCartellaClinica.vaccinazioni} : '-' "></span></li>
+                      <li><b>Microchip:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.microchip != null} ? ${animale.idCartellaClinica.microchip} : '-' "></span></li>
+                      <li><b>Sverminazione:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.sverminazione} ? 'Sì' : 'No'"></span></li>
+                      <li><b>Trattamento antiparassitario:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.trattamentoAntiparassitario} ? 'Sì' : 'No'"></span></li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block th:unless="${adminView}">
+        <th:block th:replace="fragments/header :: customHeader"></th:block>
+        <div class="main-content animal-detail-main">
+            <div class="animal-detail-container" style="max-width: 900px; margin: 36px auto 0 auto; background: #f8f8f8; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); padding: 32px 24px;">
+                <div class="animal-detail-card">
+                  <div class="animal-image-box">
+                    <img src="/images/prova_foto.webp" alt="Foto animale" />
+                  </div>
+                  <div class="animal-info-box">
+                    <h2 class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
+                    <p class="animal-short-desc" th:text="${animale.descrizioneBreve}">Breve descrizione</p>
+                    <div class="animal-attributes">
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Specie</span>
+                        <span class="animal-attr-value" th:if="${animale.specie != null}" th:text="${animale.specie.nome}">Specie</span>
+                        <span class="animal-attr-value" th:unless="${animale.specie != null}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Razza</span>
+                        <span class="animal-attr-value" th:if="${animale.razza != null}" th:text="${animale.razza.nome}">Razza</span>
+                        <span class="animal-attr-value" th:unless="${animale.razza != null}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Sesso</span>
+                        <span class="animal-attr-value" th:text="${animale.sesso}">Sesso</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Data di nascita</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Data di arrivo</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataArrivo, 'dd/MM/yyyy')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Stato</span>
+                        <span class="animal-attr-value" th:if="${animale.idStatoAnimale != null}" th:text="${animale.idStatoAnimale.descrizione}">Stato</span>
+                        <span class="animal-attr-value" th:unless="${animale.idStatoAnimale != null}">-</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="animal-gallery-section">
+                  <h3>Altre foto</h3>
+                  <div class="animal-gallery">
+                    <span>Nessuna foto aggiuntiva disponibile.</span>
+                  </div>
+                </div>
+                <div class="animal-detail-grid">
+                  <div class="animal-detail-box">
+                    <h4 th:text="|La Storia di ${animale.nome}|">La Storia di Stella</h4>
+                    <span th:text="${animale.descrizioneLunga}">Descrizione lunga</span>
+                  </div>
+                  <div class="animal-detail-box">
+                    <h4>Cartella Clinica</h4>
+                    <ul>
+                      <li><b>Sterilizzato:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.sterilizzato} ? 'Sì' : 'No'"></span></li>
+                      <li><b>Vaccinazioni:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.vaccinazioni != null} ? ${animale.idCartellaClinica.vaccinazioni} : '-' "></span></li>
+                      <li><b>Microchip:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.microchip != null} ? ${animale.idCartellaClinica.microchip} : '-' "></span></li>
+                      <li><b>Sverminazione:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.sverminazione} ? 'Sì' : 'No'"></span></li>
+                      <li><b>Trattamento antiparassitario:</b> <span th:text="${animale.idCartellaClinica != null && animale.idCartellaClinica.trattamentoAntiparassitario} ? 'Sì' : 'No'"></span></li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    </th:block>
 </body>
-
-<th:block th:replace="fragments/footer :: customFooter"></th:block>
 
 </html>
 
