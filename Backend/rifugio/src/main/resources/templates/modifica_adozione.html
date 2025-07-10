@@ -12,7 +12,7 @@
     <div th:replace="fragments/sidebar :: customSidebar"></div>
 
     <section class="filter-section animale-form">
-    <form th:action="@{/dashboard/admin/adozioni/update}" th:object="${adozione}" method="post" class="filter-box animale-form-box" novalidate>
+    <form th:action="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.Id})}" th:object="${adozione}" method="post" class="filter-box animale-form-box" novalidate>
 
         <h2 class="form-title">Inserisci Nuova Adozione</h2>
 

@@ -335,6 +335,9 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        model.addAttribute("utenti", utentiService.getAllUtenti());
+        model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
         model.addAttribute("adozione", adozioniService.getAdozioneById(id));
         return "modifica_adozione";
     }
@@ -356,6 +359,8 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/adozioni";
     }
     
+    // UTENTI
+
     @GetMapping("/utenti")
     public String getUtenti(Model model, HttpSession session) {
         if (!isAdmin(session)) {
