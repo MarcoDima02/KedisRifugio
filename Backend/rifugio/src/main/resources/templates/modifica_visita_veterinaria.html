@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<th:block th:replace="fragments/header :: customHeader"></th:block>
+<div th:replace="fragments/sidebar :: customSidebar"></div>
 <section class="filter-section animale-form">
   <form th:action="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
     <input type="hidden" th:field="*{id_visita}" />
