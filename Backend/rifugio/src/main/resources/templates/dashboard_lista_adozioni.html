@@ -23,9 +23,11 @@
                 <table class="animal-table">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>Id Adozione</th>
                             <th>Id Animale</th>
+                            <th>Nome Animale</th>
                             <th>Id Persona</th>
+                            <th>Nome e Cognome Persona</th>
                             <th>Data Adozione</th>
                             <th>Step Adozione</th>
                             <th>Azioni</th>
@@ -35,15 +37,14 @@
                         <tr th:each="adozione : ${adozioni}">
                             <td th:text="${adozione.id}">1</td>
                             <td th:text="${adozione.animale.idAnimale}">1</td>
+                            <td th:text="${adozione.animale.nome}">1</td>
+                            <td th:text="${adozione.persona.id_persona}">1</td>
                             <td th:text="${adozione.persona.nome + ' ' + adozione.persona.cognome}">Mario Rossi</td>
                             <td th:text="${#dates.format(adozione.dataAdozione, 'dd/MM/yyyy')}">1/1/2000</td>
                             <td th:text="${adozione.stepAdozione.nome_step}">Nome Step</td>
                             <td>
                                 <a th:href="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.id})}" class="action-icon-btn" title="Modifica">
                                     <i class="fa fa-edit"></i>
-                                </a>
-                                <a th:href="@{/dashboard/admin/adozioni/{id}(id=${adozione.id})}" class="action-icon-btn" title="Dettagli">
-                                    <i class="fa fa-eye"></i>
                                 </a>
                                 
                             </td>

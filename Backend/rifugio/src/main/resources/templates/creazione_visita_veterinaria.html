@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<th:block th:replace="fragments/header :: customHeader"></th:block>
+<div th:replace="fragments/sidebar :: customSidebar"></div>
 
 <section class="filter-section animale-form">
   <form th:action="@{/dashboard/admin/visite-veterinarie/save}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
