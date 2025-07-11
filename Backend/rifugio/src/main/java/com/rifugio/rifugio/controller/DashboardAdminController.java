@@ -107,6 +107,16 @@ public class DashboardAdminController {
         model.addAttribute("razzaList", razzaService.getAllRazze());    
         return "dashboard_lista_animali";
     }
+
+    @GetMapping("/animali/{id}")
+    public String dettaglioAnimaleAdmin(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
+        model.addAttribute("adminView", true);
+        return "dettaglio_animale";
+    }
     
     @GetMapping("/animali/save")
     public String mostraFormCreazioneAnimale(Model model, HttpSession session) {
@@ -441,16 +451,6 @@ public class DashboardAdminController {
                 return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
             }
         });
-    }
-
-    @GetMapping("/animali/{id}")
-    public String dettaglioAnimaleAdmin(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!isAdmin(session)) {
-            return "redirect:/";
-        }
-        model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
-        model.addAttribute("adminView", true);
-        return "dettaglio_animale";
     }
 
 }
