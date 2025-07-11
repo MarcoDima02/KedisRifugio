@@ -915,5 +915,43 @@ button.add-btn i, a.add-btn i, .add-btn i {
     }
 }
 
+.donazioni-description {
+    color: white;
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.15rem;
+}
+.donazioni-description ul {
+    color: white;
+    margin-bottom: 1rem;
+    padding-left: 1.2rem;
+}
+
+.donazioni-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.donazioni-btn {
+    background-color: #297c02;
+    color: white;
+    text-decoration: none;
+    text-decoration: none;
+    border: none;
+    padding: 0.9rem 2.2rem;
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: background 0.2s;
+}
+
+.donazioni-btn:hover {
+    background-color: #1e5802;
+
+}
 
 

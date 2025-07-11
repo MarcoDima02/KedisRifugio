@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+
+    <h1 class="page-title">Come puoi aiutare?</h1>
+
+    <div class="green-section">
+        <div class="donazioni-description">
+            <p>
+                Sostenere il nostro rifugio con una donazione in denaro è uno dei modi più efficaci per aiutarci a garantire cure, cibo e un ambiente sicuro agli animali ospitati.<br><br>
+                Ogni contributo viene utilizzato per:
+            </p>
+            <ul>
+                <li>Acquisto di cibo e medicinali</li>
+                <li>Spese veterinarie e cure specialistiche</li>
+                <li>Miglioramento delle strutture e degli spazi</li>
+                <li>Progetti di sensibilizzazione e adozione</li>
+            </ul>
+            <p>
+                Grazie al tuo aiuto possiamo offrire una vita migliore a tanti animali in difficoltà.<br>
+                <strong>Ogni euro donato viene investito con trasparenza e responsabilità.</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="donazioni-btn-container">
+        <a href="/donazione" class="donazioni-btn">Dona ora</a>
+    </div>
+
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+
+</body>
+</html>

@@ -79,9 +79,9 @@ public class RifugioController {
         return "lista_animali";
     }
 
-    @GetMapping("/donazioni")
+    @GetMapping("/come-aiutare")
     public String sezioneComeAiutare() {
-        return "donazioni";
+        return "come_aiutare";
     }
     
 
