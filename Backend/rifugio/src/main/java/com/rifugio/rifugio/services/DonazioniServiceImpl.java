@@ -27,6 +27,11 @@ public class DonazioniServiceImpl implements DonazioniService {
     }
 
     @Override
+    public Donazioni save(Donazioni donazione) {
+        return donazioniRepo.save(donazione);
+    }
+
+    @Override
     public Donazioni update(int id, Donazioni donazione) {
         return donazioniRepo.findById(id)
                 .map(existingDonazione -> {

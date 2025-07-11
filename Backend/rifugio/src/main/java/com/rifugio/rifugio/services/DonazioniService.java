@@ -13,6 +13,8 @@ public interface DonazioniService {
 
     Donazioni getByIdDonazione(int id);
 
+    Donazioni save(Donazioni donazione);
+
     Donazioni update(int id, Donazioni donazione);
 
 }
