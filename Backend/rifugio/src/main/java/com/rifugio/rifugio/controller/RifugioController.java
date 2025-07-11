@@ -83,6 +83,11 @@ public class RifugioController {
     public String sezioneComeAiutare() {
         return "come_aiutare";
     }
+
+    @GetMapping("/donazione")
+    public String paginaDonazione() {
+        return "donazione";
+    }
     
 
 }

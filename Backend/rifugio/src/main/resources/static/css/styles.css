@@ -954,4 +954,46 @@ button.add-btn i, a.add-btn i, .add-btn i {
 
 }
 
+.donazione-form {
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: left;
+    background: transparent;
+    padding: 0;
+}
 
+.donazione-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.donazione-form label {
+    color: #d4fadd;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.donazione-form input[type="number"],
+.donazione-form textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1rem;
+    margin-top: 0.3rem;
+    background: #17613a;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(23,97,58,0.07);
+}
+
+.donazione-form input[type="number"]:focus,
+.donazione-form textarea:focus {
+    outline: 2px solid #28a745;
+    background: #218c4a;
+}
+
+.donazione-form button[type="submit"] {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+}
