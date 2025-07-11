@@ -13,22 +13,23 @@
 
 <section class="filter-section animale-form">
   <form th:action="@{/dashboard/admin/visite-veterinarie/save}" th:object="${visita}" method="post" class="filter-box animale-form-box" novalidate>
-    <h2 class="form-title">Inserisci Nuova Visita Veterinaria</h2>
-
+        <input type="hidden" th:field="*{id_visita}" />
+    <h2 class="form-title">Modifica Visita Veterinaria</h2>
     <div th:if="${#fields.hasErrors()}" class="alert alert-danger" style="margin-bottom:1rem;">
       <ul>
         <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
       </ul>
     </div>
-
     <div class="filter-field">
       <label for="data">Data:</label>
-      <input type="date" id="data" th:field="*{data}" required />
+      <input type="text" id="data" th:field="*{data}" required pattern="\d{2}/\d{2}/\d{4}" placeholder="gg/mm/aaaa" />
       <div th:if="${#fields.hasErrors('data')}">
         <span class="error-message" th:errors="*{data}"></span>
       </div>
+      <div th:if="${visita.data == null}">
+        <span class="error-message">Attenzione: la data non è valorizzata, inseriscila per continuare.</span>
+      </div>
     </div>
-
     <div class="filter-field">
       <label for="ora">Ora:</label>
       <input type="time" id="ora" th:field="*{ora}" required />
@@ -36,11 +37,10 @@
         <span class="error-message" th:errors="*{ora}"></span>
       </div>
     </div>
-
     <div class="filter-field">
       <label for="id_animale">Animale:</label>
       <select id="id_animale" th:field="*{id_animale}" required>
-        <option value="" disabled selected>-- Seleziona --</option>
+        <option value="" disabled>-- Seleziona --</option>
         <option th:each="animale : ${animali}"
                 th:value="${animale.idAnimale}"
                 th:text="${animale.nome} + ' (' + ${animale.idAnimale} + ')'">
@@ -50,7 +50,6 @@
         <span class="error-message" th:errors="*{id_animale}"></span>
       </div>
     </div>
-
     <div class="filter-field">
       <label for="motivo">Motivo:</label>
       <input type="text" id="motivo" th:field="*{motivo}" maxlength="100" required />
@@ -58,10 +57,22 @@
         <span class="error-message" th:errors="*{motivo}"></span>
       </div>
     </div>
-
-    <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
-      <button type="submit">Salva Visita</button>
-      <button type="reset" class="secondary">Reset</button>
+    <div class="filter-field">
+      <label for="esito">Esito:</label>
+      <select id="esito" th:field="*{esito}" required>
+        <option value="">-- Seleziona --</option>
+        <option value="Posticipata">Posticipata</option>
+        <option value="In attesa">In attesa</option>
+        <option value="Annullata">Annullata</option>
+        <option value="Effettuata">Effettuata</option>
+      </select>
+      <div th:if="${#fields.hasErrors('esito')}">
+        <span class="error-message" th:errors="*{esito}"></span>
+      </div>
+    </div>
+    <div class="button-group" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+      <button type="submit" class="btn btn-login"><i class="fa fa-save"></i> Salva Modifiche</button>
+      <a th:href="@{/dashboard/admin/visite-veterinarie}" class="btn btn-register" style="display:inline-flex;align-items:center;"><i class="fa fa-arrow-left"></i> Annulla</a>
     </div>
   </form>
 </section>
