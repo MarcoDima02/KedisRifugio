@@ -22,7 +22,7 @@
                 <option value="" disabled selected>-- Seleziona --</option>
                 <option th:each="animale : ${animali}"
                         th:value="${animale.idAnimale}"
-                        th:text="${animale.idAnimale}"></option>
+                        th:text="${animale.idAnimale + ' ' + animale.nome}"></option>
             </select>
         </div>
         
@@ -32,7 +32,7 @@
                 <option value="" disabled selected>-- Seleziona --</option>
                 <option th:each="utente : ${utenti}"
                         th:value="${utente.id_persona}"
-                        th:text="${utente.id_persona}"></option>
+                        th:text="${utente.id_persona + ' ' + utente.nome}"></option>
             </select>
         </div>
 
