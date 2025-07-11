@@ -42,4 +42,15 @@ public class DonazioniServiceImpl implements DonazioniService {
                 .orElse(null);
     }
 
+    @Override
+    public Boolean deleteById(int id){
+        if(donazioniRepo.existsById(id)){
+            donazioniRepo.deleteById(id);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }
