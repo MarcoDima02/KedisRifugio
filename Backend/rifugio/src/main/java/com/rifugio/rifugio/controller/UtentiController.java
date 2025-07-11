@@ -87,11 +87,12 @@ public class UtentiController {
         if (utenteOpt.isPresent()) {
             Utenti utente = utenteOpt.get();
             model.addAttribute("utente", utente);
-            // Salva nome, iniziali e ruolo in sessione
+            // Salva nome, iniziali, ruolo e ID in sessione
             String initials = getUserInitials(utente);
             session.setAttribute("userInitials", initials);
             session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
             session.setAttribute("userRuolo", utente.getRuolo());
+            session.setAttribute("user",utente);
             // Redirigi in base al ruolo
             if (utente.getRuolo() != null && utente.getRuolo().equalsIgnoreCase("ADMIN")) {
                 return "redirect:/dashboard/admin";

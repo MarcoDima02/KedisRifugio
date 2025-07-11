@@ -18,14 +18,14 @@
     <h1 class="page-title">Fai una donazione</h1>
 
     <div class="green-section">
-        <form class="donazione-form" action="/donazione">
+        <form class="donazione-form" action="/donazione/save" method="post" th:object="${donazione}">
             <div class="form-group">
                 <label for="importo">Importo (€)</label>
-                <input type="number" step="0.01" min="1" id="importo" name="importo" required placeholder="Inserisci l'importo">
+                <input type="number" min="1" id="importo" name="importo" th:field="*{importo}" required placeholder="Inserisci l'importo">
             </div>
             <div class="form-group">
                 <label for="descrizione">Descrizione (opzionale)</label>
-                <textarea id="descrizione" name="descrizione" rows="3" placeholder="Motivo della donazione o messaggio"></textarea>
+                <textarea id="descrizione" name="descrizione" rows="3" th:field="*{descrizione}" placeholder="Motivo della donazione o messaggio"></textarea>
             </div>
             <button type="submit" class="donazioni-btn">Dona ora</button>
         </form>

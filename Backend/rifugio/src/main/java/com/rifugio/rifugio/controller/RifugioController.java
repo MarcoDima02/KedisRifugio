@@ -1,28 +1,40 @@
 package com.rifugio.rifugio.controller;
 
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
-import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
-import com.rifugio.rifugio.services.RazzaServiceImpl;
-import com.rifugio.rifugio.services.SpecieServiceImpl;
-import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
+import com.rifugio.rifugio.entities.Donazioni;
+import com.rifugio.rifugio.entities.Utenti;
+import com.rifugio.rifugio.services.*;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
-
 
 
 @Controller
 public class RifugioController {
 
+
     @Autowired
     AnagraficaAnimaliServiceImpl anagraficaAnimaleService;
+    
+    @Autowired
+    DonazioniServiceImpl donazioniServiceImpl;
+
+    @Autowired
+    UtentiServiceImpl utentiServiceImpl;
 
     @Autowired
     SpecieServiceImpl specieService;
@@ -85,11 +97,41 @@ public class RifugioController {
     }
 
     @GetMapping("/donazione")
-    public String paginaDonazione(HttpSession session) {
+    public String paginaDonazione(HttpSession session, Model model) {
         if (session.getAttribute("userRuolo") == null) {
             return "redirect:/utenti/login";
         }
+        model.addAttribute("donazione", new Donazioni());
         return "donazione";
+    }
+
+    @PostMapping("/donazione/save")
+    public String salvaDonazione(@Validated @ModelAttribute("donazione") Donazioni donazione,
+                           BindingResult bindingResult, HttpSession session,
+                           Model model) 
+    {
+        if (session.getAttribute("userRuolo") == null) {
+            return "redirect:/utenti/login";
+        }
+        if (bindingResult.hasErrors()) {
+            return "donazione";
+        }
+        
+        // Recupera l'oggetto Utenti direttamente dalla sessione
+        Utenti utente = (Utenti) session.getAttribute("user");
+        if (utente == null) {
+            return "redirect:/utenti/login";
+        }
+        
+        // Associa l'utente alla donazione e salva
+        donazione.setPersona(utente);
+
+        Date currentDate = new Date(System.currentTimeMillis());
+        donazione.setData_donazione(currentDate);
+ 
+        donazioniServiceImpl.save(donazione);
+        
+        return "redirect:/donazione/success";
     }
     
 
