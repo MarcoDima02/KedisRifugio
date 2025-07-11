@@ -85,7 +85,10 @@ public class RifugioController {
     }
 
     @GetMapping("/donazione")
-    public String paginaDonazione() {
+    public String paginaDonazione(HttpSession session) {
+        if (session.getAttribute("userRuolo") == null) {
+            return "redirect:/utenti/login";
+        }
         return "donazione";
     }
     
