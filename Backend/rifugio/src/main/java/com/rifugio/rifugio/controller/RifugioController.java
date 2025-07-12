@@ -131,8 +131,9 @@ public class RifugioController {
  
         donazioniServiceImpl.save(donazione);
         
-        return "redirect:/donazione/success";
+        return "donazione_successo";
     }
     
+
 
 }
