@@ -36,7 +36,7 @@ public class AnagraficaAnimali {
     private Specie Specie;
 
     @ManyToOne
-    @JoinColumn(name = "Id_Razza", referencedColumnName = "Id_Razza")
+    @JoinColumn(name = "Id_Razza", referencedColumnName = "id_razza")
     private Razza Razza;
 
     private Character Sesso;
