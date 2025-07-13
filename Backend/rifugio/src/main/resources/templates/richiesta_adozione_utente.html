@@ -45,13 +45,12 @@
                     <label for="idAnimale"><i class="fas fa-paw"></i> Seleziona l'animale che vuoi adottare *</label>
                     <div class="input-container">
                         <i class="input-icon fas fa-paw"></i>
-                        <select id="idAnimale" th:field="*{animale.idAnimale}" required
-                                style="padding-left: 2.5rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; color: white; width: 100%; padding: 0.8rem;">
-                            <option value="" disabled selected style="color: #333;">-- Scegli un animale --</option>
+                        <select id="idAnimale" th:field="*{animale.idAnimale}" required>
+                            <option value="" disabled selected>-- Scegli un animale --</option>
                             <option th:each="animale : ${animali}"
                                     th:value="${animale.idAnimale}"
-                                    th:text="${animale.nome != null ? animale.nome : 'Animale ' + animale.idAnimale}"
-                                    style="color: #333;"></option>
+                                    th:text="${animale.nome != null ? animale.nome : 'Animale ' + animale.idAnimale}">
+                            </option>
                         </select>
                     </div>
                     <div th:if="${#fields.hasErrors('animale.idAnimale')}" class="field-error">
