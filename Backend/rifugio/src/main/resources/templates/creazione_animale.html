@@ -9,7 +9,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/forms.css}" />
+    <link rel="stylesheet" th:href="@{/css/image-upload.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
 
@@ -43,14 +45,14 @@
             <select id="specie" th:field="*{specie.idSpecie}" required>
               <option value="" disabled selected>-- Seleziona --</option>
               <option th:each="specie : ${specieList}"
-                      th:value="${specie.IdSpecie}"
+                      th:value="${specie.idSpecie}"
                       th:text="${specie.nome}"></option>
             </select>
           </div>
 
           <div class="filter-field">
             <label for="razza">Razza:</label>
-            <select name="razza" id="razza">
+            <select id="razza" th:field="*{razza.idRazza}">
               <option value="" disabled selected>-- Seleziona --</option>
               <option th:each="razza : ${razzaList}"
                       th:value="${razza.idRazza}"
@@ -155,8 +157,31 @@
       <div class="form-section form-section-full">
         <h3><i class="fas fa-images"></i> Immagini dell'Animale</h3>
         <div class="filter-field">
-          <label for="immagini">Carica Immagini (puoi selezionare più file):</label>
+          <!-- Campo hidden per tracciare l'indice dell'immagine principale -->
+          <input type="hidden" id="main-image-index" name="mainImageIndex" value="-1">
+          
+          <label for="immagini">
+            <i class="fas fa-plus"></i> Seleziona immagini:
+          </label>
           <input type="file" id="immagini" name="immagini" multiple accept="image/*" />
+          
+          <button type="button" id="add-more-btn" class="add-more-btn" style="display: none; margin-top: 8px;">
+            <i class="fas fa-plus"></i> Aggiungi altre immagini
+          </button>
+          
+          <small style="color: #666; display: block; margin-top: 8px;">
+            Puoi selezionare più file contemporaneamente. Formati supportati: JPG, PNG, GIF<br>
+            <strong>🌟 Clicca sulla STELLA per scegliere la copertina | 🤏 Usa il drag & drop per riordinare</strong>
+          </small>
+          
+          <!-- Container per preview delle immagini -->
+          <div id="preview-container" class="preview-container">
+            <div class="preview-placeholder" id="preview-placeholder">
+              <i class="fas fa-images" style="font-size: 2em; margin-bottom: 8px; opacity: 0.5;"></i><br>
+              Le immagini selezionate appariranno qui<br>
+              <small style="color: #999; font-size: 0.8em;">Usa drag & drop per riordinare e stella per copertina</small>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -177,6 +202,230 @@
   </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Inizializzo gestione immagini creazione animale');
+    
+    const fileInput = document.getElementById('immagini');
+    const previewContainer = document.getElementById('preview-container');
+    const placeholder = document.getElementById('preview-placeholder');
+    const mainImageIndexInput = document.getElementById('main-image-index');
+    const addMoreBtn = document.getElementById('add-more-btn');
+    
+    let selectedFiles = [];
+    let mainImageIndex = -1;
+    
+    // Gestione click pulsante "Aggiungi altre immagini"
+    addMoreBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Click su aggiungi altre immagini');
+        fileInput.click();
+    });
+    
+    // Gestione selezione file
+    fileInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        console.log('File selezionati:', files.length);
+        
+        if (files.length === 0) return;
+        
+        // AGGIUNGE i nuovi file a quelli esistenti invece di sostituirli
+        const newFiles = files.filter(newFile => {
+            // Evita duplicati controllando nome e dimensione
+            return !selectedFiles.some(existingFile => 
+                existingFile.name === newFile.name && 
+                existingFile.size === newFile.size
+            );
+        });
+        
+        if (newFiles.length === 0) {
+            console.log('Tutti i file sono duplicati, ignoro');
+            fileInput.value = ''; // Reset input
+            return;
+        }
+        
+        console.log('Aggiungendo', newFiles.length, 'nuovi file unici');
+        selectedFiles = selectedFiles.concat(newFiles);
+        
+        updatePreview();
+        updateMainImageIndex();
+        
+        // Reset input per permettere ri-selezione
+        fileInput.value = '';
+    });
+    
+    function updatePreview() {
+        // Pulisci container
+        previewContainer.innerHTML = '';
+        
+        if (selectedFiles.length === 0) {
+            // Mostra placeholder e nascondi pulsante
+            previewContainer.appendChild(placeholder);
+            addMoreBtn.style.display = 'none';
+            previewContainer.classList.remove('has-images');
+            return;
+        }
+        
+        // Nascondi placeholder e mostra pulsante
+        addMoreBtn.style.display = 'inline-block';
+        previewContainer.classList.add('has-images');
+        
+        console.log('Creando preview per', selectedFiles.length, 'file');
+        
+        // Crea preview per ogni file
+        selectedFiles.forEach((file, index) => {
+            if (!file.type.startsWith('image/')) {
+                console.warn('File non è un\'immagine:', file.name);
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.draggable = true;
+                previewItem.setAttribute('data-index', index);
+                
+                if (index === mainImageIndex) {
+                    previewItem.classList.add('main-image');
+                }
+                
+                previewItem.innerHTML = `
+                    <div class="drag-handle" title="🤏 Trascina per riordinare">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    
+                    <img src="${e.target.result}" alt="Preview" class="preview-image">
+                    
+                    <div class="image-controls">
+                        <button type="button" class="set-main-btn ${index === mainImageIndex ? 'principale' : ''}" 
+                                onclick="setMainImage(${index})" title="⭐ Imposta come copertina">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button type="button" class="preview-remove" 
+                                onclick="removeImage(${index})" title="❌ Rimuovi immagine">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    ${index === mainImageIndex ? '<div class="main-image-label">⭐ COPERTINA</div>' : ''}
+                `;
+                
+                previewContainer.appendChild(previewItem);
+                
+                console.log(`Preview creata per file ${index + 1}/${selectedFiles.length}: ${file.name}`);
+                
+                // Inizializza sortable dopo aver aggiunto tutti gli elementi
+                if (index === selectedFiles.length - 1) {
+                    console.log('Inizializzo sortable per', selectedFiles.length, 'elementi');
+                    setTimeout(() => initSortable(), 100);
+                }
+            };
+            
+            reader.onerror = function() {
+                console.error('Errore lettura file:', file.name);
+            };
+            
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    function initSortable() {
+        if (selectedFiles.length <= 1) return;
+        
+        new Sortable(previewContainer, {
+            animation: 150,
+            handle: '.drag-handle',
+            onEnd: function(evt) {
+                console.log('Riordinamento: da', evt.oldIndex, 'a', evt.newIndex);
+                
+                // Riordina array dei file
+                const movedFile = selectedFiles.splice(evt.oldIndex, 1)[0];
+                selectedFiles.splice(evt.newIndex, 0, movedFile);
+                
+                // Aggiorna indice immagine principale
+                if (mainImageIndex === evt.oldIndex) {
+                    mainImageIndex = evt.newIndex;
+                } else if (evt.oldIndex < mainImageIndex && evt.newIndex >= mainImageIndex) {
+                    mainImageIndex--;
+                } else if (evt.oldIndex > mainImageIndex && evt.newIndex <= mainImageIndex) {
+                    mainImageIndex++;
+                }
+                
+                updateMainImageIndex();
+                updateFileInput();
+                updateDataAttributes();
+            }
+        });
+    }
+    
+    function updateDataAttributes() {
+        const items = previewContainer.querySelectorAll('.preview-item');
+        items.forEach((item, index) => {
+            item.setAttribute('data-index', index);
+            
+            const setMainBtn = item.querySelector('.set-main-btn');
+            setMainBtn.setAttribute('onclick', `setMainImage(${index})`);
+            
+            const removeBtn = item.querySelector('.preview-remove');
+            removeBtn.setAttribute('onclick', `removeImage(${index})`);
+            
+            // Aggiorna stile principale
+            if (index === mainImageIndex) {
+                item.classList.add('main-image');
+                setMainBtn.classList.add('principale');
+                if (!item.querySelector('.main-image-label')) {
+                    const label = document.createElement('div');
+                    label.className = 'main-image-label';
+                    label.textContent = 'COPERTINA';
+                    item.appendChild(label);
+                }
+            } else {
+                item.classList.remove('main-image');
+                setMainBtn.classList.remove('principale');
+                const label = item.querySelector('.main-image-label');
+                if (label) label.remove();
+            }
+        });
+    }
+    
+    function updateMainImageIndex() {
+        mainImageIndexInput.value = mainImageIndex;
+        console.log('Indice immagine principale aggiornato:', mainImageIndex);
+    }
+    
+    function updateFileInput() {
+        const dt = new DataTransfer();
+        selectedFiles.forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+    }
+    
+    // Funzioni globali
+    window.setMainImage = function(index) {
+        console.log('Imposto come principale immagine:', index);
+        mainImageIndex = index;
+        updateMainImageIndex();
+        updateDataAttributes();
+    };
+    
+    window.removeImage = function(index) {
+        console.log('Rimuovo immagine:', index);
+        
+        if (index === mainImageIndex) {
+            mainImageIndex = -1; // Reset se rimuovo la principale
+        } else if (index < mainImageIndex) {
+            mainImageIndex--;
+        }
+        
+        selectedFiles.splice(index, 1);
+        updateMainImageIndex();
+        updateFileInput();
+        updatePreview();
+    };
+    
+    console.log('Gestione immagini inizializzata');
+});
+</script>
 
 </body>
 </html>

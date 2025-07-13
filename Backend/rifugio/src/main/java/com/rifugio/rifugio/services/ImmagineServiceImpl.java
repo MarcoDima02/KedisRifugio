@@ -102,7 +102,8 @@ public class ImmagineServiceImpl implements ImmagineService {
             throw new RuntimeException("Animale non trovato con ID: " + idAnimale);
         }
         List<Immagine> immaginiSalvate = new java.util.ArrayList<>();
-        for (MultipartFile file : files) {
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
             String fileName = file.getOriginalFilename();
             String fileType = file.getContentType();
             try {
@@ -113,6 +114,8 @@ public class ImmagineServiceImpl implements ImmagineService {
                     java.sql.Date.valueOf(java.time.LocalDate.now()),
                     animale.get()
                 );
+                // Imposta l'ordine di visualizzazione in base all'indice
+                immagine.setOrdine_visualizzazione(i);
                 immaginiSalvate.add(immagineRepo.save(immagine));
             } catch (IOException e) {
                 throw new RuntimeException("Impossibile salvare l'immagine: " + fileName + ", errore: " + e.getMessage());

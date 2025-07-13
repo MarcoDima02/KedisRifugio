@@ -63,9 +63,14 @@
                         </div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">ID Utente</div>
-                        <div class="detail-value" th:text="${utente.id_persona}"></div>
+                        <div class="detail-label">Stato Account</div>
+                        <div class="detail-value">
+                            <span class="status-badge" 
+                                  th:classappend="${utente.attivo == true} ? 'status-approved' : 'status-danger'"
+                                  th:text="${utente.attivo == true} ? 'Attivo' : 'Eliminato'"></span>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
             

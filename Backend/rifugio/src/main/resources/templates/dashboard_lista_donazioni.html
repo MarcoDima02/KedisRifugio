@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamoci una zampa</title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
-
-    <div class="main-content">
-        <h1 class="page-title">
-            Lista Donazioni
-        </h1>
-
-        <section class="green-section">
-            <table class="animal-table">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diamoci una zampa</title>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+        <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        
+        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+        
+        <div class="main-content">
+            <h1 class="page-title">
+                Lista Donazioni
+            </h1>
+            
+            <section class="green-section">
+                <table class="animal-table">
+                <a th:href="@{/dashboard/admin/donazioni/save}" class="add-btn">Aggiungi Nuova Donazione</a>
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -49,7 +50,6 @@
             </table>
 
             
-            <a th:href="@{/dashboard/admin/donazioni/save}" class="add-btn">Aggiungi Nuova Donazione</a>
             
 
         </section>

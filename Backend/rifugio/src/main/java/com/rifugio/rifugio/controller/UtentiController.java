@@ -80,7 +80,8 @@ public class UtentiController {
                          @RequestParam("password") String password,
                          Model model,
                          jakarta.servlet.http.HttpSession session) {
-        Optional<Utenti> utenteOpt = utentiRepo.findAll().stream()
+        // Cerca solo tra utenti attivi
+        Optional<Utenti> utenteOpt = utentiService.getAllUtentiAttivi().stream()
                 .filter(u -> (u.getEmail().equalsIgnoreCase(Email))
                         && u.getPassword().equals(password))
                 .findFirst();

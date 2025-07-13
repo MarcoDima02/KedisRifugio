@@ -77,13 +77,13 @@ INSERT INTO anagrafica_animali (nome, id_specie, id_razza, sesso, data_nascita, 
 ('Toby', 1, 1, 'M', '2023-01-25', '2024-01-10', 'Cucciolo curioso', 'Sta imparando a socializzare con altri animali', 7, 1),
 ('Nina', 2, 4, 'F', '2020-08-15', '2021-12-20', 'Gatta indipendente', 'Ama stare da sola ma è affettuosa quando vuole', 8, 1);
 -- Inserimento dati per utenti
-INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruolo) VALUES
-('Mario', 'Rossi', 'RSSMRA80A01H501U', '3331234567', 'mario.rossi@email.com', 'password1', 'ADMIN'),
-('Luca', 'Bianchi', 'BNCLCU85B02F205Z', '3339876543', 'luca.bianchi@email.com', 'password2', 'USER'),
-('Anna', 'Verdi', 'VRDANN90C03H501X', '3335555555', 'anna.verdi@email.com', 'password3', 'USER'),
-('Giulia', 'Neri', 'NERGLI95D04F205Y', '3334444444', 'giulia.neri@email.com', 'password4', 'USER'),
-('Paolo', 'Russo', 'RSSPLA85E05H501Z', '3332222222', 'paolo.russo@email.com', 'password5', 'ADMIN'),
-('Marco','Dima','DMIMCN02E15C722Q','3467617419','dimamarco02@gmail.com','Md02@25w','USER');
+INSERT INTO utenti (nome, cognome, codice_fiscale, numero, email, password, ruolo, attivo) VALUES
+('Mario', 'Rossi', 'RSSMRA80A01H501U', '3331234567', 'mario.rossi@email.com', 'password1', 'ADMIN', TRUE),
+('Luca', 'Bianchi', 'BNCLCU85B02F205Z', '3339876543', 'luca.bianchi@email.com', 'password2', 'USER', TRUE),
+('Anna', 'Verdi', 'VRDANN90C03H501X', '3335555555', 'anna.verdi@email.com', 'password3', 'USER', TRUE),
+('Giulia', 'Neri', 'NERGLI95D04F205Y', '3334444444', 'giulia.neri@email.com', 'password4', 'USER', TRUE),
+('Paolo', 'Russo', 'RSSPLA85E05H501Z', '3332222222', 'paolo.russo@email.com', 'password5', 'ADMIN', TRUE),
+('Marco','Dima','DMIMCN02E15C722Q','3467617419','dimamarco02@gmail.com','Md02@25w','USER', TRUE);
 
 -- Inserimento dati per step_adozioni
 INSERT INTO step_adozioni (nome_step, descrizione_step) VALUES

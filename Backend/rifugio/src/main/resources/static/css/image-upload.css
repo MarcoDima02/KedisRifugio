@@ -1,0 +1,191 @@
+/* Stili per gestione upload e preview immagini */
+
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 12px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    min-height: 80px;
+}
+
+.preview-container.has-images {
+    border-color: #4CAF50;
+    background-color: #f0f8f0;
+    border-style: solid;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    background: white;
+    cursor: move;
+}
+
+.preview-item:hover {
+    transform: scale(1.05);
+}
+
+.preview-item:hover .drag-handle,
+.preview-item:hover .image-controls {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.preview-item .drag-handle,
+.preview-item .image-controls {
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.preview-item.main-image {
+    border: 3px solid #ff9800;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.preview-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.drag-handle {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: grab;
+    z-index: 20;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+    background: rgba(0,0,0,0.9);
+}
+
+.image-controls {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    gap: 6px;
+    z-index: 20;
+}
+
+.set-main-btn,
+.preview-remove {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 21;
+}
+
+.set-main-btn {
+    background: rgba(255, 193, 7, 0.95);
+    color: white;
+    border: 2px solid #ffc107;
+    font-weight: bold;
+}
+
+.set-main-btn.principale {
+    background: #ff6600;
+    border-color: #ff6600;
+    transform: scale(1.3);
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7);
+}
+
+.set-main-btn:hover {
+    background: #ff9800;
+    border-color: #ff9800;
+    transform: scale(1.3);
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.5);
+}
+
+.preview-remove {
+    background: rgba(220, 53, 69, 0.95);
+    color: white;
+    border: 2px solid #dc3545;
+}
+
+.preview-remove:hover {
+    background: #c82333;
+    border-color: #c82333;
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(200, 35, 51, 0.5);
+}
+
+.main-image-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(255, 152, 0, 0.9), transparent);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 4px 4px;
+}
+
+.preview-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.add-more-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.add-more-btn:hover {
+    background: #218838;
+}
+
+/* Stili per drag & drop di Sortable.js */
+.sortable-ghost {
+    opacity: 0.5;
+    background: #e3f2fd;
+}
+
+.sortable-chosen {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}

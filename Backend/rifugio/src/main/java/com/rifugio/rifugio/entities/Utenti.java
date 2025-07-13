@@ -1,5 +1,6 @@
 package com.rifugio.rifugio.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,10 @@ public class Utenti {
     private String password;
    
     private String ruolo;
+    
+    // Campo per soft delete - true = attivo, false = eliminato logicamente
+    @Column(name = "attivo", columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean attivo = true;
    
     // Costruttore predefinito necessario per JPA e Spring
     public Utenti() {
@@ -80,6 +85,27 @@ public class Utenti {
         this.ruolo = ruolo;
     }
 
+    public Boolean getAttivo() {
+        return attivo;
+    }
+    
+    public void setAttivo(Boolean attivo) {
+        this.attivo = attivo;
+    }
+    
+    // Metodi di utilità per soft delete
+    public void elimina() {
+        this.attivo = false;
+    }
+    
+    public void ripristina() {
+        this.attivo = true;
+    }
+    
+    public boolean isEliminato() {
+        return this.attivo == null || !this.attivo;
+    }
+
     @Override
     public String toString() {
         return "Utenti{" +
@@ -89,6 +115,7 @@ public class Utenti {
                 ", email='" + email + '\'' +
                 ", codiceFiscale='" + codiceFiscale + '\'' +
                 ", ruolo='" + ruolo + '\'' +
+                ", attivo=" + attivo +
                 '}';
     }
 

@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuova Donazione - Admin</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/forms.css}">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div th:insert="fragments/sidebar :: customSidebar"></div>
 
     <main class="dashboard-main">
-        <div class="dashboard-header">
-            <h1>Registra Nuova Donazione</h1>
-            <a th:href="@{/dashboard/admin/donazioni}" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i> Torna alle donazioni
-            </a>
-        </div>
 
         <div class="form-container">
             <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
@@ -42,7 +38,7 @@
                     <div class="form-field">
                         <label for="importo">Importo (€):</label>
                         <input type="number" name="importo" id="importo" class="form-control" 
-                               step="0.01" min="0.01" required>
+                               step="1.00" min="1.00" required>
                     </div>
 
                     <div class="form-field">
@@ -70,14 +66,19 @@
                     </div>
                 </div>
 
-                <div class="form-actions">
+                <!-- Azioni del form -->
+                <div class="action-buttons">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-save"></i> Registra Donazione
+                        <i class="fas fa-save"></i> Salva Animale
                     </button>
-                    <a th:href="@{/dashboard/admin/donazioni}" class="btn btn-secondary">
-                        <i class="fa-solid fa-times"></i> Annulla
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                    <a href="/dashboard/admin/donazioni" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Torna alle Donazioni
                     </a>
                 </div>
+
             </form>
         </div>
     </main>

@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamoci una zampa</title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diamoci una zampa</title>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+        <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        
         <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
-
+        
         <div class="main-content">
             <h1 class="page-title">
                 Lista Visite Veterinarie
             </h1>
-
-
+            
+            
             <div th:if="${successMessage}" class="alert alert-success" style="margin-bottom:1rem;">
                 <span th:text="${successMessage}"></span>
             </div>
-
+            
             <section class="green-section">
                 <table class="animal-table">
                     <thead>
+                        <a th:href="@{/dashboard/admin/visite-veterinarie/save}" class="add-btn">Aggiungi Nuova Visita</a>
                         <tr>
                             <th>Id</th>
                             <th>Data</th>
@@ -54,7 +55,6 @@
                     </tbody>
                 </table>
 
-                <a th:href="@{/dashboard/admin/visite-veterinarie/save}" class="add-btn">Aggiungi Nuova Visita</a>
             </section>
         </div>
 

@@ -27,7 +27,7 @@
                     <!-- Iniziali utente -->
                 </div>
                 <h1 class="profile-name" th:text="${utente.nome + ' ' + utente.cognome}">Nome Cognome</h1>
-                <span class="profile-role" th:text="${utente.ruolo}">USER</span>
+                
             </div>
             
             <div class="profile-details">
@@ -56,10 +56,7 @@
                     <div class="profile-field-value" th:text="${utente.numero}">+39 123 456 7890</div>
                 </div>
                 
-                <div class="profile-field">
-                    <label><i class="fas fa-user-shield"></i> Ruolo</label>
-                    <div class="profile-field-value" th:text="${utente.ruolo}">USER</div>
-                </div>
+                
             </div>
             
             <div class="profile-actions">

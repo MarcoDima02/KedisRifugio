@@ -626,7 +626,7 @@ button.add-btn, a.add-btn, .add-btn {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-top: 30px;
+    margin-bottom: 30px;
     background: #17613a !important;
     color: #fff !important;
     border: none !important;

@@ -69,7 +69,8 @@ CREATE TABLE utenti (
     numero VARCHAR(50),
     email VARCHAR(50),
     password VARCHAR(20) NOT NULL,
-    ruolo ENUM('ADMIN', 'USER') Not null DEFAULT 'USER'
+    ruolo ENUM('ADMIN', 'USER') Not null DEFAULT 'USER',
+    attivo BOOLEAN DEFAULT TRUE NOT NULL
 );
 
 -- Creazione tabella step_adozioni

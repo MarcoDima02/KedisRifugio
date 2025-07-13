@@ -7,6 +7,42 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .soft-deleted {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .soft-deleted td {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .status-active {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        .status-deleted {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .toggle-view-btn {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .toggle-view-btn:hover {
+            background-color: #1976D2;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,15 +51,28 @@
         <div class="main-content">
             <h1 class="page-title">
                 Lista Utenti
+                <span th:if="${mostraTutti}" class="status-badge status-deleted">Inclusi Eliminati</span>
+                <span th:unless="${mostraTutti}" class="status-badge status-active">Solo Attivi</span>
             </h1>
 
             <!-- Messaggi di successo/errore -->
             <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
             <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            
+            <!-- Toggle per mostrare/nascondere utenti eliminati -->
+            <form th:action="@{/dashboard/admin/utenti/toggle-view}" method="post" style="display:inline;">
+                <button type="submit" class="toggle-view-btn">
+                    <i class="fas fa-eye" th:if="${!mostraTutti}"></i>
+                    <i class="fas fa-eye-slash" th:if="${mostraTutti}"></i>
+                    <span th:if="${!mostraTutti}">Mostra Anche Eliminati</span>
+                    <span th:if="${mostraTutti}">Mostra Solo Attivi</span>
+                </button>
+            </form>
 
             <section class="green-section">
                 <table class="animal-table">
                     <thead>
+                        <a th:href="@{/dashboard/admin/utenti/save}" class="add-btn">Aggiungi Nuovo Utente</a>
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
@@ -31,11 +80,13 @@
                             <th>Email</th>
                             <th>Codice Fiscale</th>
                             <th>Ruolo</th>
+                            <th>Status</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="utente : ${utenti}">
+                        <tr th:each="utente : ${utenti}" 
+                            th:class="${utente.attivo == false ? 'soft-deleted' : ''}">
                             <td th:text="${utente.id_persona}">1</td>
                             <td>
                                 <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}"
@@ -48,24 +99,61 @@
                             <td th:text="${utente.codiceFiscale}">CodiceFiscale</td>
                             <td th:text="${utente.ruolo}">Ruolo</td>
                             <td>
-                                <a th:href="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" class="action-icon-btn" title="Modifica">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}" class="action-icon-btn" title="Dettagli">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <form th:action="@{/dashboard/admin/utenti/delete/{id}(id=${utente.id_persona})}" method="post" style="display:inline;">
-                                    <button type="submit" class="action-icon-btn delete-btn" title="Elimina" 
-                                            onclick="return confirm('Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.');">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </form>
+                                <span th:if="${utente.attivo == true}" class="status-badge status-active">
+                                    <i class="fas fa-check-circle"></i> Attivo
+                                </span>
+                                <span th:if="${utente.attivo == false}" class="status-badge status-deleted">
+                                    <i class="fas fa-times-circle"></i> Eliminato
+                                </span>
+                            </td>
+                            <td>
+                                <!-- Azioni per utenti attivi -->
+                                <div th:if="${utente.attivo == true}">
+                                    <a th:href="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" 
+                                       class="action-icon-btn" title="Modifica">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}" 
+                                       class="action-icon-btn" title="Dettagli">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <form th:action="@{/dashboard/admin/utenti/delete/{id}(id=${utente.id_persona})}" 
+                                          method="post" style="display:inline;">
+                                        <button type="submit" class="action-icon-btn delete-btn" title="Elimina (Soft Delete)" 
+                                                onclick="return confirm('Sei sicuro di voler eliminare questo utente? Potrà essere ripristinato successivamente.');">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <!-- Azioni per utenti eliminati -->
+                                <div th:if="${utente.attivo == false}">
+                                    <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}" 
+                                       class="action-icon-btn" title="Dettagli">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <form th:action="@{/dashboard/admin/utenti/restore/{id}(id=${utente.id_persona})}" 
+                                          method="post" style="display:inline;">
+                                        <button type="submit" class="action-icon-btn" title="Ripristina Utente"
+                                                style="background-color: #4CAF50; color: white;"
+                                                onclick="return confirm('Sei sicuro di voler ripristinare questo utente?');">
+                                            <i class="fa fa-undo"></i>
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/dashboard/admin/utenti/hard-delete/{id}(id=${utente.id_persona})}" 
+                                          method="post" style="display:inline;">
+                                        <button type="submit" class="action-icon-btn delete-btn" title="Elimina Definitivamente"
+                                                style="background-color: #d32f2f;"
+                                                onclick="return confirm('ATTENZIONE: Questa azione eliminerà DEFINITIVAMENTE l\'utente dal database. Non potrà essere ripristinato. Continuare?');">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <a th:href="@{/dashboard/admin/utenti/save}" class="add-btn">Aggiungi Nuovo Utente</a>
             </section>
         </div>
 
