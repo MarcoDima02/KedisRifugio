@@ -23,6 +23,7 @@ import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.Razza;
+import com.rifugio.rifugio.entities.Specie;
 import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
 import com.rifugio.rifugio.services.AdozioniServiceImpl;
@@ -231,16 +232,38 @@ public class DashboardAdminController {
     }
 
     @PostMapping("/razze/save")
-    public String saveRazza(Model model, HttpSession session, @ModelAttribute("razza") Razza razza){
+    public String saveRazza(
+            Model model,
+            HttpSession session,
+            @Validated @ModelAttribute("razza") Razza razza,
+            BindingResult bindingResult) {
+
         if (!isAdmin(session)) {
             return "redirect:/";
         }
 
-        razzaService.salva(razza);
-        model.addAttribute("specie", specieService.getAllSpecie());
-        return "redirect:/dashboard/admin/razze";  
+        // Validazione manuale per il nome
+        if (razza.getNome() == null || razza.getNome().trim().isEmpty()) {
+            bindingResult.rejectValue("nome", "error.razza", "Il nome è obbligatorio e non può essere vuoto");
+        }
 
+        // Validazione manuale per la specie  
+        if (razza.getSpecie() == null) {
+            bindingResult.rejectValue("specie", "error.razza", "Devi selezionare una specie");
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "creazione_razza";  
+        }
+
+        // Salva razza
+        razzaService.salva(razza);
+
+        return "redirect:/dashboard/admin/razze";
     }
+
+
 
     // DASHBOARD DONAZIONI
 
@@ -662,6 +685,24 @@ public class DashboardAdminController {
                         Integer userId = Integer.valueOf(text);
                         Utenti utente = utentiService.getUtenteById(userId);
                         setValue(utente);
+                    } catch (NumberFormatException e) {
+                        setValue(null);
+                    }
+                }
+            }
+        });
+        
+        // Custom editor per convertire ID specie in oggetto Specie
+        binder.registerCustomEditor(Specie.class, "specie", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    try {
+                        Integer specieId = Integer.valueOf(text);
+                        var specieOpt = specieService.getSpecieById(specieId);
+                        setValue(specieOpt.orElse(null));
                     } catch (NumberFormatException e) {
                         setValue(null);
                     }

@@ -35,6 +35,9 @@
                         <div class="filter-field">
                             <label for="nome">Nome Razza</label>
                             <input type="text" id="nome" th:field="*{nome}" required>
+                            <div th:if="${#fields.hasErrors('nome')}" class="error-message">
+                                <p th:errors="*{nome}"></p>
+                            </div>
                         </div>
                     </div>
                     
@@ -44,12 +47,15 @@
                         
                         <div class="filter-field">
                             <label for="specie">Seleziona Specie</label>
-                            <select id="specie" th:field="*{specie.idSpecie}" required>
+                            <select id="specie" th:field="*{specie}" required>
                                 <option value="" disabled selected>-- Seleziona --</option>
                                 <option th:each="specie : ${specie}"
-                                        th:value="${specie.IdSpecie}"
+                                        th:value="${specie.idSpecie}"
                                         th:text="${specie.nome}"></option>
                             </select>
+                            <div th:if="${#fields.hasErrors('specie')}" class="error-message">
+                                <p th:errors="*{specie}"></p>
+                            </div>
                         </div>
                     </div>
 

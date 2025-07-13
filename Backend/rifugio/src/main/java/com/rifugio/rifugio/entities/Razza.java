@@ -2,6 +2,7 @@ package com.rifugio.rifugio.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Razze")
@@ -17,6 +18,7 @@ public class Razza {
 
     private Specie id_specie;
 
+    @NotBlank(message = "Il nome è obbligatorio e non può essere vuoto")
     private String nome;
 
     // Getter & Setter
