@@ -22,8 +22,8 @@ public class RazzaServiceImpl implements RazzaService {
     }
 
     @Override
-    public Optional<Razza> getRazzaById(int id) {
-        return razzaRepo.findById(id);
+    public Razza getRazzaById(int id) {
+        return razzaRepo.findById(id).orElse(null);
     }
 
     @Override

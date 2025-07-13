@@ -231,8 +231,8 @@ public class DashboardAdminController {
 
     }
 
-    @PostMapping("/razze/save")
-    public String saveRazza(
+    @PostMapping("/razze/update/{id}")
+    public String updateRazze(@PathVariable Integer id,
             Model model,
             HttpSession session,
             @Validated @ModelAttribute("razza") Razza razza,
@@ -242,14 +242,38 @@ public class DashboardAdminController {
             return "redirect:/";
         }
 
-        // Validazione manuale per il nome
-        if (razza.getNome() == null || razza.getNome().trim().isEmpty()) {
-            bindingResult.rejectValue("nome", "error.razza", "Il nome è obbligatorio e non può essere vuoto");
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "modifica_razza";  
         }
 
-        // Validazione manuale per la specie  
-        if (razza.getSpecie() == null) {
-            bindingResult.rejectValue("specie", "error.razza", "Devi selezionare una specie");
+        // Aggiorna razza
+        razzaService.aggiorna(id, razza);
+
+        return "redirect:/dashboard/admin/razze";
+    }
+
+    @GetMapping("/razze/update/{id}")
+    public String formUpdateRazza(@PathVariable Integer id, Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razza", razzaService.getRazzaById(id));
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "modifica_razza";  
+
+    }
+
+    @PostMapping("/razze/save")
+    public String saveRazza(
+            Model model,
+            HttpSession session,
+            @Validated @ModelAttribute("razza") Razza razza,
+            BindingResult bindingResult) {
+
+        if (!isAdmin(session)) {
+            return "redirect:/";
         }
 
         if (bindingResult.hasErrors()) {

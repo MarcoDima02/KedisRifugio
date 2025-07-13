@@ -19,11 +19,11 @@
             
             <!-- Header del form -->
             <div class="form-header">
-                <h2><i class="fas fa-plus-circle"></i> Inserisci Nuova Razza</h2>
+                <h2><i class="fas fa-edit"></i> Modifica Razza</h2>
             </div>
 
             <!-- Form -->
-            <form th:action="@{/dashboard/admin/razze/save}" th:object="${razza}" method="post">
+            <form th:action="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" th:object="${razza}" method="post">
                 
                 <!-- Grid per organizzare i campi -->
                 <div class="form-grid">
@@ -48,10 +48,11 @@
                         <div class="filter-field">
                             <label for="specie">Seleziona Specie</label>
                             <select id="specie" th:field="*{specie}" required>
-                                <option value="" disabled selected>-- Seleziona --</option>
+                                <option value="" disabled>-- Seleziona --</option>
                                 <option th:each="specieItem : ${specie}"
                                         th:value="${specieItem.idSpecie}"
-                                        th:text="${specieItem.nome}"></option>
+                                        th:text="${specieItem.nome}"
+                                        th:selected="${specieItem.idSpecie == razza.specie?.idSpecie}"></option>
                             </select>
                             <div th:if="${#fields.hasErrors('specie')}" class="error-message">
                                 <p th:errors="*{specie}"></p>
