@@ -204,6 +204,19 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/animali";
     }
 
+    // DASHBOARD RAZZE
+
+    @GetMapping("/razze")
+    public String getAllRazze(Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razze", razzaService.getAllRazze());
+        return "dashboard_lista_razze";  
+
+    }
+
     // DASHBOARD DONAZIONI
 
     @GetMapping("/donazioni")
@@ -211,8 +224,7 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        List<Donazioni> donazioni = donazioniService.getAllDonazioni();
-        model.addAttribute("donazioni", donazioni);
+        model.addAttribute("donazioni", donazioniService.getAllDonazioni());
         return "dashboard_lista_donazioni";
     }
 
