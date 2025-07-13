@@ -1,14 +1,15 @@
 <div th:fragment="customSidebar">
-    <nav class="sidebar">
-        <div class="sidebar-logo">
+    <nav class="sidebar"> 
+        <div class="sidebar-logo"> 
             <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo" />
             <span>Dashboard gestionale</span>
         </div>
         <ul class="sidebar-menu">
             <li><a href="/dashboard/admin" th:classappend="${activePage} == 'dashboard' ? 'active'" ><i class="icon-dashboard"></i> Dashboard</a></li>
-            <li><a href="/dashboard/admin/animali" th:classappend="${activePage} == 'animali' ? 'active'" ><i class="icon-animali"></i> Gestione animali</a></li>
-            <li><a href="/dashboard/admin/adozioni" th:classappend="${activePage} == 'adozioni' ? 'active'" ><i class="icon-adozioni"></i> Adozioni</a></li>
-            <li><a href="/dashboard/admin/visite-veterinarie" th:classappend="${activePage} == 'visite' ? 'active'" ><i class="icon-visite"></i> Visite veterinarie</a></li>
+            <li><a href="/dashboard/admin/animali" th:classappend="${activePage} == 'animali' ? 'active'" ><i class="icon-animali"></i> Gestione Animali</a></li>
+            <li><a href="/dashboard/admin/razze" th:classappend="${activePage} == 'razze' ? 'active'" ><i class="icon-animali"></i> Gestione Razze</a></li>
+            <li><a href="/dashboard/admin/adozioni" th:classappend="${activePage} == 'adozioni' ? 'active'" ><i class="icon-adozioni"></i>Gestione Adozioni</a></li>
+            <li><a href="/dashboard/admin/visite-veterinarie" th:classappend="${activePage} == 'visite' ? 'active'" ><i class="icon-visite"></i> Visite Veterinarie</a></li>
             <li><a href="/dashboard/admin/donazioni" th:classappend="${activePage} == 'donazioni' ? 'active'" ><i class="icon-donazioni"></i> Donazioni</a></li>
             <li><a href="/dashboard/admin/utenti" th:classappend="${activePage} == 'utenti' ? 'active'" ><i class="icon-utenti"></i> Utenti</a></li>
         </ul>
