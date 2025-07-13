@@ -22,9 +22,12 @@ public class RazzeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Razza> getRazzaById(@PathVariable int id) {
-        return razzaService.getRazzaById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Razza razza = razzaService.getRazzaById(id);
+        if (razza != null) {
+            return ResponseEntity.ok(razza);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
@@ -32,7 +35,7 @@ public class RazzeController {
         return ResponseEntity.ok(razzaService.salva(razza));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}")            
     public ResponseEntity<Razza> aggiorna(@PathVariable int id, @RequestBody Razza nuova) {
         Razza aggiornata = razzaService.aggiorna(id, nuova);
         if (aggiornata == null) return ResponseEntity.notFound().build();

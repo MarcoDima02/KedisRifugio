@@ -24,6 +24,8 @@ import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.CartellaClinica;
 import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.Immagine;
+import com.rifugio.rifugio.entities.Razza;
+import com.rifugio.rifugio.entities.Specie;
 import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
 import com.rifugio.rifugio.services.AdozioniServiceImpl;
@@ -245,6 +247,89 @@ public class DashboardAdminController {
         return "redirect:/dashboard/admin/animali";
     }
 
+    // DASHBOARD RAZZE
+
+    @GetMapping("/razze")
+    public String getAllRazze(Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razze", razzaService.getAllRazze());
+        return "dashboard_lista_razze";  
+
+    }
+
+    @GetMapping("/razze/save")
+    public String formSaveRazza(Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razza", new Razza());
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "creazione_razza";  
+
+    }
+
+    @PostMapping("/razze/update/{id}")
+    public String updateRazze(@PathVariable Integer id,
+            Model model,
+            HttpSession session,
+            @Validated @ModelAttribute("razza") Razza razza,
+            BindingResult bindingResult) {
+
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "modifica_razza";  
+        }
+
+        // Aggiorna razza
+        razzaService.aggiorna(id, razza);
+
+        return "redirect:/dashboard/admin/razze";
+    }
+
+    @GetMapping("/razze/update/{id}")
+    public String formUpdateRazza(@PathVariable Integer id, Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razza", razzaService.getRazzaById(id));
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "modifica_razza";  
+
+    }
+
+    @PostMapping("/razze/save")
+    public String saveRazza(
+            Model model,
+            HttpSession session,
+            @Validated @ModelAttribute("razza") Razza razza,
+            BindingResult bindingResult) {
+
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "creazione_razza";  
+        }
+
+        // Salva razza
+        razzaService.salva(razza);
+
+        return "redirect:/dashboard/admin/razze";
+    }
+
+
+
     // DASHBOARD DONAZIONI
 
     @GetMapping("/donazioni")
@@ -252,8 +337,7 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        List<Donazioni> donazioni = donazioniService.getAllDonazioni();
-        model.addAttribute("donazioni", donazioni);
+        model.addAttribute("donazioni", donazioniService.getAllDonazioni());
         return "dashboard_lista_donazioni";
     }
 
@@ -694,8 +778,8 @@ public class DashboardAdminController {
             }
         });
         
-        // Custom editor per Specie
-        binder.registerCustomEditor(com.rifugio.rifugio.entities.Specie.class, "specie", new PropertyEditorSupport() {
+        // Custom editor per convertire ID specie in oggetto Specie
+        binder.registerCustomEditor(Specie.class, "specie", new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) throws IllegalArgumentException {
                 if (text == null || text.isEmpty()) {
@@ -703,47 +787,8 @@ public class DashboardAdminController {
                 } else {
                     try {
                         Integer specieId = Integer.valueOf(text);
-                        var specie = specieService.getSpecieById(specieId);
-                        setValue(specie.orElse(null));
-                    } catch (NumberFormatException e) {
-                        setValue(null);
-                    }
-                }
-            }
-        });
-        
-        // Custom editor per Razza
-        binder.registerCustomEditor(com.rifugio.rifugio.entities.Razza.class, "razza", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                if (text == null || text.isEmpty()) {
-                    setValue(null);
-                } else {
-                    try {
-                        Integer razzaId = Integer.valueOf(text);
-                        var razza = razzaService.getRazzaById(razzaId);
-                        setValue(razza.orElse(null));
-                    } catch (NumberFormatException e) {
-                        setValue(null);
-                    }
-                }
-            }
-        });
-        
-        // Custom editor per StatoAnimale - usando lookup dalla lista
-        binder.registerCustomEditor(com.rifugio.rifugio.entities.Stato_Animale.class, "idStatoAnimale", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                if (text == null || text.isEmpty()) {
-                    setValue(null);
-                } else {
-                    try {
-                        Integer statoId = Integer.valueOf(text);
-                        var statiAnimali = statoAnimaleService.getAllStatiAnimali();
-                        var stato = statiAnimali.stream()
-                                .filter(s -> s.getIdStatoAnimale().equals(statoId))
-                                .findFirst();
-                        setValue(stato.orElse(null));
+                        var specieOpt = specieService.getSpecieById(specieId);
+                        setValue(specieOpt.orElse(null));
                     } catch (NumberFormatException e) {
                         setValue(null);
                     }

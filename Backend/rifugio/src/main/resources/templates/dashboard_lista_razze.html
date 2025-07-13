@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+
+        <div class="main-content">
+            <h1 class="page-title">
+                Lista Razze
+            </h1>
+
+            <section class="green-section">
+                <table class="animal-table">
+                    <thead>
+                        <tr>
+                            <th>Id Razza</th>
+                            <th>Nome</th>
+                            <th>Id Specie</th>
+                            <th>Specie</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="razza : ${razze}">
+                            <td th:text="${razza.idRazza}">1</td>
+                            <td th:text="${razza.nome}">Nome</td>
+                            <td th:text="${razza.specie.idSpecie}">1</td>
+                            <td th:text="${razza.specie.nome}">Nome</td>
+                            <td>
+                                <a th:href="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" class="action-icon-btn" title="Modifica">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a th:href="@{/dashboard/admin/razze/save}" class="add-btn">Aggiungi Razza</a>
+                
+            </section>
+        </div>
+
+    </body>
+
+</html>
+
