@@ -27,14 +27,15 @@
                             <th>Nome</th>
                             <th>Id Specie</th>
                             <th>Specie</th>
+                            <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="razza : ${razze}">
                             <td th:text="${razza.idRazza}">1</td>
-                            <td th:text="${razza.nome}">1</td>
+                            <td th:text="${razza.nome}">Nome</td>
                             <td th:text="${razza.specie.idSpecie}">1</td>
-                            <td th:text="${razza.specie.nome}">1</td>
+                            <td th:text="${razza.specie.nome}">Nome</td>
                             <td>
                                 <a th:href="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" class="action-icon-btn" title="Modifica">
                                     <i class="fa fa-edit"></i>

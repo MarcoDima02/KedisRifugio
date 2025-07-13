@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Inserisci Razza</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/forms.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div th:replace="fragments/sidebar :: customSidebar"></div>
+
+    <div class="main-content">
+        <div class="filter-box animale-form-box">
+            
+            <!-- Header del form -->
+            <div class="form-header">
+                <h2><i class="fas fa-plus-circle"></i> Inserisci Nuova Razza</h2>
+            </div>
+
+            <!-- Form -->
+            <form th:action="@{/dashboard/admin/razze/save}" th:object="${razza}" method="post" novalidate>
+                
+                <!-- Grid per organizzare i campi -->
+                <div class="form-grid">
+                    
+                    <!-- Informazioni Base -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-paw"></i> Informazioni Base</h3>
+                        
+                        <div class="filter-field">
+                            <label for="nome">Nome Razza</label>
+                            <input type="text" id="nome" th:field="*{nome}" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Informazioni Specie -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-list"></i> Specie</h3>
+                        
+                        <div class="filter-field">
+                            <label for="specie">Seleziona Specie</label>
+                            <select id="specie" th:field="*{specie.idSpecie}" required>
+                                <option value="" disabled selected>-- Seleziona --</option>
+                                <option th:each="specie : ${specie}"
+                                        th:value="${specie.IdSpecie}"
+                                        th:text="${specie.nome}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Azioni del form -->
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salva Razza
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                    <a href="/dashboard/admin/razze" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Torna alla Lista
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

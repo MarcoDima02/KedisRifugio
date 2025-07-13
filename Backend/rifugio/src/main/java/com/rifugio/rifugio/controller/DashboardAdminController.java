@@ -237,7 +237,8 @@ public class DashboardAdminController {
         }
 
         razzaService.salva(razza);
-        return "dashboard_lista_razze";  
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "redirect:/dashboard/admin/razze";  
 
     }
 
