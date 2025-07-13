@@ -1,6 +1,6 @@
 package com.rifugio.rifugio.controller;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,8 +166,8 @@ public class RifugioController {
         // Associa l'utente alla donazione e salva
         donazione.setPersona(utente);
 
-        Date currentDate = new Date(System.currentTimeMillis());
-        donazione.setData_donazione(currentDate);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        donazione.setData_donazione(currentDateTime);
  
         donazioniServiceImpl.save(donazione);
         

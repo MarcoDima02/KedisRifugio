@@ -26,12 +26,18 @@
                     
                     <div class="form-field">
                         <label for="nome">Nome:</label>
-                        <input type="text" th:field="*{nome}" id="nome" class="form-control" required maxlength="50">
+                        <input type="text" th:field="*{nome}" id="nome" class="form-control" required 
+                               maxlength="50" minlength="2" pattern="[A-Za-zÀ-ù\s]+" 
+                               title="Il nome deve contenere solo lettere e spazi">
+                        <small class="form-help">Solo lettere e spazi, da 2 a 50 caratteri</small>
                     </div>
 
                     <div class="form-field">
                         <label for="cognome">Cognome:</label>
-                        <input type="text" th:field="*{cognome}" id="cognome" class="form-control" required maxlength="50">
+                        <input type="text" th:field="*{cognome}" id="cognome" class="form-control" required 
+                               maxlength="50" minlength="2" pattern="[A-Za-zÀ-ù\s]+" 
+                               title="Il cognome deve contenere solo lettere e spazi">
+                        <small class="form-help">Solo lettere e spazi, da 2 a 50 caratteri</small>
                     </div>
 
                     <div class="form-field">
@@ -50,7 +56,11 @@
 
                     <div class="form-field">
                         <label for="numero">Numero di telefono:</label>
-                        <input type="tel" th:field="*{numero}" id="numero" class="form-control" maxlength="15">
+                        <input type="tel" th:field="*{numero}" id="numero" class="form-control" 
+                               maxlength="15" pattern="[+]?[0-9\s\-()]{8,15}" 
+                               title="Inserisci un numero di telefono valido" 
+                               placeholder="Es: +39 123 456 7890">
+                        <small class="form-help">Formato: +39 123 456 7890 (opzionale)</small>
                     </div>
                 </div>
 

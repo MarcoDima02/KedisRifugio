@@ -18,5 +18,7 @@ public interface DonazioniService {
     Donazioni update(int id, Donazioni donazione);
 
     Boolean deleteById(int id);
+    
+    List<Donazioni> getUltimeDonazioni();
 
 }
