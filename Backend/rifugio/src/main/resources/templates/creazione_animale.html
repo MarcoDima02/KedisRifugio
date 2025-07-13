@@ -8,120 +8,165 @@
 
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/forms.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <div th:replace="fragments/sidebar :: customSidebar"></div>
 
-<!-- Aggiunta classe "animale-form" per isolare il CSS -->
-<section class="filter-section animale-form">
-  <!-- Aggiunta classe "animale-form-box" al form -->
-  <form th:action="@{/dashboard/admin/animali/save}" th:object="${animale}" method="post" class="filter-box animale-form-box" novalidate>
-
-    <h2 class="form-title">Inserisci Nuovo Animale</h2>
-
-    <div class="filter-field">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" th:field="*{nome}" required />
+<div class="main-content">
+  <div class="filter-box animale-form-box">
+    
+    <!-- Header del form -->
+    <div class="form-header">
+      <h2><i class="fas fa-plus-circle"></i> Inserisci Nuovo Animale</h2>
     </div>
 
-        <div class="filter-field">
-      <label for="specie">Specie:</label>
-      <select id="specie" th:field="*{specie.idSpecie}" required>
-        <option value="" disabled selected>-- Seleziona --</option>
-        <option th:each="specie : ${specieList}"
-                th:value="${specie.IdSpecie}"
-                th:text="${specie.nome}"></option>
-      </select>
-    </div>
+    <!-- Form -->
+    <form th:action="@{/dashboard/admin/animali/save}" th:object="${animale}" method="post" novalidate>
+      
+      <!-- Grid per organizzare i campi -->
+      <div class="form-grid">
+        
+        <!-- Informazioni Base -->
+        <div class="form-section">
+          <h3><i class="fas fa-paw"></i> Informazioni Base</h3>
+          
+          <div class="filter-field">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" th:field="*{nome}" required />
+          </div>
 
-    <div class="filter-field">
-      <label for="razza">Razza:</label>
-      <select name="razza" id="razza">
-        <option value="" disabled selected>-- Seleziona --</option>
-        <option th:each="razza : ${razzaList}"
-                th:value="${razza.idRazza}"
-                th:text="${razza.nome}">
-        </option>
-      </select>
-    </div>
+          <div class="filter-field">
+            <label for="specie">Specie:</label>
+            <select id="specie" th:field="*{specie.idSpecie}" required>
+              <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="specie : ${specieList}"
+                      th:value="${specie.IdSpecie}"
+                      th:text="${specie.nome}"></option>
+            </select>
+          </div>
 
-    <div class="filter-field">
-      <label for="sesso">Sesso:</label>
-      <select id="sesso" th:field="*{sesso}" required>
-        <option value="" disabled selected>Seleziona sesso</option>
-        <option value="M">Maschio</option>
-        <option value="F">Femmina</option>
-      </select>
-    </div>
+          <div class="filter-field">
+            <label for="razza">Razza:</label>
+            <select name="razza" id="razza">
+              <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="razza : ${razzaList}"
+                      th:value="${razza.idRazza}"
+                      th:text="${razza.nome}">
+              </option>
+            </select>
+          </div>
+        </div>
 
-    <div class="filter-field">
-      <label for="dataNascita">Data di Nascita:</label>
-      <input type="date" id="dataNascita" th:field="*{dataNascita}" required />
-    </div>
+        <!-- Caratteristiche -->
+        <div class="form-section">
+          <h3><i class="fas fa-info-circle"></i> Caratteristiche</h3>
+          
+          <div class="filter-field">
+            <label for="sesso">Sesso:</label>
+            <select id="sesso" th:field="*{sesso}" required>
+              <option value="" disabled selected>Seleziona sesso</option>
+              <option value="M">Maschio</option>
+              <option value="F">Femmina</option>
+            </select>
+          </div>
 
-    <div class="filter-field">
-      <label for="dataArrivo">Data di Arrivo:</label>
-      <input type="date" id="dataArrivo" th:field="*{dataArrivo}" required />
-    </div>
+          <div class="filter-field">
+            <label for="dataNascita">Data di Nascita:</label>
+            <input type="date" id="dataNascita" th:field="*{dataNascita}" required />
+          </div>
 
-    <div class="filter-field">
-      <label for="descrizioneBreve">Descrizione Breve:</label>
-      <input type="text" id="descrizioneBreve" th:field="*{descrizioneBreve}" maxlength="50" />
+          <div class="filter-field">
+            <label for="dataArrivo">Data di Arrivo:</label>
+            <input type="date" id="dataArrivo" th:field="*{dataArrivo}" required />
+          </div>
 
-    </div>
+          <div class="filter-field">
+            <label for="idStatoAnimale">Stato Animale:</label>
+            <select id="idStatoAnimale" th:field="*{idStatoAnimale.idStatoAnimale}" required>
+              <option value="" disabled selected>-- Seleziona --</option>
+              <option th:each="stato : ${statiAnimali}"
+                      th:value="${stato.idStatoAnimale}"
+                      th:text="${stato.descrizione}"></option>
+            </select>
+          </div>
+        </div>
 
-    <div class="filter-field">
-      <label for="descrizioneLunga">Descrizione Lunga:</label>
-      <textarea id="descrizioneLunga" th:field="*{descrizioneLunga}" rows="4" maxlength="200"></textarea>
-    </div>
+        <!-- Descrizioni -->
+        <div class="form-section form-section-full">
+          <h3><i class="fas fa-align-left"></i> Descrizioni</h3>
+          
+          <div class="filter-field">
+            <label for="descrizioneBreve">Descrizione Breve:</label>
+            <input type="text" id="descrizioneBreve" th:field="*{descrizioneBreve}" maxlength="50" placeholder="Breve descrizione dell'animale..." />
+          </div>
 
-    <div class="filter-field">
-      <label for="idStatoAnimale">Stato Animale:</label>
-      <select id="idStatoAnimale" th:field="*{idStatoAnimale.idStatoAnimale}" required>
-        <option value="" disabled selected>-- Seleziona --</option>
-        <option th:each="stato : ${statiAnimali}"
-                th:value="${stato.idStatoAnimale}"
-                th:text="${stato.descrizione}"></option>
-      </select>
-    </div>
+          <div class="filter-field">
+            <label for="descrizioneLunga">Descrizione Lunga:</label>
+            <textarea id="descrizioneLunga" th:field="*{descrizioneLunga}" rows="4" maxlength="200" placeholder="Descrizione dettagliata dell'animale..."></textarea>
+          </div>
+        </div>
 
-    <fieldset>
-      <legend>Cartella Clinica</legend>
+        <!-- Cartella Clinica -->
+        <div class="form-section form-section-full">
+          <h3><i class="fas fa-stethoscope"></i> Cartella Clinica</h3>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="filter-field">
+              <label for="microchip">Microchip:</label>
+              <input type="text" id="microchip" th:field="*{idCartellaClinica.microchip}" />
+            </div>
 
-      <div class="filter-field">
-        <label for="microchip">Microchip:</label>
-        <input type="text" id="microchip" th:field="*{idCartellaClinica.microchip}" />
+            <div class="filter-field">
+              <label for="vaccinazioni">Vaccinazioni (numero):</label>
+              <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" min="0" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div class="filter-field">
+              <label for="sterilizzato" style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="sterilizzato" th:field="*{idCartellaClinica.sterilizzato}" style="width: auto;" />
+                Sterilizzato
+              </label>
+            </div>
+
+            <div class="filter-field">
+              <label for="sverminazione" style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="sverminazione" th:field="*{idCartellaClinica.sverminazione}" style="width: auto;" />
+                Sverminazione
+              </label>
+            </div>
+
+            <div class="filter-field">
+              <label for="trattamentoAntiparassitario" style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="trattamentoAntiparassitario" th:field="*{idCartellaClinica.trattamentoAntiparassitario}" style="width: auto;" />
+                Trattamento Antiparassitario
+              </label>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="filter-field">
-        <label for="vaccinazioni">Vaccinazioni (numero):</label>
-        <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" min="0" />
+      <!-- Azioni del form -->
+      <div class="action-buttons">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Salva Animale
+        </button>
+        <button type="reset" class="btn btn-secondary">
+          <i class="fas fa-undo"></i> Reset
+        </button>
+        <a href="/dashboard/admin/animali" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Torna alla Lista
+        </a>
       </div>
 
-      <div class="filter-field">
-        <label for="sterilizzato">Sterilizzato:</label>
-        <input type="checkbox" id="sterilizzato" th:field="*{idCartellaClinica.sterilizzato}" />
-      </div>
-
-      <div class="filter-field">
-        <label for="sverminazione">Sverminazione:</label>
-        <input type="checkbox" id="sverminazione" th:field="*{idCartellaClinica.sverminazione}" />
-      </div>
-
-      <div class="filter-field">
-        <label for="trattamentoAntiparassitario">Trattamento Antiparassitario:</label>
-        <input type="checkbox" id="trattamentoAntiparassitario" th:field="*{idCartellaClinica.trattamentoAntiparassitario}" />
-      </div>
-    </fieldset>
-
-    <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
-      <button type="submit">Salva Animale</button>
-      <button type="reset" class="secondary">Reset</button>
-    </div>
-
-  </form>
-</section>
+    </form>
+  </div>
+</div>
 
 
 </body>

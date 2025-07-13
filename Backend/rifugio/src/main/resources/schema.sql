@@ -96,6 +96,7 @@ CREATE TABLE adozioni (
     id_persona INT NOT NULL,
     data_adozione DATE NOT NULL,
     id_step_adozioni INT NULL,
+    note TEXT,
     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale),
     FOREIGN KEY (id_persona) REFERENCES utenti(id_persona),
     FOREIGN KEY (id_step_adozioni) REFERENCES step_adozioni(id_step_adozioni)

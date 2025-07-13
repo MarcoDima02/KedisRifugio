@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Richiesta Adozione</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-area.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+    
+    <div class="edit-profile-container">
+        <div class="edit-profile-card">
+            <div class="edit-profile-header">
+                <h1><i class="fas fa-heart-circle-plus"></i> Richiesta di Adozione</h1>
+                <p>Compila il modulo per inviare la tua richiesta di adozione</p>
+            </div>
+
+            <!-- Messaggi di successo/errore -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-error">
+                <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
+            </div>
+
+            <form th:action="@{/area-utente/richiesta-adozione}" th:object="${adozione}" method="post" novalidate>
+                
+                <!-- Informazioni Richiedente (readonly) -->
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Richiedente</label>
+                    <div class="input-container">
+                        <input type="text" 
+                               th:value="${utente.nome + ' ' + utente.cognome + ' (' + utente.email + ')'}" 
+                               readonly
+                               style="background: rgba(255, 255, 255, 0.2); cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <!-- Selezione Animale -->
+                <div class="form-group">
+                    <label for="idAnimale"><i class="fas fa-paw"></i> Seleziona l'animale che vuoi adottare *</label>
+                    <div class="input-container">
+                        <i class="input-icon fas fa-paw"></i>
+                        <select id="idAnimale" th:field="*{animale.idAnimale}" required
+                                style="padding-left: 2.5rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; color: white; width: 100%; padding: 0.8rem;">
+                            <option value="" disabled selected style="color: #333;">-- Scegli un animale --</option>
+                            <option th:each="animale : ${animali}"
+                                    th:value="${animale.idAnimale}"
+                                    th:text="${animale.nome != null ? animale.nome : 'Animale ' + animale.idAnimale}"
+                                    style="color: #333;"></option>
+                        </select>
+                    </div>
+                    <div th:if="${#fields.hasErrors('animale.idAnimale')}" class="field-error">
+                        <span th:errors="*{animale.idAnimale}"></span>
+                    </div>
+                </div>
+
+                <!-- Data preferita per l'adozione -->
+                <div class="form-group">
+                    <label for="dataAdozione"><i class="fas fa-calendar-alt"></i> Data preferita per l'adozione</label>
+                    <div class="input-container">
+                        <i class="input-icon fas fa-calendar-alt"></i>
+                        <input type="date" id="dataAdozione" th:field="*{dataAdozione}"
+                               style="padding-left: 2.5rem;">
+                    </div>
+                    <small style="color: rgba(255, 255, 255, 0.8); font-size: 0.85rem;">
+                        Indica una data orientativa. Sarà necessario completare il processo di adozione prima.
+                    </small>
+                </div>
+
+                <!-- Note aggiuntive -->
+                <div class="form-group">
+                    <label for="note"><i class="fas fa-sticky-note"></i> Note aggiuntive (opzionale)</label>
+                    <div class="input-container">
+                        <textarea id="note" name="note" rows="4" placeholder="Racconta qualcosa di te, della tua esperienza con gli animali, della tua casa..."
+                                style="width: 100%; padding: 0.8rem; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; resize: vertical; min-height: 100px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Informazioni importanti -->
+                <div class="password-info">
+                    <h3><i class="fas fa-info-circle"></i> Informazioni Importanti</h3>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; opacity: 0.9; font-size: 0.9rem;">
+                        <li>La richiesta sarà valutata dal nostro staff</li>
+                        <li>Potremmo contattarti per un colloquio conoscitivo</li>
+                        <li>È possibile che sia richiesta una visita pre-adozione</li>
+                        <li>L'adozione è gratuita, ma apprezziamo donazioni volontarie</li>
+                    </ul>
+                </div>
+
+                <!-- Pulsanti azione -->
+                <div class="form-actions">
+                    <button type="submit" class="form-btn">
+                        <i class="fas fa-paper-plane"></i> Invia Richiesta
+                    </button>
+                    <a href="/area-utente" class="form-btn secondary">
+                        <i class="fas fa-arrow-left"></i> Torna all'Area Utente
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+
+    <script>
+        // Migliora l'esperienza utente con la selezione dell'animale
+        document.getElementById('idAnimale').addEventListener('change', function() {
+            if (this.value) {
+                this.style.color = 'white';
+            }
+        });
+
+        // Imposta una data minima di oggi per l'adozione
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dataAdozione').setAttribute('min', today);
+        
+        // Se non è stata impostata una data, suggerisci una data tra una settimana
+        if (!document.getElementById('dataAdozione').value) {
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            document.getElementById('dataAdozione').value = nextWeek.toISOString().split('T')[0];
+        }
+    </script>
+</body>
+</html>

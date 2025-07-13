@@ -1,23 +1,132 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diamoci una zampa - Area personale</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-
-
+    <link rel="stylesheet" th:href="@{/css/user-area.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <th:block th:replace="fragments/header :: customHeader"></th:block>
-    <div style="text-align:center; margin-top: 40px;">
-        <h1>Benvenuto nell'area utente!</h1>
-        <p>Questa è la pagina di destinazione dopo il login. Personalizzala come preferisci.</p>
-        <div th:if="${userFullName != null}" style="margin-top: 20px; font-size:1.1em; color:#2d7d3e;">
-            Utente loggato: <b th:text="${userFullName}"></b>
+    
+    <div class="user-area-container">
+        <!-- Messaggi di successo/errore -->
+        <div th:if="${successMessage}" class="alert alert-success" style="max-width: 800px; margin: 0 auto 2rem auto; text-align: center; padding: 1rem; background: linear-gradient(45deg, #28a745, #34ce57); color: white; border-radius: 8px;">
+            <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-error" style="max-width: 800px; margin: 0 auto 2rem auto; text-align: center; padding: 1rem; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px;">
+            <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
+        </div>
+        
+        <div style="text-align:center; margin-bottom: 2rem;">
+            <h1 style="color: #004B23; font-size: 2.5rem; margin-bottom: 1rem;">
+                <i class="fas fa-user-circle"></i> Benvenuto nell'area personale!
+            </h1>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 1rem;">
+                Gestisci il tuo profilo e contribuisci al benessere degli animali
+            </p>
+            <div th:if="${userFullName != null}" 
+                 style="font-size: 1.3rem; color: #004B23; font-weight: 600; background: linear-gradient(45deg, #FFD700, #FFA500); padding: 1rem 2rem; border-radius: 25px; display: inline-block; margin-top: 1rem;">
+                <i class="fas fa-user"></i> Utente loggato: <strong th:text="${userFullName}"></strong>
+            </div>
+        </div>
+        
+        <div class="user-cards-grid">
+            <!-- Card Donazioni -->
+            <div class="user-card" onclick="window.location.href='/donazione'">
+                <div class="user-card-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Fai una Donazione</h3>
+                <p>
+                    Sostieni il rifugio e aiuta i nostri amici a quattro zampe. 
+                    Ogni contributo fa la differenza per il loro benessere e le cure veterinarie.
+                </p>
+                <a href="/donazione" class="user-card-btn">
+                    <i class="fas fa-donate"></i> Dona Ora
+                </a>
+            </div>
+            
+            <!-- Card Profilo Utente -->
+            <div class="user-card" onclick="window.location.href='/area-utente/profilo'">
+                <div class="user-card-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h3>Il Mio Profilo</h3>
+                <p>
+                    Visualizza e modifica le tue informazioni personali, 
+                    aggiorna i tuoi dati di contatto e gestisci le impostazioni del tuo account.
+                </p>
+                <a href="/area-utente/profilo" class="user-card-btn">
+                    <i class="fas fa-cog"></i> Gestisci Profilo
+                </a>
+            </div>
+            
+            <!-- Card Richiesta Adozione -->
+            <div class="user-card" onclick="window.location.href='/area-utente/richiesta-adozione'">
+                <div class="user-card-icon">
+                    <i class="fas fa-heart-circle-plus"></i>
+                </div>
+                <h3>Richiesta Adozione</h3>
+                <p>
+                    Invia una richiesta di adozione per uno dei nostri animali. 
+                    Trova il tuo nuovo compagno di vita e offrigli una casa piena d'amore.
+                </p>
+                <a href="/area-utente/richiesta-adozione" class="user-card-btn">
+                    <i class="fas fa-paw"></i> Adotta un Amico
+                </a>
+            </div>
+            
+            <!-- Card Animali (opzionale - per future funzionalità) -->
+            <div class="user-card" onclick="window.location.href='/animali'">
+                <div class="user-card-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <h3>I Nostri Animali</h3>
+                <p>
+                    Scopri tutti gli animali del rifugio, trova il tuo nuovo amico 
+                    e segui le loro storie di recupero e adozione.
+                </p>
+                <a href="/animali" class="user-card-btn">
+                    <i class="fas fa-search"></i> Esplora Animali
+                </a>
+            </div>
+            
+            <!-- Card Come Aiutare -->
+            <div class="user-card" onclick="window.location.href='/come-aiutare'">
+                <div class="user-card-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Come Aiutare</h3>
+                <p>
+                    Scopri tutti i modi per supportare il rifugio: volontariato, 
+                    adozioni, donazioni di cibo e materiali per gli animali.
+                </p>
+                <a href="/come-aiutare" class="user-card-btn">
+                    <i class="fas fa-info-circle"></i> Scopri di Più
+                </a>
+            </div>
         </div>
     </div>
+    
     <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    
+    <script>
+        // Aggiungi un effetto di click per le card
+        document.querySelectorAll('.user-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Evita la navigazione se si è cliccato su un link
+                if (e.target.tagName.toLowerCase() !== 'a') {
+                    const link = this.querySelector('.user-card-btn');
+                    if (link) {
+                        window.location.href = link.getAttribute('href');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

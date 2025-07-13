@@ -1,0 +1,23 @@
+/* CSS per pagine di successo/conferma */
+/* Utilizzato da: donazione_successo.html e altre pagine di conferma */
+
+/* Pagina a full height con footer fisso in basso */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.donazioni-btn-container {
+    margin-top: 3rem;
+}

@@ -235,7 +235,6 @@
     font-size: 1.1em;
 }
 
-
 @media (max-width: 900px) {
     .dashboard-cards, .dashboard-actions {
         flex-direction: column;

@@ -1,63 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Diamoci una zampa - Inserisci Adozione</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/forms.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <div th:replace="fragments/sidebar :: customSidebar"></div>
 
-    <section class="filter-section animale-form">
-    <form th:action="@{/dashboard/admin/adozioni/save}" th:object="${adozione}" method="post" class="filter-box animale-form-box" novalidate>
+    <div class="main-content">
+        <div class="filter-box animale-form-box">
+            
+            <!-- Header del form -->
+            <div class="form-header">
+                <h2><i class="fas fa-heart"></i> Inserisci Nuova Adozione</h2>
+            </div>
 
-        <h2 class="form-title">Inserisci Nuova Adozione</h2>
+            <!-- Form -->
+            <form th:action="@{/dashboard/admin/adozioni/save}" th:object="${adozione}" method="post" novalidate>
+                
+                <!-- Grid per organizzare i campi -->
+                <div class="form-grid">
+                    
+                    <!-- Informazioni Animale -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-paw"></i> Animale</h3>
+                        
+                        <div class="filter-field">
+                            <label for="idAnimale">Seleziona Animale</label>
+                            <select id="idAnimale" th:field="*{animale.idAnimale}" required>
+                                <option value="" disabled selected>-- Seleziona --</option>
+                                <option th:each="animale : ${animali}"
+                                        th:value="${animale.idAnimale}"
+                                        th:text="${animale.idAnimale + ' - ' + animale.nome}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Informazioni Richiedente -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Richiedente</h3>
+                        
+                        <div class="filter-field">
+                            <label for="idPersona">Seleziona Utente</label>
+                            <select id="idPersona" th:field="*{persona.id_persona}" required>
+                                <option value="" disabled selected>-- Seleziona --</option>
+                                <option th:each="utente : ${utenti}"
+                                        th:value="${utente.id_persona}"
+                                        th:text="${utente.id_persona + ' - ' + utente.nome + ' ' + utente.cognome}"></option>
+                            </select>
+                        </div>
+                    </div>
 
-        <div class="filter-field">
-            <label for="idAnimale">Id Animale</label>
-            <select id="idAnimale" th:field="*{animale.idAnimale}" required>
-                <option value="" disabled selected>-- Seleziona --</option>
-                <option th:each="animale : ${animali}"
-                        th:value="${animale.idAnimale}"
-                        th:text="${animale.idAnimale + ' ' + animale.nome}"></option>
-            </select>
-        </div>
-        
-        <div class="filter-field">
-            <label for="idPersona">Id Utente</label>
-            <select id="idPersona" th:field="*{persona.id_persona}" required>
-                <option value="" disabled selected>-- Seleziona --</option>
-                <option th:each="utente : ${utenti}"
-                        th:value="${utente.id_persona}"
-                        th:text="${utente.id_persona + ' ' + utente.nome}"></option>
-            </select>
-        </div>
+                    <!-- Dettagli Adozione -->
+                    <div class="form-section form-section-full">
+                        <h3><i class="fas fa-calendar-alt"></i> Dettagli Adozione</h3>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="filter-field">
+                                <label for="dataAdozione">Data Adozione</label>
+                                <input type="date" id="dataAdozione" th:field="*{dataAdozione}" required>
+                            </div>
+                            
+                            <div class="filter-field">
+                                <label for="idStepAdozione">Step Adozione</label>
+                                <select id="idStepAdozione" th:field="*{stepAdozione.id_step_adozioni}" required>
+                                    <option value="" disabled selected>-- Seleziona --</option>
+                                    <option th:each="step : ${stepAdozioni}"
+                                            th:value="${step.id_step_adozioni}"
+                                            th:text="${step.nome_step}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="filter-field">
-            <label for="dataAdozione">Data Adozione</label>
-            <input type="date" id="dataAdozione" th:field="*{dataAdozione}" required>
-        </div>
-        
-        <div class="filter-field">
-            <label for="idStepAdozione">Step Adozione</label>
-            <select id="idStepAdozione" th:field="*{stepAdozione.id_step_adozioni}" required>
-                <option value="" disabled selected>-- Seleziona --</option>
-                <option th:each="step : ${stepAdozioni}"
-                        th:value="${step.id_step_adozioni}"
-                        th:text="${step.nome_step}"></option>
-            </select>
-        </div>
+                </div>
 
-        <div class="filter-field" style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
-        <button type="submit">Salva Adozione</button>
-        <button type="reset" class="secondary">Reset</button>
-        </div>
+                <!-- Azioni del form -->
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salva Adozione
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                    <a href="/dashboard/admin/adozioni" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Torna alla Lista
+                    </a>
+                </div>
 
-    </form>
-    </section>
+            </form>
+        </div>
+    </div>
     
 </body>
 </html>

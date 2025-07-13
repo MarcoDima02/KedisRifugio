@@ -319,6 +319,51 @@ public class DashboardAdminController {
         return "dashboard_lista_adozioni";
     }
 
+    // Visualizza dettagli di una richiesta di adozione
+    @GetMapping("/adozioni/dettagli/{id}")
+    public String visualizzaDettagliAdozione(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        try {
+            Adozioni adozione = adozioniService.getAdozioneById(id);
+            if (adozione == null) {
+                return "redirect:/dashboard/admin/adozioni";
+            }
+            
+            // Forza il caricamento delle relazioni lazy per evitare LazyInitializationException
+            if (adozione.getPersona() != null) {
+                // Accesso alle proprietà per forzare il caricamento
+                adozione.getPersona().getNome();
+                adozione.getPersona().getCognome();
+                adozione.getPersona().getEmail();
+                adozione.getPersona().getNumero();
+                adozione.getPersona().getCodiceFiscale();
+            }
+            
+            if (adozione.getAnimale() != null) {
+                adozione.getAnimale().getNome();
+                if (adozione.getAnimale().getSpecie() != null) {
+                    adozione.getAnimale().getSpecie().getNome();
+                }
+                if (adozione.getAnimale().getRazza() != null) {
+                    adozione.getAnimale().getRazza().getNome();
+                }
+            }
+            
+            if (adozione.getStepAdozione() != null) {
+                adozione.getStepAdozione().getNome_step();
+            }
+            
+            model.addAttribute("adozione", adozione);
+            return "dettagli_richiesta_adozione";
+        } catch (Exception e) {
+            System.err.println("Errore nel caricamento dettagli adozione: " + e.getMessage());
+            return "redirect:/dashboard/admin/adozioni";
+        }
+    }
+
     @GetMapping("/adozioni/save")
     public String mostraFormCreazioneAdozione(Model model, HttpSession session) {
         if (!isAdmin(session)) {

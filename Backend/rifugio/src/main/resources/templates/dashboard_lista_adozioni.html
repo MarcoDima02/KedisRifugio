@@ -43,6 +43,9 @@
                             <td th:text="${#dates.format(adozione.dataAdozione, 'dd/MM/yyyy')}">1/1/2000</td>
                             <td th:text="${adozione.stepAdozione.nome_step}">Nome Step</td>
                             <td>
+                                <a th:href="@{/dashboard/admin/adozioni/dettagli/{id}(id=${adozione.id})}" class="action-icon-btn" title="Visualizza Dettagli">
+                                    <i class="fa fa-eye"></i>
+                                </a>
                                 <a th:href="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.id})}" class="action-icon-btn" title="Modifica">
                                     <i class="fa fa-edit"></i>
                                 </a>

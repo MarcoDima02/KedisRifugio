@@ -3,140 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifica Utente</title>
+    <title>Diamoci una zampa - Modifica Utente</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/forms.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+    
     <div class="main-content">
-        <div class="login-container" style="margin: 2rem auto; max-width: 500px;">
-            <div class="logo" style="margin-bottom: 20px;">
-                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Diamoci una zampa Logo" style="width:80px;height:80px;object-fit:contain;">
+        <div class="filter-box animale-form-box">
+            
+            <!-- Header del form -->
+            <div class="form-header">
+                <h2><i class="fas fa-user-edit"></i> Modifica Utente</h2>
             </div>
-            <h1 class="title" style="color:#fff;">Modifica Utente</h1>
-            <form th:action="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" th:object="${utente}" method="post" id="modificaUtenteForm">
-                <div th:if="${#fields.hasErrors()}" class="error-message" style="display:block;">
+
+            <!-- Form -->
+            <form th:action="@{/dashboard/admin/utenti/update/{id}(id=${utente.id_persona})}" th:object="${utente}" method="post" id="modificaUtenteForm" novalidate>
+                
+                <!-- Messaggi di errore globali -->
+                <div th:if="${#fields.hasErrors()}" class="error-message" style="display:block; margin-bottom: 1.5rem;">
                     <ul>
                         <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
                     </ul>
                 </div>
-                <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <div class="input-container">
-                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                        <input type="text" id="nome" th:field="*{nome}" maxlength="50" required />
+
+                <!-- Grid per organizzare i campi -->
+                <div class="form-grid">
+                    
+                    <!-- Informazioni Personali -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Informazioni Personali</h3>
+                        
+                        <div class="filter-field">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" th:field="*{nome}" maxlength="50" required />
+                            <div th:if="${#fields.hasErrors('nome')}" class="error-message" th:errors="*{nome}"></div>
+                        </div>
+                        
+                        <div class="filter-field">
+                            <label for="cognome">Cognome</label>
+                            <input type="text" id="cognome" th:field="*{cognome}" maxlength="50" required />
+                            <div th:if="${#fields.hasErrors('cognome')}" class="error-message" th:errors="*{cognome}"></div>
+                        </div>
+                        
+                        <div class="filter-field">
+                            <label for="codiceFiscale">Codice Fiscale</label>
+                            <input type="text" id="codiceFiscale" th:field="*{codiceFiscale}" maxlength="16" required />
+                            <div th:if="${#fields.hasErrors('codiceFiscale')}" class="error-message" th:errors="*{codiceFiscale}"></div>
+                        </div>
                     </div>
-                    <div th:if="${#fields.hasErrors('nome')}">
-                        <span class="error-message" th:errors="*{nome}"></span>
+
+                    <!-- Informazioni Account -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user-cog"></i> Account</h3>
+                        
+                        <div class="filter-field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" th:field="*{email}" maxlength="100" required />
+                            <div th:if="${#fields.hasErrors('email')}" class="error-message" th:errors="*{email}"></div>
+                        </div>
+                        
+                        <div class="filter-field">
+                            <label for="ruolo">Ruolo</label>
+                            <select id="ruolo" th:field="*{ruolo}" required>
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('ruolo')}" class="error-message" th:errors="*{ruolo}"></div>
+                        </div>
                     </div>
+
+                    <!-- Password Attuale -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-key"></i> Password Attuale</h3>
+                        
+                        <div class="filter-field">
+                            <label for="currentPassword">Password attuale</label>
+                            <input type="password" id="currentPassword" th:value="${utente.password}" readonly style="background:#e9ecef;color:#495057;" />
+                            <div style="margin-top:0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="showCurrentPassword" />
+                                <label for="showCurrentPassword" style="cursor:pointer; color:#6c757d; font-size: 0.9em;">Mostra password attuale</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nuova Password -->
+                    <div class="form-section form-section-full">
+                        <h3><i class="fas fa-lock"></i> Nuova Password</h3>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="filter-field">
+                                <label for="password">Nuova Password</label>
+                                <input type="password" id="password" th:field="*{password}" maxlength="100" autocomplete="new-password" required 
+                                       pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':&quot;\\|,.<>/?]).{8,}$" 
+                                       title="Minimo 8 caratteri, almeno una lettera, un numero e un simbolo" />
+                                <small class="password-hint">La password deve contenere almeno 8 caratteri, una lettera, un numero e un simbolo.</small>
+                            </div>
+                            
+                            <div class="filter-field">
+                                <label for="confirmPassword">Conferma Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" maxlength="100" autocomplete="new-password" />
+                                <div class="error-message" id="confirmPasswordError" style="display:none;color:#dc3545;"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top:0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="showPassword" />
+                            <label for="showPassword" style="cursor:pointer; color:#6c757d; font-size: 0.9em;">Mostra password</label>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <label for="cognome">Cognome</label>
-                    <div class="input-container">
-                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                        <input type="text" id="cognome" th:field="*{cognome}" maxlength="50" required />
-                    </div>
-                    <div th:if="${#fields.hasErrors('cognome')}">
-                        <span class="error-message" th:errors="*{cognome}"></span>
-                    </div>
+
+                <!-- Azioni del form -->
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salva Modifiche
+                    </button>
+                    <a th:href="@{/dashboard/admin/utenti}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Torna alla Lista
+                    </a>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <div class="input-container">
-                        <span class="input-icon">@</span>
-                        <input type="email" id="email" th:field="*{email}" maxlength="100" required />
-                    </div>
-                    <div th:if="${#fields.hasErrors('email')}">
-                        <span class="error-message" th:errors="*{email}"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="codiceFiscale">Codice Fiscale</label>
-                    <div class="input-container">
-                        <span class="input-icon"><i class="fa fa-id-card"></i></span>
-                        <input type="text" id="codiceFiscale" th:field="*{codiceFiscale}" maxlength="16" required />
-                    </div>
-                    <div th:if="${#fields.hasErrors('codiceFiscale')}">
-                        <span class="error-message" th:errors="*{codiceFiscale}"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="ruolo">Ruolo</label>
-                    <div class="input-container">
-                        <span class="input-icon"><i class="fa fa-user-shield"></i></span>
-                        <select id="ruolo" th:field="*{ruolo}" required style="padding-left:45px;">
-                            <option value="USER">USER</option>
-                            <option value="ADMIN">ADMIN</option>
-                        </select>
-                    </div>
-                    <div th:if="${#fields.hasErrors('ruolo')}">
-                        <span class="error-message" th:errors="*{ruolo}"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="currentPassword">Password attuale</label>
-                    <div class="input-container">
-                        <span class="input-icon"><i class="fa fa-eye"></i></span>
-                        <input type="password" id="currentPassword" th:value="${utente.password}" readonly style="background:#e9ecef;color:#495057;" />
-                    </div>
-                    <div style="margin-top:0.5rem; text-align:left;">
-                        <input type="checkbox" id="showCurrentPassword" style="margin-right:0.4em;" />
-                        <label for="showCurrentPassword" style="font-size:0.98em;cursor:pointer;color:#fff;">Mostra password attuale</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-container">
-                        <span class="input-icon">🔒</span>
-                        <input type="password" id="password" th:field="*{password}" maxlength="100" autocomplete="new-password" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':&quot;\\|,.<>/?]).{8,}$" title="Minimo 8 caratteri, almeno una lettera, un numero e un simbolo" />
-                    </div>
-                    <small class="password-hint">La password deve contenere almeno 8 caratteri, una lettera, un numero e un simbolo.</small>
-                    <div style="margin-top:0.5rem; text-align:left;">
-                        <input type="checkbox" id="showPassword" style="margin-right:0.4em;" />
-                        <label for="showPassword" style="font-size:0.98em;cursor:pointer;color:#fff;">Mostra password</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Conferma Password</label>
-                    <div class="input-container">
-                        <span class="input-icon">🔒</span>
-                        <input type="password" id="confirmPassword" name="confirmPassword" maxlength="100" autocomplete="new-password" />
-                    </div>
-                    <div class="error-message" id="confirmPasswordError" style="display:none;color:#dc3545;"></div>
-                </div>
-                <div class="button-group" style="margin-top: 30px;">
-                    <button type="submit" class="btn btn-login"><i class="fa fa-save"></i> Salva</button>
-                    <a th:href="@{/dashboard/admin/utenti}" class="btn btn-register" style="display:inline-flex;align-items:center;"><i class="fa fa-arrow-left"></i> Annulla</a>
-                </div>
+
             </form>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        document.getElementById('modificaUtenteForm').addEventListener('submit', function(e) {
+            var pwd = document.getElementById('password').value;
+            var conf = document.getElementById('confirmPassword').value;
+            var errorDiv = document.getElementById('confirmPasswordError');
+            if (pwd !== conf) {
+                e.preventDefault();
+                errorDiv.textContent = 'Le password non coincidono.';
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('showPassword').addEventListener('change', function() {
+            var pwd = document.getElementById('password');
+            var conf = document.getElementById('confirmPassword');
+            var type = this.checked ? 'text' : 'password';
+            pwd.type = type;
+            conf.type = type;
+        });
+        
+        document.getElementById('showCurrentPassword').addEventListener('change', function() {
+            var curr = document.getElementById('currentPassword');
+            curr.type = this.checked ? 'text' : 'password';
+        });
+    </script>
 </body>
-<script th:inline="javascript">
-    document.getElementById('modificaUtenteForm').addEventListener('submit', function(e) {
-        var pwd = document.getElementById('password').value;
-        var conf = document.getElementById('confirmPassword').value;
-        var errorDiv = document.getElementById('confirmPasswordError');
-        if (pwd !== conf) {
-            e.preventDefault();
-            errorDiv.textContent = 'Le password non coincidono.';
-            errorDiv.style.display = 'block';
-        } else {
-            errorDiv.style.display = 'none';
-        }
-    });
-    document.getElementById('showPassword').addEventListener('change', function() {
-        var pwd = document.getElementById('password');
-        var conf = document.getElementById('confirmPassword');
-        var type = this.checked ? 'text' : 'password';
-        pwd.type = type;
-        conf.type = type;
-    });
-    document.getElementById('showCurrentPassword').addEventListener('change', function() {
-        var curr = document.getElementById('currentPassword');
-        curr.type = this.checked ? 'text' : 'password';
-    });
-</script>
 </html>

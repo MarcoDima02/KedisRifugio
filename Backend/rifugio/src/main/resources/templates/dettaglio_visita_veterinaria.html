@@ -2,35 +2,103 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Dettaglio Visita Veterinaria</title>
+    <title>Diamoci una zampa - Dettaglio Visita Veterinaria</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Stili custom spostati in styles.css -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/details-pages.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-<section>
-  <div class="visita-card">
-    <h2 class="form-title"><i class="fa-solid fa-notes-medical"></i> Dettaglio Visita Veterinaria</h2>
-    <dl class="visita-details">
-      <dt><i class="fa-solid fa-hashtag"></i> ID Visita</dt>
-      <dd th:text="${visita.id_visita}"></dd>
-      <dt><i class="fa-solid fa-calendar-day"></i> Data</dt>
-      <dd th:text="${#temporals.format(visita.data, 'dd/MM/yyyy')}"></dd>
-      <dt><i class="fa-solid fa-clock"></i> Ora</dt>
-      <dd th:text="${#temporals.format(visita.ora, 'HH:mm')}"></dd>
-      <dt><i class="fa-solid fa-dog"></i> Animale</dt>
-      <dd th:text="${visita.id_animale.nome + ' (' + visita.id_animale.idAnimale + ')'}"></dd>
-      <dt><i class="fa-solid fa-stethoscope"></i> Motivo</dt>
-      <dd th:text="${visita.motivo}"></dd>
-      <dt><i class="fa-solid fa-clipboard-check"></i> Esito</dt>
-      <dd th:text="${visita.esito}"></dd>
-    </dl>
-    <div class="action-buttons">
-      <a th:href="@{/dashboard/admin/visite-veterinarie}" class="secondary"><i class="fa-solid fa-arrow-left"></i> Torna alla lista</a>
-      <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="primary"><i class="fa-solid fa-pen-to-square"></i> Modifica Visita</a>
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+
+    <div class="main-content">
+        <div class="details-container">
+            
+            <!-- Header del dettaglio -->
+            <div class="details-header">
+                <h1>
+                    <i class="fas fa-stethoscope"></i> 
+                    Dettaglio Visita Veterinaria
+                </h1>
+                <p>Informazioni complete sulla visita del <span th:text="${#temporals.format(visita.data, 'dd/MM/yyyy')}"></span></p>
+            </div>
+
+            <!-- Grid dei dettagli -->
+            <div class="details-grid">
+                
+                <!-- Sezione Informazioni Generali -->
+                <div class="detail-section">
+                    <h3><i class="fas fa-info-circle"></i> Informazioni Generali</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">ID Visita</div>
+                        <div class="detail-value" th:text="${visita.id_visita}">ID</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Data</div>
+                        <div class="detail-value" th:text="${#temporals.format(visita.data, 'dd/MM/yyyy')}">Data</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Ora</div>
+                        <div class="detail-value" th:text="${#temporals.format(visita.ora, 'HH:mm')}">Ora</div>
+                    </div>
+                </div>
+
+                <!-- Sezione Animale -->
+                <div class="detail-section">
+                    <h3><i class="fas fa-paw"></i> Animale</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Nome</div>
+                        <div class="detail-value" th:text="${visita.id_animale.nome}">Nome animale</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">ID Animale</div>
+                        <div class="detail-value" th:text="${visita.id_animale.idAnimale}">ID</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Specie</div>
+                        <div class="detail-value">
+                            <span th:if="${visita.id_animale.specie != null}" th:text="${visita.id_animale.specie.nome}">Specie</span>
+                            <span th:unless="${visita.id_animale.specie != null}">Non specificata</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Dettagli Visita (full-width) -->
+                <div class="detail-section notes-section">
+                    <h3><i class="fas fa-clipboard-check"></i> Dettagli della Visita</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Motivo della Visita</div>
+                        <div class="detail-value" th:text="${visita.motivo}">Motivo</div>
+                    </div>
+                    
+                    <div class="notes-content">
+                        <h4>Esito della Visita</h4>
+                        <span th:text="${visita.esito}">Esito della visita veterinaria</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pulsanti di azione -->
+            <div class="action-buttons">
+                <a th:href="@{/dashboard/admin/visite-veterinarie/update/{id}(id=${visita.id_visita})}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Modifica Visita
+                </a>
+                <a th:href="@{/dashboard/admin/visite-veterinarie}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Torna alla Lista
+                </a>
+            </div>
+
+        </div>
     </div>
-  </div>
-</section>
+    
 </body>
 </html>

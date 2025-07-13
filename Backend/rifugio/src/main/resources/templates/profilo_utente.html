@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Il mio profilo</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-area.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+    
+    <div class="profile-container">
+        <div th:if="${successMessage}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+        </div>
+        
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i> <span th:text="${errorMessage}"></span>
+        </div>
+        
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar" th:text="${userInitials}">
+                    <!-- Iniziali utente -->
+                </div>
+                <h1 class="profile-name" th:text="${utente.nome + ' ' + utente.cognome}">Nome Cognome</h1>
+                <span class="profile-role" th:text="${utente.ruolo}">USER</span>
+            </div>
+            
+            <div class="profile-details">
+                <div class="profile-field">
+                    <label><i class="fas fa-user"></i> Nome</label>
+                    <div class="profile-field-value" th:text="${utente.nome}">Nome</div>
+                </div>
+                
+                <div class="profile-field">
+                    <label><i class="fas fa-user"></i> Cognome</label>
+                    <div class="profile-field-value" th:text="${utente.cognome}">Cognome</div>
+                </div>
+                
+                <div class="profile-field">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <div class="profile-field-value" th:text="${utente.email}">email@esempio.com</div>
+                </div>
+                
+                <div class="profile-field">
+                    <label><i class="fas fa-id-card"></i> Codice Fiscale</label>
+                    <div class="profile-field-value" th:text="${utente.codiceFiscale}">CODICE FISCALE</div>
+                </div>
+                
+                <div class="profile-field">
+                    <label><i class="fas fa-phone"></i> Telefono</label>
+                    <div class="profile-field-value" th:text="${utente.numero}">+39 123 456 7890</div>
+                </div>
+                
+                <div class="profile-field">
+                    <label><i class="fas fa-user-shield"></i> Ruolo</label>
+                    <div class="profile-field-value" th:text="${utente.ruolo}">USER</div>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <a th:href="@{/area-utente/profilo/modifica}" class="profile-btn">
+                    <i class="fas fa-edit"></i> Modifica Profilo
+                </a>
+                <a th:href="@{/area-utente}" class="profile-btn secondary">
+                    <i class="fas fa-arrow-left"></i> Torna all'Area Utente
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+</body>
+</html>

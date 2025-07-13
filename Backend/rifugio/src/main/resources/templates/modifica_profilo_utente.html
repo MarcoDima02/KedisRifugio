@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Modifica Profilo</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-area.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <th:block th:replace="fragments/header :: customHeader"></th:block>
+    
+    <div class="edit-profile-container">
+        <div class="edit-profile-card">
+            <div class="edit-profile-header">
+                <h1><i class="fas fa-user-edit"></i> Modifica Profilo</h1>
+                <p>Aggiorna le tue informazioni personali</p>
+            </div>
+            
+            <div th:if="${errorMessage}" class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i> <span th:text="${errorMessage}"></span>
+            </div>
+            
+            <form th:action="@{/area-utente/profilo/modifica}" th:object="${utente}" method="post" id="editProfileForm">
+                <div class="form-group">
+                    <label for="nome"><i class="fas fa-user"></i> Nome</label>
+                    <div class="input-container">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="nome" th:field="*{nome}" placeholder="Inserisci il tuo nome" required maxlength="50">
+                    </div>
+                    <div th:if="${#fields.hasErrors('nome')}" class="field-error">
+                        <span th:errors="*{nome}"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cognome"><i class="fas fa-user"></i> Cognome</label>
+                    <div class="input-container">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="cognome" th:field="*{cognome}" placeholder="Inserisci il tuo cognome" required maxlength="50">
+                    </div>
+                    <div th:if="${#fields.hasErrors('cognome')}" class="field-error">
+                        <span th:errors="*{cognome}"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <div class="input-container">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" th:field="*{email}" placeholder="Inserisci la tua email" required maxlength="100">
+                    </div>
+                    <div th:if="${#fields.hasErrors('email')}" class="field-error">
+                        <span th:errors="*{email}"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="codiceFiscale"><i class="fas fa-id-card"></i> Codice Fiscale</label>
+                    <div class="input-container">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="codiceFiscale" th:field="*{codiceFiscale}" placeholder="Inserisci il codice fiscale" required maxlength="16" style="text-transform: uppercase;">
+                    </div>
+                    <div th:if="${#fields.hasErrors('codiceFiscale')}" class="field-error">
+                        <span th:errors="*{codiceFiscale}"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="numero"><i class="fas fa-phone"></i> Numero di Telefono</label>
+                    <div class="input-container">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="numero" th:field="*{numero}" placeholder="Inserisci il tuo numero di telefono" maxlength="15">
+                    </div>
+                    <div th:if="${#fields.hasErrors('numero')}" class="field-error">
+                        <span th:errors="*{numero}"></span>
+                    </div>
+                </div>
+                
+                <div class="password-info">
+                    <h3><i class="fas fa-lock"></i> Modifica Password</h3>
+                    <p>Se desideri modificare la password, compila i campi sottostanti. Altrimenti, lasciali vuoti per mantenere la password attuale.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Nuova Password (opzionale)</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" placeholder="Inserisci la nuova password" minlength="8" maxlength="100">
+                    </div>
+                    <small style="color: rgba(255, 255, 255, 0.8); font-size: 0.85rem;">
+                        Minimo 8 caratteri, almeno una lettera, un numero e un simbolo
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword"><i class="fas fa-lock"></i> Conferma Nuova Password</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Conferma la nuova password">
+                    </div>
+                    <div id="passwordError" class="field-error" style="display: none;"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="form-btn">
+                        <i class="fas fa-save"></i> Salva Modifiche
+                    </button>
+                    <a th:href="@{/area-utente/profilo}" class="form-btn secondary">
+                        <i class="fas fa-arrow-left"></i> Annulla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <th:block th:replace="fragments/footer :: customFooter"></th:block>
+    
+    <script>
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('passwordError');
+            
+            if (password || confirmPassword) {
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    errorDiv.textContent = 'Le password non coincidono.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                // Validazione password
+                const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+                if (!passwordRegex.test(password)) {
+                    e.preventDefault();
+                    errorDiv.textContent = 'La password deve contenere almeno 8 caratteri, una lettera, un numero e un simbolo.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+            }
+            
+            errorDiv.style.display = 'none';
+        });
+        
+        // Trasforma il codice fiscale in maiuscolo mentre si digita
+        document.getElementById('codiceFiscale').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>

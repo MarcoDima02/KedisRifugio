@@ -1,0 +1,233 @@
+/* CSS per tutti i form  */
+/* Utilizzato da: modifica_visita_veterinaria, creazione_animale, modifica_animale, ecc. */
+
+/* Pulsante cancellazione outline */
+.btn-outline-cancel {
+    padding: 0.5em 1.5em;
+    border: 2px solid #17613a;
+    color: #17613a;
+    background: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-outline-cancel:hover {
+    background: #17613a;
+    color: #fff;
+    border-color: #17613a;
+}
+
+/* Container principale del form - simile ai dettagli */
+.form-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Header del form - stile simile ai dettagli */
+.form-header {
+    background: linear-gradient(135deg, #004B23, #007C40);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.form-header h1, 
+.form-header h2,
+.form-title {
+    margin: 0;
+    font-size: 2rem;
+    color: white;
+}
+
+/* Grid per organizzare i campi in sezioni - come nei dettagli */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Sezioni del form - stile simile alle detail-section */
+.form-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #007C40;
+}
+
+.form-section h3 {
+    color: #004B23;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Sezione che occupa tutta la larghezza */
+.form-section-full {
+    grid-column: 1 / -1;
+}
+
+/* Campi del form */
+.form-field,
+.filter-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field:last-child,
+.filter-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label,
+.filter-field label {
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea,
+.filter-field input,
+.filter-field select,
+.filter-field textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus,
+.filter-field input:focus,
+.filter-field select:focus,
+.filter-field textarea:focus {
+    outline: none;
+    border-color: #007C40;
+    box-shadow: 0 0 0 3px rgba(0, 124, 64, 0.1);
+}
+
+.form-field textarea,
+.filter-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Messaggi di errore */
+.error-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: block;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* Azioni del form - simile agli action-buttons dei dettagli */
+.form-actions,
+.action-buttons {
+    padding: 0 2rem 2rem 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.form-actions .btn,
+.action-buttons .btn {
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.form-actions .btn-primary,
+.action-buttons .btn-primary {
+    background: #007C40;
+    color: white;
+}
+
+.form-actions .btn-primary:hover,
+.action-buttons .btn-primary:hover {
+    background: #005a2d;
+}
+
+.form-actions .btn-secondary,
+.action-buttons .btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.form-actions .btn-secondary:hover,
+.action-buttons .btn-secondary:hover {
+    background: #545b62;
+}
+
+/* Compatibilità con struttura esistente */
+.filter-section.animale-form {
+    background: transparent;
+    min-height: auto;
+    display: block;
+    padding: 0;
+}
+
+.filter-box.animale-form-box {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container,
+    .filter-box.animale-form-box {
+        margin: 1rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .form-actions,
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 1rem 1rem 1rem;
+    }
+}

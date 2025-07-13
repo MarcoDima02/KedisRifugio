@@ -1,7 +1,17 @@
 package com.rifugio.rifugio.entities;
 
-import jakarta.persistence.*;
 import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "adozioni")
@@ -27,6 +37,9 @@ public class Adozioni {
     @ManyToOne
     @JoinColumn(name = "id_step_adozioni", referencedColumnName = "id_step_adozioni")
     private StepAdozioni stepAdozione;
+
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
 
     public Integer getId() {
         return id;
@@ -66,5 +79,13 @@ public class Adozioni {
 
     public void setStepAdozione(StepAdozioni stepAdozione) {
         this.stepAdozione = stepAdozione;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

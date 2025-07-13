@@ -102,9 +102,9 @@ INSERT INTO donazioni (importo, id_persona, data_donazione, descrizione) VALUES
 (75.00, 5, '2024-05-12', 'Donazione per progetto');
 
 -- Inserimento dati per adozioni
-INSERT INTO adozioni (id_animale, id_persona, data_adozione, id_step_adozioni) VALUES
-(1, 2, '2024-03-10', 1),
-(2, 3, '2024-04-12', 2);
+INSERT INTO adozioni (id_animale, id_persona, data_adozione, id_step_adozioni, note) VALUES
+(1, 2, '2024-03-10', 1, 'Sono un appassionato di cani da sempre. Vivo in una casa con giardino e ho esperienza con animali domestici. Lavoro da casa quindi posso dedicare molto tempo al cane. Ho già avuto un Labrador in passato e conosco bene le esigenze della razza.'),
+(2, 3, '2024-04-12', 2, 'Amo i gatti e sto cercando un compagno felino. Vivo da sola in un appartamento tranquillo al secondo piano. Non ho altri animali ma ho esperienza con i gatti di famiglia. Posso offrire tanto amore e attenzioni.');
 
 -- Inserimento dati per visite_veterinarie
 INSERT INTO visite_veterinarie (data, ora, id_animale, motivo, esito) VALUES

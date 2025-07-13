@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamoci una zampa - Dettagli Richiesta Adozione</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/details-pages.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+    
+    <div class="main-content">
+        <div class="details-container">
+            <div class="details-header">
+                <h1><i class="fas fa-clipboard-list"></i> Dettagli Richiesta di Adozione</h1>
+                <p>Richiesta #<span th:text="${adozione.id}"></span> - Valutazione per il colloquio</p>
+            </div>
+            
+            <div class="details-grid">
+                <!-- Informazioni Richiedente -->
+                <div class="detail-section">
+                    <h3><i class="fas fa-user"></i> Richiedente</h3>
+                    <div class="detail-item">
+                        <div class="detail-label">Nome Completo</div>
+                        <div class="detail-value" th:text="${adozione.persona.nome + ' ' + adozione.persona.cognome}"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value" th:text="${adozione.persona.email}"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Telefono</div>
+                        <div class="detail-value">
+                            <span th:if="${adozione.persona.numero != null}" th:text="${adozione.persona.numero}"></span>
+                            <span th:if="${adozione.persona.numero == null}">Non specificato</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Codice Fiscale</div>
+                        <div class="detail-value">
+                            <span th:if="${adozione.persona.codiceFiscale != null}" th:text="${adozione.persona.codiceFiscale}"></span>
+                            <span th:if="${adozione.persona.codiceFiscale == null}">Non specificato</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Informazioni Animale -->
+                <div class="detail-section">
+                    <h3><i class="fas fa-paw"></i> Animale Richiesto</h3>
+                    <div class="detail-item">
+                        <div class="detail-label">Nome</div>
+                        <div class="detail-value" th:text="${adozione.animale.nome}"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ID Animale</div>
+                        <div class="detail-value" th:text="${adozione.animale.idAnimale}"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Specie</div>
+                        <div class="detail-value">
+                            <span th:if="${adozione.animale.specie != null}" th:text="${adozione.animale.specie.nome}"></span>
+                            <span th:if="${adozione.animale.specie == null}">Non specificato</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Razza</div>
+                        <div class="detail-value">
+                            <span th:if="${adozione.animale.razza != null}" th:text="${adozione.animale.razza.nome}"></span>
+                            <span th:if="${adozione.animale.razza == null}">Non specificato</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Informazioni Richiesta -->
+                <div class="detail-section">
+                    <h3><i class="fas fa-calendar-alt"></i> Dettagli Richiesta</h3>
+                    <div class="detail-item">
+                        <div class="detail-label">Data Richiesta</div>
+                        <div class="detail-value" th:text="${#dates.format(adozione.dataAdozione, 'dd/MM/yyyy')}"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Stato Corrente</div>
+                        <div class="detail-value">
+                            <span class="status-badge status-pending" th:text="${adozione.stepAdozione.nome_step}"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Note del Richiedente -->
+                <div class="detail-section notes-section">
+                    <h3><i class="fas fa-comment-dots"></i> Note del Richiedente</h3>
+                    <p style="margin: 0.5rem 0; color: #6c757d; font-style: italic;">
+                        Queste informazioni possono essere utili per preparare il colloquio conoscitivo
+                    </p>
+                    <div class="notes-content">
+                        <span th:if="${adozione.note != null and !#strings.isEmpty(adozione.note)}" 
+                              th:text="${adozione.note}"></span>
+                        <span th:if="${adozione.note == null or #strings.isEmpty(adozione.note)}" 
+                              style="color: #6c757d; font-style: italic;">
+                            Il richiedente non ha aggiunto note aggiuntive.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a th:href="@{/dashboard/admin/adozioni/update/{id}(id=${adozione.id})}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Modifica Richiesta
+                </a>
+                <a href="/dashboard/admin/adozioni" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Torna alla Lista
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
