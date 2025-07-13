@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
+import com.rifugio.rifugio.entities.Razza;
 import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
 import com.rifugio.rifugio.services.AdozioniServiceImpl;
@@ -213,6 +214,29 @@ public class DashboardAdminController {
         }
 
         model.addAttribute("razze", razzaService.getAllRazze());
+        return "dashboard_lista_razze";  
+
+    }
+
+    @GetMapping("/razze/save")
+    public String formSaveRazza(Model model, HttpSession session){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("razza", new Razza());
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "creazione_razza";  
+
+    }
+
+    @PostMapping("/razze/save")
+    public String saveRazza(Model model, HttpSession session, @ModelAttribute("razza") Razza razza){
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+
+        razzaService.salva(razza);
         return "dashboard_lista_razze";  
 
     }
