@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.Donazioni;
+import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
 import com.rifugio.rifugio.services.AdozioniServiceImpl;
 import com.rifugio.rifugio.services.AnagraficaAnimaliService;
@@ -40,6 +41,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/dashboard/admin")
 public class DashboardAdminController {
+    @Autowired
+    private com.rifugio.rifugio.services.ImmagineService immagineService;
 
     @Autowired
     StepAdozioniService stepAdozioniService;
@@ -113,7 +116,17 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
+        var animale = anagraficaAnimaleService.getByIdAnagraficaAnimali(id);
+        
+        // Ottieni l'immagine principale
+        var immaginePrincipale = immagineService.getImmaginePrincipaleByAnimale(id);
+        
+        // Ottieni tutte le immagini ordinate per il carosello
+        var immaginiCarosello = immagineService.getImmaginiByAnimaleOrdered(id);
+        
+        model.addAttribute("animale", animale);
+        model.addAttribute("immaginePrincipale", immaginePrincipale);
+        model.addAttribute("immaginiCarosello", immaginiCarosello);
         model.addAttribute("adminView", true);
         return "dettaglio_animale";
     }
@@ -131,9 +144,12 @@ public class DashboardAdminController {
     }
 
     @PostMapping("/animali/save")
-    public String salvaAnimale(@Validated @ModelAttribute("animale") AnagraficaAnimali animale,
-                           BindingResult bindingResult,
-                           Model model) {
+    public String salvaAnimale(
+        @Validated @ModelAttribute("animale") AnagraficaAnimali animale,
+        BindingResult bindingResult,
+        Model model,
+        @org.springframework.web.bind.annotation.RequestParam(value = "immagini", required = false) List<org.springframework.web.multipart.MultipartFile> immagini
+    ) {
         if (bindingResult.hasErrors()) {
             // se ci sono errori di validazione, ritorna al form
             model.addAttribute("specieList", specieService.getAllSpecie());
@@ -142,8 +158,15 @@ public class DashboardAdminController {
             return "creazione_animale";
         }
 
-        anagraficaAnimaleService.create(animale); // salva l'animale
-        return "redirect:/animali"; // redirect alla lista animali dopo il salvataggio
+        // Salva l'animale
+        AnagraficaAnimali animaleSalvato = anagraficaAnimaleService.create(animale);
+
+        // Salva le immagini se presenti
+        if (immagini != null && !immagini.isEmpty()) {
+            immagineService.storeImmagini(immagini, animaleSalvato.getIdAnagraficaAnimali());
+        }
+
+        return "redirect:/dashboard/admin/animali"; // redirect alla lista animali dopo il salvataggio
     }
 
     @GetMapping("/animali/update/{id}")
@@ -151,7 +174,11 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("animale", anagraficaAnimaleService.getByIdAnagraficaAnimali(id));
+        var animale = anagraficaAnimaliService.getByIdAnagraficaAnimali(id);
+        model.addAttribute("animale", animale);
+        // Passa anche le immagini associate ordinate
+        var immagini = immagineService.getImmaginiByAnimaleOrdered(id);
+        model.addAttribute("immagini", immagini);
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
@@ -212,6 +239,96 @@ public class DashboardAdminController {
             return "modifica_donazione";
         }
         donazioniService.update(id, donazione); // aggiorna la donazione
+        return "redirect:/dashboard/admin/donazioni";
+    }
+
+    @GetMapping("/donazioni/save")
+    public String mostraFormCreazioneDonazione(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("donazione", new Donazioni());
+        model.addAttribute("utenti", utentiService.getAllUtenti());
+        return "creazione_donazione_admin";
+    }
+
+    @PostMapping("/donazioni/save")
+    public String creaDonazione(@org.springframework.web.bind.annotation.RequestParam("personaId") Integer personaId,
+                         @org.springframework.web.bind.annotation.RequestParam("importo") Double importo,
+                         @org.springframework.web.bind.annotation.RequestParam(value = "data_donazione", required = false) String dataDonazioneStr,
+                         @org.springframework.web.bind.annotation.RequestParam("metodo_pagamento") String metodoPagamento,
+                         @org.springframework.web.bind.annotation.RequestParam(value = "note", required = false) String note,
+                         HttpSession session,
+                         RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        // Debug logging
+        System.out.println("=== DEBUG DONAZIONE ===");
+        System.out.println("PersonaId ricevuto: " + personaId);
+        System.out.println("Importo ricevuto: " + importo);
+        System.out.println("Data donazione string: " + dataDonazioneStr);
+        System.out.println("Metodo pagamento: " + metodoPagamento);
+        System.out.println("Note: " + note);
+        System.out.println("========================");
+        
+        // Validazioni manuali
+        if (personaId == null || personaId <= 0) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Devi selezionare un donatore.");
+            return "redirect:/dashboard/admin/donazioni/save";
+        }
+        
+        if (importo == null || importo <= 0) {
+            redirectAttributes.addFlashAttribute("errorMessage", "L'importo deve essere maggiore di zero.");
+            return "redirect:/dashboard/admin/donazioni/save";
+        }
+        
+        if (metodoPagamento == null || metodoPagamento.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Devi selezionare un metodo di pagamento.");
+            return "redirect:/dashboard/admin/donazioni/save";
+        }
+        
+        // Crea nuova donazione
+        Donazioni donazione = new Donazioni();
+        donazione.setImporto(importo);
+        donazione.setMetodo_pagamento(metodoPagamento);
+        donazione.setNote(note);
+        
+        // Imposta la persona
+        try {
+            Utenti persona = utentiService.getUtenteById(personaId);
+            if (persona == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Utente selezionato non trovato.");
+                return "redirect:/dashboard/admin/donazioni/save";
+            }
+            donazione.setPersona(persona);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Errore nel recupero dell'utente: " + e.getMessage());
+            return "redirect:/dashboard/admin/donazioni/save";
+        }
+        
+        // Imposta la data
+        try {
+            if (dataDonazioneStr != null && !dataDonazioneStr.trim().isEmpty()) {
+                java.sql.Date dataDate = java.sql.Date.valueOf(dataDonazioneStr);
+                donazione.setData_donazione(dataDate);
+            } else {
+                donazione.setData_donazione(new java.sql.Date(System.currentTimeMillis()));
+            }
+        } catch (Exception e) {
+            donazione.setData_donazione(new java.sql.Date(System.currentTimeMillis()));
+        }
+        
+        try {
+            donazioniService.save(donazione);
+            redirectAttributes.addFlashAttribute("successMessage", "Donazione registrata con successo!");
+            System.out.println("Donazione salvata con successo!");
+        } catch (Exception e) {
+            System.err.println("Errore durante il salvataggio della donazione: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Errore durante il salvataggio: " + e.getMessage());
+        }
+        
         return "redirect:/dashboard/admin/donazioni";
     }
 
@@ -446,7 +563,7 @@ public class DashboardAdminController {
 
     @PostMapping("/utenti/update/{id}")
     public String aggiornaUtente(@PathVariable Integer id,
-                                 @ModelAttribute("utente") com.rifugio.rifugio.entities.Utenti utente,
+                                 @ModelAttribute("utente") Utenti utente,
                                  BindingResult result,
                                  Model model,
                                  HttpSession session,
@@ -496,6 +613,113 @@ public class DashboardAdminController {
                 return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
             }
         });
+        
+        // Custom editor per convertire ID utente in oggetto Utenti
+        binder.registerCustomEditor(Utenti.class, "persona", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    try {
+                        Integer userId = Integer.valueOf(text);
+                        Utenti utente = utentiService.getUtenteById(userId);
+                        setValue(utente);
+                    } catch (NumberFormatException e) {
+                        setValue(null);
+                    }
+                }
+            }
+        });
     }
 
+    @PostMapping("/utenti/delete/{id}")
+    public String eliminaUtente(@PathVariable Integer id, HttpSession session, RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        try {
+            // Controlla se l'utente ha donazioni o adozioni associate
+            var utente = utentiService.getUtenteById(id);
+            if (utente == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Utente non trovato.");
+                return "redirect:/dashboard/admin/utenti";
+            }
+            
+            // Verifica se è un admin che tenta di eliminare se stesso
+            var currentUserId = session.getAttribute("userId");
+            if (currentUserId != null && currentUserId.equals(id)) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Non puoi eliminare il tuo stesso account.");
+                return "redirect:/dashboard/admin/utenti";
+            }
+            
+            utentiService.deleteUtente(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Utente eliminato con successo.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'eliminazione: " + e.getMessage());
+        }
+        
+        return "redirect:/dashboard/admin/utenti";
+    }
+
+    @GetMapping("/utenti/save")
+    public String mostraFormCreazioneUtente(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        model.addAttribute("utente", new Utenti());
+        return "creazione_utente_admin";
+    }
+
+    @PostMapping("/utenti/save")
+    public String creaUtente(@Validated @ModelAttribute("utente") Utenti utente,
+                            BindingResult bindingResult,
+                            Model model,
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        // Capitalizzazione e validazioni come nel controller Utenti
+        utente.setNome(capitalizeEachWord(utente.getNome() != null ? utente.getNome().trim() : ""));
+        utente.setCognome(capitalizeEachWord(utente.getCognome() != null ? utente.getCognome().trim() : ""));
+        utente.setCodiceFiscale(utente.getCodiceFiscale() != null ? utente.getCodiceFiscale().toUpperCase().trim() : "");
+        utente.setEmail(utente.getEmail() != null ? utente.getEmail().toLowerCase().trim() : "");
+        
+        // Verifica se email già esiste
+        if (utentiService.existsByEmail(utente.getEmail())) {
+            bindingResult.rejectValue("email", "error.utente", "Esiste già un utente con questa email.");
+        }
+        
+        // Verifica se codice fiscale già esiste
+        if (utentiService.existsByCodiceFiscale(utente.getCodiceFiscale())) {
+            bindingResult.rejectValue("codiceFiscale", "error.utente", "Esiste già un utente con questo codice fiscale.");
+        }
+        
+        if (bindingResult.hasErrors()) {
+            return "creazione_utente_admin";
+        }
+        
+        // Password di default se non specificata
+        if (utente.getPassword() == null || utente.getPassword().trim().isEmpty()) {
+            utente.setPassword("password123"); // Password temporanea
+        }
+        
+        // Ruolo di default USER se non specificato
+        if (utente.getRuolo() == null || utente.getRuolo().trim().isEmpty()) {
+            utente.setRuolo("USER");
+        }
+        
+        try {
+            utentiService.createUtente(utente);
+            redirectAttributes.addFlashAttribute("successMessage", "Utente creato con successo!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la creazione: " + e.getMessage());
+        }
+        
+        return "redirect:/dashboard/admin/utenti";
+    }
 }

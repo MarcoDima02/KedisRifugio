@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Donazione</title>
+</head>
+<body>
+    <h1>Test Form Donazione</h1>
+    
+    <form th:action="@{/dashboard/admin/donazioni/save}" th:object="${donazione}" method="post">
+        <div>
+            <label for="importo">Importo:</label>
+            <input type="number" th:field="*{importo}" id="importo" step="0.01" min="0.01" />
+        </div>
+        
+        <div>
+            <label for="persona">Donatore:</label>
+            <select th:field="*{persona}" id="persona">
+                <option value="">Seleziona un utente</option>
+                <option th:each="utente : ${utenti}" 
+                        th:value="${utente.id_persona}" 
+                        th:text="${utente.nome + ' ' + utente.cognome}">
+                    Nome Cognome
+                </option>
+            </select>
+        </div>
+        
+        <button type="submit">Salva</button>
+    </form>
+</body>
+</html>

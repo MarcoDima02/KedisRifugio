@@ -41,4 +41,26 @@ public class UtentiServiceImpl implements UtentiService {
         }
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return utentiRepo.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByCodiceFiscale(String codiceFiscale) {
+        return utentiRepo.existsByCodiceFiscale(codiceFiscale);
+    }
+
+    @Override
+    public Utenti createUtente(Utenti utente) {
+        return utentiRepo.save(utente);
+    }
+
+    @Override
+    public void deleteUtente(Integer id) {
+        if (utentiRepo.existsById(id)) {
+            utentiRepo.deleteById(id);
+        }
+    }
+
 }

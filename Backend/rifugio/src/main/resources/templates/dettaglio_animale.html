@@ -19,7 +19,12 @@
                 <!-- Tutto il contenuto ANIMALE qui, una sola volta -->
                 <div class="animal-detail-card">
                   <div class="animal-image-box">
-                    <img src="/images/prova_foto.webp" alt="Foto animale" />
+                    <img th:if="${immaginePrincipale.isPresent()}" 
+                         th:src="@{'/immagini/' + ${immaginePrincipale.get().id_immagine}}" 
+                         th:alt="${animale.nome}" />
+                    <img th:unless="${immaginePrincipale.isPresent()}" 
+                         src="/images/prova_foto.webp" 
+                         alt="Foto animale" />
                   </div>
                   <div class="animal-info-box">
                     <h2 class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
@@ -56,8 +61,41 @@
                   </div>
                 </div>
                 <div class="animal-gallery-section">
-                  <h3>Altre foto</h3>
-                  <div class="animal-gallery">
+                  <h3>Galleria Foto</h3>
+                  <div th:if="${immaginiCarosello != null and !immaginiCarosello.isEmpty()}" class="carousel-container">
+                    <!-- Immagine principale del carosello -->
+                    <div class="carousel-main">
+                      <img id="carousel-main-img" 
+                           th:src="@{'/immagini/' + ${immaginiCarosello[0].id_immagine}}" 
+                           th:alt="${animale.nome}" />
+                      
+                      <!-- Controlli del carosello -->
+                      <button class="carousel-controls carousel-prev" onclick="previousImage()">
+                        <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button class="carousel-controls carousel-next" onclick="nextImage()">
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                      
+                      <!-- Indicatore posizione -->
+                      <div class="carousel-indicator">
+                        <span id="carousel-counter">1</span> / <span th:text="${#lists.size(immaginiCarosello)}">1</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Thumbnails -->
+                    <div class="carousel-thumbnails">
+                      <div th:each="img, iterStat : ${immaginiCarosello}" 
+                           class="carousel-thumbnail" 
+                           th:classappend="${iterStat.index == 0} ? 'active' : ''"
+                           th:onclick="'setActiveImage(' + ${iterStat.index} + ')'">
+                        <img th:src="@{'/immagini/' + ${img.id_immagine}}" th:alt="${img.nome}" />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div th:unless="${immaginiCarosello != null and !immaginiCarosello.isEmpty()}" class="no-images-message">
+                    <i class="fas fa-images"></i>
                     <span>Nessuna foto aggiuntiva disponibile.</span>
                   </div>
                 </div>
@@ -86,7 +124,12 @@
             <div class="animal-detail-container" style="max-width: 900px; margin: 36px auto 0 auto; background: #f8f8f8; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); padding: 32px 24px;">
                 <div class="animal-detail-card">
                   <div class="animal-image-box">
-                    <img src="/images/prova_foto.webp" alt="Foto animale" />
+                    <img th:if="${immaginePrincipale.isPresent()}" 
+                         th:src="@{'/immagini/' + ${immaginePrincipale.get().id_immagine}}" 
+                         th:alt="${animale.nome}" />
+                    <img th:unless="${immaginePrincipale.isPresent()}" 
+                         src="/images/prova_foto.webp" 
+                         alt="Foto animale" />
                   </div>
                   <div class="animal-info-box">
                     <h2 class="animal-name" th:text="${animale.nome}">Nome Animale</h2>
@@ -123,8 +166,41 @@
                   </div>
                 </div>
                 <div class="animal-gallery-section">
-                  <h3>Altre foto</h3>
-                  <div class="animal-gallery">
+                  <h3>Galleria Foto</h3>
+                  <div th:if="${immaginiCarosello != null and !immaginiCarosello.isEmpty()}" class="carousel-container">
+                    <!-- Immagine principale del carosello -->
+                    <div class="carousel-main">
+                      <img id="carousel-main-img" 
+                           th:src="@{'/immagini/' + ${immaginiCarosello[0].id_immagine}}" 
+                           th:alt="${animale.nome}" />
+                      
+                      <!-- Controlli del carosello -->
+                      <button class="carousel-controls carousel-prev" onclick="previousImage()">
+                        <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button class="carousel-controls carousel-next" onclick="nextImage()">
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                      
+                      <!-- Indicatore posizione -->
+                      <div class="carousel-indicator">
+                        <span id="carousel-counter">1</span> / <span th:text="${#lists.size(immaginiCarosello)}">1</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Thumbnails -->
+                    <div class="carousel-thumbnails">
+                      <div th:each="img, iterStat : ${immaginiCarosello}" 
+                           class="carousel-thumbnail" 
+                           th:classappend="${iterStat.index == 0} ? 'active' : ''"
+                           th:onclick="'setActiveImage(' + ${iterStat.index} + ')'">
+                        <img th:src="@{'/immagini/' + ${img.id_immagine}}" th:alt="${img.nome}" />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div th:unless="${immaginiCarosello != null and !immaginiCarosello.isEmpty()}" class="no-images-message">
+                    <i class="fas fa-images"></i>
                     <span>Nessuna foto aggiuntiva disponibile.</span>
                   </div>
                 </div>
@@ -148,7 +224,71 @@
         </div>
         <th:block th:replace="fragments/footer :: customFooter"></th:block>
     </th:block>
-</body>
 
+<script>
+// JavaScript per il carosello
+let currentImageIndex = 0;
+let images = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Inizializza array immagini dal template
+    const thumbnails = document.querySelectorAll('.carousel-thumbnail img');
+    images = Array.from(thumbnails).map(thumb => thumb.src);
+    
+    // Aggiungi Font Awesome se non presente per le icone
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    }
+});
+
+function setActiveImage(index) {
+    currentImageIndex = index;
+    
+    // Aggiorna immagine principale
+    const mainImg = document.getElementById('carousel-main-img');
+    if (mainImg && images[index]) {
+        mainImg.src = images[index];
+    }
+    
+    // Aggiorna thumbnails attive
+    document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+    });
+    
+    // Aggiorna contatore
+    const counter = document.getElementById('carousel-counter');
+    if (counter) {
+        counter.textContent = index + 1;
+    }
+}
+
+function nextImage() {
+    if (images.length > 0) {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        setActiveImage(currentImageIndex);
+    }
+}
+
+function previousImage() {
+    if (images.length > 0) {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        setActiveImage(currentImageIndex);
+    }
+}
+
+// Supporto per navigazione con tastiera
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        previousImage();
+    } else if (e.key === 'ArrowRight') {
+        nextImage();
+    }
+});
+</script>
+
+</body>
 </html>
 

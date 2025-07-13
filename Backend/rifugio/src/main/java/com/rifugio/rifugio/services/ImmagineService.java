@@ -17,9 +17,21 @@ public interface ImmagineService {
     
     List<Immagine> getImmaginiByAnimale(int idAnimale);
     
+    List<Immagine> getImmaginiByAnimaleOrdered(int idAnimale);
+    
+    Optional<Immagine> getImmaginePrincipaleByAnimale(int idAnimale);
+    
+    List<Immagine> getImmaginiSecondariesByAnimale(int idAnimale);
+    
     Immagine storeImmagine(MultipartFile file, int idAnimale);
+    
+    List<Immagine> storeImmagini(List<MultipartFile> files, int idAnimale);
     
     void deleteImmagine(int id);
     
     Immagine updateImmagine(int id, MultipartFile file, int idAnimale);
+    
+    void setImmaginePrincipale(int idImmagine, int idAnimale);
+    
+    void updateOrdineVisualizzazione(List<Integer> ordineImmagini);
 }

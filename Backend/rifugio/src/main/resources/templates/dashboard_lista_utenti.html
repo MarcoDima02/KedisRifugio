@@ -17,6 +17,10 @@
                 Lista Utenti
             </h1>
 
+            <!-- Messaggi di successo/errore -->
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
             <section class="green-section">
                 <table class="animal-table">
                     <thead>
@@ -50,8 +54,9 @@
                                 <a th:href="@{/utenti/dettaglio/{id}(id=${utente.id_persona})}" class="action-icon-btn" title="Dettagli">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <form th:action="@{/dashboard/admin/utenti/elimina/{id}(id=${utente.id_persona})}" method="post" style="display:inline;">
-                                    <button type="submit" class="action-icon-btn" title="Elimina" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">
+                                <form th:action="@{/dashboard/admin/utenti/delete/{id}(id=${utente.id_persona})}" method="post" style="display:inline;">
+                                    <button type="submit" class="action-icon-btn delete-btn" title="Elimina" 
+                                            onclick="return confirm('Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.');">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </form>
@@ -60,7 +65,7 @@
                     </tbody>
                 </table>
 
-                <a th:href="@{/dashboard/admin/utenti/crea}" class="add-btn">Aggiungi Nuovo Utente</a>
+                <a th:href="@{/dashboard/admin/utenti/save}" class="add-btn">Aggiungi Nuovo Utente</a>
             </section>
         </div>
 

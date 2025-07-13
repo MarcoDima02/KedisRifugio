@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuova Donazione - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/forms.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div th:insert="fragments/sidebar :: customSidebar"></div>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <h1>Registra Nuova Donazione</h1>
+            <a th:href="@{/dashboard/admin/donazioni}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Torna alle donazioni
+            </a>
+        </div>
+
+        <div class="form-container">
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            
+            <form action="/dashboard/admin/donazioni/save" method="post" class="animal-form">
+                <div class="form-section">
+                    <h3>Informazioni Donazione</h3>
+                    
+                    <div class="form-field">
+                        <label for="personaId">Donatore:</label>
+                        <select name="personaId" id="personaId" class="form-control" required>
+                            <option value="">Seleziona un utente</option>
+                            <option th:each="utente : ${utenti}" 
+                                    th:value="${utente.id_persona}" 
+                                    th:text="${utente.nome + ' ' + utente.cognome + ' (' + utente.email + ')'}">
+                                Nome Cognome (email)
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="importo">Importo (€):</label>
+                        <input type="number" name="importo" id="importo" class="form-control" 
+                               step="0.01" min="0.01" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="data_donazione">Data donazione:</label>
+                        <input type="date" name="data_donazione" id="data_donazione" class="form-control">
+                        <small class="form-help">Se non specificata, verrà usata la data odierna</small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="metodo_pagamento">Metodo di pagamento:</label>
+                        <select name="metodo_pagamento" id="metodo_pagamento" class="form-control" required>
+                            <option value="">Seleziona metodo</option>
+                            <option value="Carta di credito">Carta di credito</option>
+                            <option value="Bonifico bancario">Bonifico bancario</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Contanti">Contanti</option>
+                            <option value="Assegno">Assegno</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="note">Note aggiuntive:</label>
+                        <textarea name="note" id="note" class="form-control" rows="3" 
+                                placeholder="Note opzionali sulla donazione..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-save"></i> Registra Donazione
+                    </button>
+                    <a th:href="@{/dashboard/admin/donazioni}" class="btn btn-secondary">
+                        <i class="fa-solid fa-times"></i> Annulla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

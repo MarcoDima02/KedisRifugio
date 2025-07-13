@@ -26,7 +26,9 @@ public class Utenti {
    
     private String ruolo;
    
-    
+    // Costruttore predefinito necessario per JPA e Spring
+    public Utenti() {
+    }
 
     
     public Integer getId_persona() {
@@ -78,6 +80,17 @@ public class Utenti {
         this.ruolo = ruolo;
     }
 
+    @Override
+    public String toString() {
+        return "Utenti{" +
+                "id_persona=" + id_persona +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", email='" + email + '\'' +
+                ", codiceFiscale='" + codiceFiscale + '\'' +
+                ", ruolo='" + ruolo + '\'' +
+                '}';
+    }
 
 }
 

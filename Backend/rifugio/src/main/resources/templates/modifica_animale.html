@@ -12,6 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/forms.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
 
@@ -157,22 +158,340 @@
 
             </div>
 
-            <!-- Azioni del form -->
-            <div class="action-buttons">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Salva Modifiche
+            <!-- Pulsanti di salvataggio -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Salva modifiche
                 </button>
-                <button type="reset" class="btn btn-secondary">
-                    <i class="fas fa-undo"></i> Reset
-                </button>
-                <a th:href="@{/dashboard/admin/animali}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Torna alla Lista
+                <a th:href="@{/lista-animali}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Annulla
                 </a>
             </div>
 
         </form>
+        
+        <!-- Form separato per le immagini (fuori dal form principale) -->
+        <div class="form-section form-section-full">
+            <h3><i class="fas fa-images"></i> Gestione Immagini</h3>
+            <div class="animal-gallery">
+              <div class="gallery-grid" id="sortable-gallery">
+                <div th:each="img : ${immagini}" class="gallery-item" th:attr="data-id=${img.id_immagine}">
+                  <img th:src="@{'/immagini/' + ${img.id_immagine}}" th:alt="${img.nome}" />
+                  <div class="image-controls">
+                    <button class="set-main-btn" th:attr="data-id=${img.id_immagine}" 
+                            th:class="${img.is_principale} ? 'set-main-btn principale' : 'set-main-btn'"
+                            th:title="${img.is_principale} ? 'Immagine principale' : 'Imposta come principale'">
+                      <i class="fas fa-star"></i>
+                    </button>
+                    <button class="delete-img-btn" th:attr="data-id=${img.id_immagine}" title="Elimina immagine">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <form class="update-img-form" th:attr="data-id=${img.id_immagine}">
+                    <input type="file" name="file" accept="image/*" />
+                    <button type="submit">Sostituisci</button>
+                  </form>
+                  <div class="drag-handle" title="Trascina per riordinare">
+                    <i class="fas fa-grip-vertical"></i>
+                  </div>
+                </div>
+              </div>
+              <div th:if="${immagini == null or immagini.isEmpty()}" class="no-images-message">
+                <i class="fas fa-images"></i> Nessuna foto aggiuntiva disponibile.
+              </div>
+            </div>
+            <hr style="margin: 16px 0 8px 0; border: none; border-top: 1px solid #e0e0e0;" />
+            <form class="add-img-form" enctype="multipart/form-data">
+              <label for="add-img-input">
+                <i class="fas fa-plus"></i> Aggiungi nuove immagini:
+              </label>
+              <input type="file" id="add-img-input" name="immagini" multiple accept="image/*" />
+              <input type="hidden" name="idAnimale" th:value="${animale.idAnimale}" />
+              <button type="submit">
+                <i class="fas fa-upload"></i> Aggiungi
+              </button>
+            </form>
+        </div>
     </div>
-</div>
 
-</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, JavaScript inizializzato');
+  console.log('Form add-img trovato:', document.querySelector('.add-img-form'));
+  console.log('Input file trovato:', document.querySelector('.add-img-form input[type="file"]'));
+  
+  // Elimina immagine
+  document.querySelectorAll('.delete-img-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const imgId = btn.getAttribute('data-id');
+      if (confirm('Vuoi davvero eliminare questa immagine?')) {
+        fetch('/immagini/' + imgId, {
+          method: 'DELETE'
+        }).then(function(response) {
+          if (response.ok) {
+            btn.closest('.gallery-item').remove();
+          } else {
+            alert('Errore durante l\'eliminazione.');
+          }
+        }).catch(function() {
+          alert('Errore di rete.');
+        });
+      }
+    });
+  });
+
+  // Sostituisci immagine + preview
+  document.querySelectorAll('.update-img-form').forEach(function(form) {
+    const fileInput = form.querySelector('input[type="file"]');
+    // Crea preview container
+    let preview = document.createElement('img');
+    preview.style.display = 'none';
+    preview.style.maxWidth = '80px';
+    preview.style.maxHeight = '80px';
+    preview.style.margin = '6px auto 4px auto';
+    preview.style.borderRadius = '6px';
+    preview.style.boxShadow = '0 2px 6px rgba(0,0,0,0.10)';
+    preview.alt = 'Preview';
+    form.insertBefore(preview, fileInput.nextSibling);
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        preview.style.display = 'none';
+        preview.src = '';
+      }
+    });
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const imgId = form.getAttribute('data-id');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert('Seleziona un file immagine.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      fetch('/immagini/' + imgId, {
+        method: 'PUT',
+        body: formData
+      }).then(function(response) {
+        if (response.ok) {
+          response.blob().then(function(blob) {
+            const url = URL.createObjectURL(blob);
+            form.closest('.gallery-item').querySelector('img').src = url;
+            fileInput.value = '';
+            preview.style.display = 'none';
+            preview.src = '';
+          });
+        } else {
+          alert('Errore durante la modifica.');
+        }
+      }).catch(function() {
+        alert('Errore di rete.');
+      });
+    });
+  });
+
+  // Aggiungi nuova immagine
+  var addImgForm = document.querySelector('.add-img-form');
+  console.log('addImgForm trovato:', addImgForm);
+  if (addImgForm) {
+    const fileInput = addImgForm.querySelector('input[type="file"]');
+    console.log('fileInput trovato:', fileInput);
+    console.log('fileInput ID:', fileInput ? fileInput.id : 'nessun ID');
+    
+    // TEST DIRETTO con getElementById
+    const fileInputDirect = document.getElementById('add-img-input');
+    console.log('fileInput trovato direttamente per ID:', fileInputDirect);
+    console.log('fileInput === fileInputDirect:', fileInput === fileInputDirect);
+    
+    // TEST CLICKABILITY - aggiungiamo un event listener per click
+    if (fileInputDirect) {
+      fileInputDirect.addEventListener('click', function() {
+        console.log('File input clicked!');
+      });
+      
+      // TEST FOCUS
+      fileInputDirect.addEventListener('focus', function() {
+        console.log('File input focused!');
+      });
+    }
+    
+    // Crea container preview
+    let previewContainer = document.createElement('div');
+    previewContainer.style.display = 'flex';
+    previewContainer.style.flexWrap = 'wrap';
+    previewContainer.style.gap = '8px';
+    previewContainer.style.margin = '8px 0 0 0';
+    addImgForm.insertBefore(previewContainer, addImgForm.querySelector('button'));
+    
+    // EVENT LISTENER SUL fileInput trovato tramite form
+    fileInput.addEventListener('change', function(e) {
+      console.log('File change event triggered (via form query)', fileInput.files);
+      previewContainer.innerHTML = '';
+      if (fileInput.files && fileInput.files.length > 0) {
+        console.log('Files found:', fileInput.files.length);
+        Array.from(fileInput.files).forEach(function(file, index) {
+          console.log('Processing file:', file.name, file.type);
+          if (!file.type.startsWith('image/')) {
+            console.log('File is not an image, skipping');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            console.log('File loaded for preview');
+            let img = document.createElement('img');
+            img.src = ev.target.result;
+            img.style.width = '120px';
+            img.style.height = '120px';
+            img.style.borderRadius = '12px';
+            img.style.boxShadow = '0 2px 12px rgba(0,0,0,0.12)';
+            img.style.objectFit = 'cover';
+            img.style.margin = '6px';
+            img.style.display = 'block';
+            previewContainer.appendChild(img);
+            console.log('Preview image added to container');
+          };
+          reader.onerror = function() {
+            console.error('Error reading file:', file.name);
+          };
+          reader.readAsDataURL(file);
+        });
+      } else {
+        console.log('No files selected');
+      }
+    });
+    
+    // EVENT LISTENER DIRETTO SU ELEMENTO TROVATO PER ID
+    const fileInputById = document.getElementById('add-img-input');
+    if (fileInputById) {
+      console.log('File input disabled?', fileInputById.disabled);
+      console.log('File input type:', fileInputById.type);
+      console.log('File input accept:', fileInputById.accept);
+      console.log('File input multiple:', fileInputById.multiple);
+      
+      fileInputById.addEventListener('change', function(e) {
+        console.log('File change event triggered (via ID)', e.target.files);
+        console.log('Number of files selected:', e.target.files ? e.target.files.length : 0);
+      });
+    }
+    addImgForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const files = fileInput.files;
+      if (!files || files.length === 0) {
+        alert('Seleziona almeno un file immagine.');
+        return;
+      }
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+      }
+      // idAnimale hidden input
+      const idAnimaleInput = addImgForm.querySelector('input[name="idAnimale"]');
+      if (idAnimaleInput) {
+        formData.append('idAnimale', idAnimaleInput.value);
+      }
+      fetch('/immagini/carica-multiple', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }).then(function(response) {
+        console.log('Upload response status:', response.status);
+        if (response.ok) {
+          console.log('Upload successful, clearing preview and input');
+          // Pulisci preview e input
+          previewContainer.innerHTML = '';
+          fileInput.value = '';
+          // Ricarica solo la galleria esistente senza redirect
+          setTimeout(function() {
+            window.location.reload();
+          }, 500);
+        } else {
+          console.error('Upload failed with status:', response.status);
+          alert('Errore durante l\'aggiunta.');
+        }
+      }).catch(function(error) {
+        console.error('Upload error:', error);
+        alert('Errore di rete.');
+      });
+    });
+  }
+
+  // Inizializza drag & drop per riordinamento immagini
+  const sortableGallery = document.getElementById('sortable-gallery');
+  if (sortableGallery) {
+    new Sortable(sortableGallery, {
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      handle: '.drag-handle',
+      onEnd: function(evt) {
+        // Raccogli l'ordine aggiornato degli ID immagini
+        const ordineImmagini = Array.from(sortableGallery.children).map(function(item) {
+          return parseInt(item.getAttribute('data-id'));
+        });
+        
+        // Invia l'ordine aggiornato al server
+        fetch('/immagini/aggiorna-ordine', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(ordineImmagini)
+        }).then(function(response) {
+          if (!response.ok) {
+            console.error('Errore durante l\'aggiornamento dell\'ordine');
+            // Ricarica la pagina per ripristinare l'ordine originale
+            location.reload();
+          } else {
+            console.log('Ordine aggiornato con successo');
+          }
+        }).catch(function(error) {
+          console.error('Errore di rete:', error);
+          location.reload();
+        });
+      }
+    });
+  }
+
+  // Gestione impostazione immagine principale
+  document.querySelectorAll('.set-main-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const imgId = btn.getAttribute('data-id');
+      const idAnimale = document.querySelector('input[name="idAnimale"]').value;
+      
+      fetch('/immagini/set-principale/' + imgId + '?idAnimale=' + idAnimale, {
+        method: 'POST'
+      }).then(function(response) {
+        if (response.ok) {
+          // Rimuovi il flag principale da tutti i pulsanti
+          document.querySelectorAll('.set-main-btn').forEach(function(b) {
+            b.classList.remove('principale');
+            b.title = 'Imposta come principale';
+          });
+          
+          // Aggiungi il flag principale al pulsante corrente
+          btn.classList.add('principale');
+          btn.title = 'Immagine principale';
+          
+          console.log('Immagine principale aggiornata');
+        } else {
+          alert('Errore durante l\'impostazione dell\'immagine principale.');
+        }
+      }).catch(function() {
+        alert('Errore di rete.');
+      });
+    });
+  });
+});
+</script>
 </html>

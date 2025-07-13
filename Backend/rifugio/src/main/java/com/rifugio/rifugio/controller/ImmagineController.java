@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,11 +37,17 @@ public class ImmagineController {
                 .collect(Collectors.toList());
     }
     
-    // Ottieni immagine specifica per ID
+    // Ottieni immagine specifica per ID (restituisce i dati binari)
     @GetMapping("/{id}")
-    public ResponseEntity<?> getImmagineById(@PathVariable int id) {
+    public ResponseEntity<byte[]> getImmagineById(@PathVariable int id) {
         Optional<Immagine> img = immagineService.getImmagineById(id);
-        return img.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (img.isPresent()) {
+            return ResponseEntity.ok()
+                .header("Content-Type", img.get().getTipo())
+                .body(img.get().getDati());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     // Ottieni tutte le immagini di un animale specifico (solo metadati)
@@ -59,6 +66,20 @@ public class ImmagineController {
         try {
             Immagine img = immagineService.storeImmagine(file, idAnimale);
             return ResponseEntity.ok(img);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    // Carica più immagini per un animale
+    @PostMapping(value = "/carica-multiple")
+    public ResponseEntity<?> caricaImmaginiMultiple(@RequestParam("files") List<MultipartFile> files, @RequestParam("idAnimale") int idAnimale) {
+        try {
+            List<Immagine> immagini = immagineService.storeImmagini(files, idAnimale);
+            List<ImmagineResponse> response = immagini.stream()
+                .map(this::mapToImmagineResponse)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -167,5 +188,27 @@ public class ImmagineController {
                 immagine.getData_caricamento().toString(),
                 immagine.getAnimale() != null ? immagine.getAnimale().getIdAnimale() : 0
         );
+    }
+    
+    // Imposta un'immagine come principale
+    @PostMapping(value = "/set-principale/{idImmagine}")
+    public ResponseEntity<?> setImmaginePrincipale(@PathVariable int idImmagine, @RequestParam("idAnimale") int idAnimale) {
+        try {
+            immagineService.setImmaginePrincipale(idImmagine, idAnimale);
+            return ResponseEntity.ok().body("Immagine principale aggiornata con successo");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    // Aggiorna l'ordine delle immagini
+    @PostMapping(value = "/aggiorna-ordine")
+    public ResponseEntity<?> aggiornaOrdineImmagini(@RequestBody List<Integer> ordineImmagini) {
+        try {
+            immagineService.updateOrdineVisualizzazione(ordineImmagini);
+            return ResponseEntity.ok().body("Ordine aggiornato con successo");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -15,6 +15,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="AnagraficaAnimali")
 public class AnagraficaAnimali {
+    // Getter compatibile con il controller per id animale
+    public Integer getIdAnagraficaAnimali() {
+        return Id_Animale;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

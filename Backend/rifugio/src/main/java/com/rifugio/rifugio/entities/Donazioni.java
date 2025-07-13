@@ -26,6 +26,14 @@ public class Donazioni {
     private Date data_donazione;
 
     private String descrizione;
+    
+    private String metodo_pagamento;
+    
+    private String note;
+
+    // Costruttore vuoto richiesto per JPA e Thymeleaf
+    public Donazioni() {
+    }
 
     public Integer getId_donazione() {
         return id_donazione;
@@ -65,5 +73,34 @@ public class Donazioni {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+    
+    public String getMetodo_pagamento() {
+        return metodo_pagamento;
+    }
+
+    public void setMetodo_pagamento(String metodo_pagamento) {
+        this.metodo_pagamento = metodo_pagamento;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
+    @Override
+    public String toString() {
+        return "Donazioni{" +
+                "id_donazione=" + id_donazione +
+                ", importo=" + importo +
+                ", persona=" + (persona != null ? persona.getId_persona() : null) +
+                ", data_donazione=" + data_donazione +
+                ", descrizione='" + descrizione + '\'' +
+                ", metodo_pagamento='" + metodo_pagamento + '\'' +
+                ", note='" + note + '\'' +
+                '}';
     }
 }

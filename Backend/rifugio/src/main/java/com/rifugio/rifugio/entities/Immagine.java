@@ -1,5 +1,7 @@
 package com.rifugio.rifugio.entities;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Date;
 
 @Entity
 @Table(name="immagini")
@@ -30,6 +31,9 @@ public class Immagine {
     @JoinColumn(name = "id_animale", referencedColumnName = "id_animale")
     private AnagraficaAnimali animale;
     
+    private boolean is_principale = false;
+    private int ordine_visualizzazione = 0;
+    
     // Constructors
     public Immagine() {
     }
@@ -40,6 +44,8 @@ public class Immagine {
         this.dati = dati;
         this.data_caricamento = data_caricamento;
         this.animale = animale;
+        this.is_principale = false;
+        this.ordine_visualizzazione = 0;
     }
     
     // Getters and Setters
@@ -89,5 +95,21 @@ public class Immagine {
 
     public void setAnimale(AnagraficaAnimali animale) {
         this.animale = animale;
+    }
+
+    public boolean isIs_principale() {
+        return is_principale;
+    }
+
+    public void setIs_principale(boolean is_principale) {
+        this.is_principale = is_principale;
+    }
+
+    public int getOrdine_visualizzazione() {
+        return ordine_visualizzazione;
+    }
+
+    public void setOrdine_visualizzazione(int ordine_visualizzazione) {
+        this.ordine_visualizzazione = ordine_visualizzazione;
     }
 }

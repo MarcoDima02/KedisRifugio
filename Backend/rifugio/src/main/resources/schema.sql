@@ -121,5 +121,7 @@ CREATE TABLE immagini (
     dati LONGBLOB NOT NULL,
     data_caricamento DATE NOT NULL,
     id_animale INT,
+    is_principale BOOLEAN DEFAULT FALSE,
+    ordine_visualizzazione INT DEFAULT 0,
     FOREIGN KEY (id_animale) REFERENCES anagrafica_animali(id_animale)
 );

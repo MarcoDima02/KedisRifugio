@@ -12,4 +12,8 @@ public interface UtentiService {
     List<Utenti> getAllUtenti();
     Utenti getUtenteById(Integer id);
     void updateUtente(Integer id, Utenti utente);
+    void deleteUtente(Integer id);
+    Utenti createUtente(Utenti utente);
+    boolean existsByEmail(String email);
+    boolean existsByCodiceFiscale(String codiceFiscale);
 }

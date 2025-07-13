@@ -76,7 +76,12 @@
         <div class="animal-grid">
             <a th:href="@{/animale/{id}(id=${animale.idAnimale})}" class="animal-link" th:each="animale : ${animali}">
                 <div class="animal-card">
-                <img src="../images/prova_foto.webp" th:alt="${animale.nome}" />
+                    <img th:if="${immaginiPrincipali[animale.idAnimale].isPresent()}" 
+                         th:src="@{'/immagini/' + ${immaginiPrincipali[animale.idAnimale].get().id_immagine}}" 
+                         th:alt="${animale.nome}" />
+                    <img th:unless="${immaginiPrincipali[animale.idAnimale].isPresent()}" 
+                         src="../images/prova_foto.webp" 
+                         th:alt="${animale.nome}" />
                     <div class="animal-info">
                         <p class="animal-name" th:text="${animale.nome}">Nome Animale</p>
                         <p class="animal-meta">

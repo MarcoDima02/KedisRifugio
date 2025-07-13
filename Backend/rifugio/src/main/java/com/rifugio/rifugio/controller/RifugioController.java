@@ -1,14 +1,10 @@
 package com.rifugio.rifugio.controller;
 
-import com.rifugio.rifugio.entities.AnagraficaAnimali;
-import com.rifugio.rifugio.entities.Donazioni;
-import com.rifugio.rifugio.entities.Utenti;
-import com.rifugio.rifugio.services.*;
-
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +16,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.rifugio.rifugio.entities.AnagraficaAnimali;
+import com.rifugio.rifugio.entities.Donazioni;
+import com.rifugio.rifugio.entities.Immagine;
+import com.rifugio.rifugio.entities.Utenti;
+import com.rifugio.rifugio.services.AnagraficaAnimaliServiceImpl;
+import com.rifugio.rifugio.services.DonazioniServiceImpl;
+import com.rifugio.rifugio.services.ImmagineServiceImpl;
+import com.rifugio.rifugio.services.RazzaServiceImpl;
+import com.rifugio.rifugio.services.SpecieServiceImpl;
+import com.rifugio.rifugio.services.StatoAnimaleServiceImpl;
+import com.rifugio.rifugio.services.UtentiServiceImpl;
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -45,6 +54,9 @@ public class RifugioController {
     @Autowired
     StatoAnimaleServiceImpl statoAnimaleService;
 
+    @Autowired
+    ImmagineServiceImpl immagineService;
+
     @GetMapping("/")
     public String homePagine(Model model, HttpSession session){
         model.addAttribute("animaliDisponibili", anagraficaAnimaleService.getByIdStatoAnimale(1).size());
@@ -55,7 +67,17 @@ public class RifugioController {
     @GetMapping("/animali")
     public String dashboardAnimali(Model model) {
         String[] sessoList = {"Maschio", "Femmina"};
-        model.addAttribute("animali", anagraficaAnimaleService.getByIdStatoAnimale(1)); // Serve per mostrare solo gli animali disponibili
+        List<AnagraficaAnimali> animali = anagraficaAnimaleService.getByIdStatoAnimale(1);
+        
+        // Per ogni animale, ottieni l'immagine principale
+        Map<Integer, Optional<Immagine>> immaginiPrincipali = new HashMap<>();
+        for (AnagraficaAnimali animale : animali) {
+            Optional<Immagine> immaginePrincipale = immagineService.getImmaginePrincipaleByAnimale(animale.getIdAnimale());
+            immaginiPrincipali.put(animale.getIdAnimale(), immaginePrincipale);
+        }
+        
+        model.addAttribute("animali", animali);
+        model.addAttribute("immaginiPrincipali", immaginiPrincipali);
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("selezionata", ""); // valore selezionato di default
@@ -66,7 +88,17 @@ public class RifugioController {
     @GetMapping("/animale/{id}")
     public String dettaglioAnimale(@PathVariable int id, Model model) {
         AnagraficaAnimali animale = anagraficaAnimaleService.getByIdAnagraficaAnimali(id);
+        
+        // Ottieni l'immagine principale
+        Optional<Immagine> immaginePrincipale = immagineService.getImmaginePrincipaleByAnimale(id);
+        
+        // Ottieni tutte le immagini ordinate per il carosello
+        List<Immagine> immaginiCarosello = immagineService.getImmaginiByAnimaleOrdered(id);
+        
         model.addAttribute("animale", animale);
+        model.addAttribute("immaginePrincipale", immaginePrincipale);
+        model.addAttribute("immaginiCarosello", immaginiCarosello);
+        model.addAttribute("adminView", false); // Vista pubblica
         return "dettaglio_animale"; 
     }
 
@@ -80,10 +112,18 @@ public class RifugioController {
         // Otteniamo la lista filtrata
         List<AnagraficaAnimali> animaliFiltrati = anagraficaAnimaleService.filtra(specie, razza, sesso);
 
+        // Per ogni animale, ottieni l'immagine principale
+        Map<Integer, Optional<Immagine>> immaginiPrincipali = new HashMap<>();
+        for (AnagraficaAnimali animale : animaliFiltrati) {
+            Optional<Immagine> immaginePrincipale = immagineService.getImmaginePrincipaleByAnimale(animale.getIdAnimale());
+            immaginiPrincipali.put(animale.getIdAnimale(), immaginePrincipale);
+        }
+
         // Ri-popoliamo le liste di selezione
         String[] sessoList = {"M", "F"}; // Maschio = M, Femmina = F
 
         model.addAttribute("animali", animaliFiltrati);
+        model.addAttribute("immaginiPrincipali", immaginiPrincipali);
         model.addAttribute("specieList", specieService.getAllSpecie());
         model.addAttribute("razzaList", razzaService.getAllRazze());
         model.addAttribute("sessoList", sessoList);

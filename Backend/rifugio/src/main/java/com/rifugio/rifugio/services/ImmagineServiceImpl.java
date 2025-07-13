@@ -44,6 +44,33 @@ public class ImmagineServiceImpl implements ImmagineService {
     }
 
     @Override
+    public List<Immagine> getImmaginiByAnimaleOrdered(int idAnimale) {
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isPresent()) {
+            return immagineRepo.findByAnimaleOrderByOrdineVisualizzazione(animale.get());
+        }
+        return List.of();
+    }
+
+    @Override
+    public Optional<Immagine> getImmaginePrincipaleByAnimale(int idAnimale) {
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isPresent()) {
+            return immagineRepo.findImmaginePrincipaleByAnimale(animale.get());
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Immagine> getImmaginiSecondariesByAnimale(int idAnimale) {
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isPresent()) {
+            return immagineRepo.findImmaginiSecondariesByAnimale(animale.get());
+        }
+        return List.of();
+    }
+
+    @Override
     public Immagine storeImmagine(MultipartFile file, int idAnimale) {
         String fileName = file.getOriginalFilename();
         String fileType = file.getContentType();
@@ -66,6 +93,32 @@ public class ImmagineServiceImpl implements ImmagineService {
         } catch (IOException e) {
             throw new RuntimeException("Impossibile salvare l'immagine: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<Immagine> storeImmagini(List<MultipartFile> files, int idAnimale) {
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isEmpty()) {
+            throw new RuntimeException("Animale non trovato con ID: " + idAnimale);
+        }
+        List<Immagine> immaginiSalvate = new java.util.ArrayList<>();
+        for (MultipartFile file : files) {
+            String fileName = file.getOriginalFilename();
+            String fileType = file.getContentType();
+            try {
+                Immagine immagine = new Immagine(
+                    fileName,
+                    fileType,
+                    file.getBytes(),
+                    java.sql.Date.valueOf(java.time.LocalDate.now()),
+                    animale.get()
+                );
+                immaginiSalvate.add(immagineRepo.save(immagine));
+            } catch (IOException e) {
+                throw new RuntimeException("Impossibile salvare l'immagine: " + fileName + ", errore: " + e.getMessage());
+            }
+        }
+        return immaginiSalvate;
     }
 
     @Override
@@ -93,6 +146,37 @@ public class ImmagineServiceImpl implements ImmagineService {
             return immagineRepo.save(existing);
         } catch (IOException e) {
             throw new RuntimeException("Impossibile aggiornare l'immagine: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void setImmaginePrincipale(int idImmagine, int idAnimale) {
+        Optional<AnagraficaAnimali> animale = anagraficaAnimaliRepo.findById(idAnimale);
+        if (animale.isPresent()) {
+            // Prima rimuovi il flag principale da tutte le immagini dell'animale
+            List<Immagine> tutteImmagini = immagineRepo.findByAnimale(animale.get());
+            for (Immagine img : tutteImmagini) {
+                img.setIs_principale(false);
+                immagineRepo.save(img);
+            }
+            
+            // Poi imposta la nuova immagine principale
+            Optional<Immagine> nuovaPrincipale = immagineRepo.findById(idImmagine);
+            if (nuovaPrincipale.isPresent()) {
+                nuovaPrincipale.get().setIs_principale(true);
+                immagineRepo.save(nuovaPrincipale.get());
+            }
+        }
+    }
+
+    @Override
+    public void updateOrdineVisualizzazione(List<Integer> ordineImmagini) {
+        for (int i = 0; i < ordineImmagini.size(); i++) {
+            Optional<Immagine> immagine = immagineRepo.findById(ordineImmagini.get(i));
+            if (immagine.isPresent()) {
+                immagine.get().setOrdine_visualizzazione(i + 1);
+                immagineRepo.save(immagine.get());
+            }
         }
     }
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuovo Utente - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/forms.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div th:insert="fragments/sidebar :: customSidebar"></div>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <h1>Crea Nuovo Utente</h1>
+            <a th:href="@{/dashboard/admin/utenti}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Torna agli utenti
+            </a>
+        </div>
+
+        <div class="form-container">
+            <form th:action="@{/dashboard/admin/utenti/save}" th:object="${utente}" method="post" class="animal-form">
+                <div class="form-section">
+                    <h3>Informazioni Personali</h3>
+                    
+                    <div class="form-field">
+                        <label for="nome">Nome:</label>
+                        <input type="text" th:field="*{nome}" id="nome" class="form-control" required maxlength="50">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="cognome">Cognome:</label>
+                        <input type="text" th:field="*{cognome}" id="cognome" class="form-control" required maxlength="50">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="codiceFiscale">Codice Fiscale:</label>
+                        <input type="text" th:field="*{codiceFiscale}" id="codiceFiscale" class="form-control" 
+                               required maxlength="16" pattern="[A-Za-z0-9]{16}" 
+                               title="Inserisci un codice fiscale valido di 16 caratteri">
+                        <small class="form-help">Il codice fiscale deve essere unico nel sistema</small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email:</label>
+                        <input type="email" th:field="*{email}" id="email" class="form-control" required maxlength="100">
+                        <small class="form-help">L'email deve essere unica nel sistema</small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="numero">Numero di telefono:</label>
+                        <input type="tel" th:field="*{numero}" id="numero" class="form-control" maxlength="15">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Credenziali e Ruolo</h3>
+                    
+                    <div class="form-field">
+                        <label for="password">Password:</label>
+                        <input type="password" th:field="*{password}" id="password" class="form-control" 
+                               placeholder="Lascia vuoto per password predefinita (password123)">
+                        <small class="form-help">Se non specificata, verrà assegnata la password temporanea "password123"</small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="ruolo">Ruolo:</label>
+                        <select th:field="*{ruolo}" id="ruolo" class="form-control" required>
+                            <option value="USER">Utente</option>
+                            <option value="ADMIN">Amministratore</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-save"></i> Crea Utente
+                    </button>
+                    <a th:href="@{/dashboard/admin/utenti}" class="btn btn-secondary">
+                        <i class="fa-solid fa-times"></i> Annulla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Auto-maiuscolo per codice fiscale
+        document.getElementById('codiceFiscale').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>

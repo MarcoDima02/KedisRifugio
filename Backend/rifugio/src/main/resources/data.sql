@@ -112,5 +112,5 @@ INSERT INTO visite_veterinarie (data, ora, id_animale, motivo, esito) VALUES
 ('2024-04-15', '11:30:00', 2, 'Controllo annuale', 'In attesa');
 
 -- Inserimento dati per immagini di prova
-INSERT INTO immagini (nome, tipo, dati, data_caricamento, id_animale) VALUES
-('banner.png', 'image/png', 0xff, '2024-06-27', 1);
+-- INSERT INTO immagini (nome, tipo, dati, data_caricamento, id_animale) VALUES
+-- ('banner.png', 'image/png', 0xff, '2024-06-27', 1);

@@ -77,17 +77,14 @@
 }
 
 .animal-gallery-section {
-  background: #17613a;
-  border-radius: 14px;
-  padding: 18px 18px 12px 18px;
-  margin-bottom: 28px;
-  box-shadow: 0 2px 12px rgba(23,97,58,0.10);
+  margin: 24px 0;
 }
+
 .animal-gallery-section h3 {
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1em;
+  color: #17613a;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  text-align: center;
 }
 .animal-gallery {
   display: flex;
@@ -131,6 +128,185 @@
 .animal-detail-box li {
   font-size: 1em;
   margin-bottom: 0.3em;
+}
+
+/* Stili per il carosello nel dettaglio animale */
+.animal-gallery-section {
+  margin: 24px 0;
+}
+
+.animal-gallery-section h3 {
+  color: #17613a;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.carousel-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.carousel-main {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  max-height: 500px;
+  overflow: hidden;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-main img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.carousel-controls:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.carousel-prev {
+  left: 15px;
+}
+
+.carousel-next {
+  right: 15px;
+}
+
+.carousel-indicator {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.carousel-thumbnails {
+  display: flex;
+  gap: 8px;
+  padding: 15px;
+  background: #f8f9fa;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.carousel-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.carousel-thumbnails::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.carousel-thumbnails::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+
+.carousel-thumbnail {
+  flex: 0 0 80px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-thumbnail:hover {
+  transform: scale(1.05);
+}
+
+.carousel-thumbnail.active {
+  border-color: #17613a;
+  box-shadow: 0 0 0 1px rgba(23, 97, 58, 0.3);
+}
+
+.carousel-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-images-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.no-images-message i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Responsive per il carosello */
+@media (max-width: 768px) {
+  .carousel-main {
+    min-height: 250px;
+    max-height: 400px;
+  }
+  
+  .carousel-controls {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .carousel-prev {
+    left: 10px;
+  }
+  
+  .carousel-next {
+    right: 10px;
+  }
+  
+  .carousel-thumbnails {
+    padding: 10px;
+    gap: 6px;
+  }
+  
+  .carousel-thumbnail {
+    flex: 0 0 60px;
+    height: 45px;
+  }
 }
 
 @media (max-width: 1000px) {
