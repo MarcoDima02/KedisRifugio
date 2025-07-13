@@ -27,6 +27,12 @@ public class RazzeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Nuovo endpoint per filtrare razze per specie
+    @GetMapping("/specie/{specieId}")
+    public List<Razza> getRazzeBySpecie(@PathVariable Integer specieId) {
+        return razzaService.getRazzeBySpecieId(specieId);
+    }
+
     @PostMapping
     public ResponseEntity<Razza> crea(@RequestBody Razza razza) {
         return ResponseEntity.ok(razzaService.salva(razza));

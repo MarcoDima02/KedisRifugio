@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Razza - Dashboard Admin</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div th:replace="fragments/sidebar :: customSidebar"></div>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+            <div style="display: flex; align-items: center; gap: 32px;">
+                <h1 style="margin: 0;">Modifica Razza</h1>
+                <a href="/dashboard/admin/razze" class="dashboard-home-btn">
+                    <i class="fa-solid fa-arrow-left"></i> <span style="margin-left:6px;">Torna alla lista</span>
+                </a>
+            </div>
+            <div class="dashboard-user">
+                <div class="user-initials" th:text="${userInitials}"></div>
+                <div>
+                    <div th:text="${userFullName}"></div>
+                    <div class="user-role" th:text="${userRuolo}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container" style="max-width: 600px; margin: 24px auto; background: white; padding: 24px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form th:action="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" method="post" th:object="${razza}">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="nome" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Nome Razza *</label>
+                    <input type="text" 
+                           id="nome" 
+                           name="nome"
+                           th:field="*{nome}" 
+                           placeholder="Inserisci il nome della razza"
+                           style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;"
+                           required>
+                    <div th:if="${#fields.hasErrors('nome')}" 
+                         style="color: #dc3545; font-size: 12px; margin-top: 4px;">
+                        <span th:errors="*{nome}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="specie" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Specie *</label>
+                    <select id="specie" 
+                            name="specie"
+                            th:field="*{specie}"
+                            style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;"
+                            required>
+                        <option value="">Seleziona una specie</option>
+                        <option th:each="s : ${specie}" 
+                                th:value="${s.idSpecie}" 
+                                th:text="${s.nome}"
+                                th:selected="${razza.specie != null && razza.specie.idSpecie == s.idSpecie}"></option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('specie')}" 
+                         style="color: #dc3545; font-size: 12px; margin-top: 4px;">
+                        <span th:errors="*{specie}"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px;">
+                    <a href="/dashboard/admin/razze" 
+                       style="padding: 12px 24px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                        Annulla
+                    </a>
+                    <button type="submit" 
+                            style="padding: 12px 24px; background: #17613a; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                        <i class="fa-solid fa-save"></i> Salva Modifiche
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

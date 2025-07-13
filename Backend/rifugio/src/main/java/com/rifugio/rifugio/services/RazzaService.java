@@ -10,4 +10,7 @@ public interface RazzaService {
     Razza salva(Razza razza);
     Razza aggiorna(int id, Razza razza);
     void elimina(int id);
+    
+    // Nuovi metodi per filtrare per specie
+    List<Razza> getRazzeBySpecieId(Integer specieId);
 }

@@ -44,4 +44,12 @@ public class RazzaServiceImpl implements RazzaService {
     public void elimina(int id) {
         razzaRepo.deleteById(id);
     }
+
+    @Override
+    public List<Razza> getRazzeBySpecieId(Integer specieId) {
+        if (specieId == null) {
+            return getAllRazze();
+        }
+        return razzaRepo.findBySpecieId(specieId);
+    }
 }

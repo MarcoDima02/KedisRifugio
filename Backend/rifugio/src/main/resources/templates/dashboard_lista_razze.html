@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Razze - Dashboard Admin</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div th:replace="fragments/sidebar :: customSidebar"></div>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+            <div style="display: flex; align-items: center; gap: 32px;">
+                <h1 style="margin: 0;">Gestione Razze</h1>
+                <a href="/" class="dashboard-home-btn">
+                    <i class="fa-solid fa-house"></i> <span style="margin-left:6px;">Home</span>
+                </a>
+            </div>
+            <div class="dashboard-user">
+                <div class="user-initials" th:text="${userInitials}"></div>
+                <div>
+                    <div th:text="${userFullName}"></div>
+                    <div class="user-role" th:text="${userRuolo}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messaggi di successo/errore -->
+        <div th:if="${successMessage}" class="alert alert-success" style="margin: 16px 0; padding: 12px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" style="margin: 16px 0; padding: 12px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <div class="dashboard-actions" style="margin-bottom: 24px;">
+            <a class="dashboard-action" href="/dashboard/admin/razze/save">
+                <div class="action-icon"><i class="fa-solid fa-plus"></i></div>
+                <div class="action-label">Nuova razza<br><span style="font-size:0.9em;color:#888;">Aggiungi una nuova razza</span></div>
+            </a>
+        </div>
+
+        <section class="dashboard-table">
+            <h2 style="margin-bottom:16px;font-size:1.2em;color:#17613a;">Lista Razze</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome Razza</th>
+                        <th>Specie</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="razza : ${razze}">
+                        <td th:text="${razza.idRazza}"></td>
+                        <td th:text="${razza.nome}"></td>
+                        <td th:text="${razza.specie?.nome ?: 'N/A'}"></td>
+                        <td style="display: flex; gap: 8px;">
+                            <a th:href="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" 
+                               class="btn btn-sm btn-primary" style="background-color: #17613a; color: white; padding: 4px 8px; text-decoration: none; border-radius: 4px; font-size: 0.8em;">
+                                <i class="fa-solid fa-edit"></i> Modifica
+                            </a>
+                            <form th:action="@{/dashboard/admin/razze/delete/{id}(id=${razza.idRazza})}" 
+                                  method="post" style="display: inline;"
+                                  onsubmit="return confirm('Sei sicuro di voler eliminare questa razza?');">
+                                <button type="submit" class="btn btn-sm btn-danger" 
+                                        style="background-color: #dc3545; color: white; padding: 4px 8px; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer;">
+                                    <i class="fa-solid fa-trash"></i> Elimina
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(razze)}">
+                        <td colspan="4" style="text-align: center; color: #888; font-style: italic;">Nessuna razza trovata</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

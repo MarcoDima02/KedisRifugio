@@ -48,10 +48,10 @@ public class DashboardAdminController {
     AnagraficaAnimaliService anagraficaAnimaliService;
 
     @Autowired
-    SpecieServiceImpl specieService;
+    RazzaServiceImpl razzaService;
 
     @Autowired
-    RazzaServiceImpl razzaService;
+    SpecieServiceImpl specieService;
 
     @Autowired
     StatoAnimaleServiceImpl statoAnimaleService;
@@ -496,6 +496,113 @@ public class DashboardAdminController {
                 return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
             }
         });
+    }
+
+    // DASHBOARD RAZZE (BREEDS)
+
+    @GetMapping("/razze")
+    public String getRazze(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("razze", razzaService.getAllRazze());
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "dashboard_lista_razze";
+    }
+
+    @GetMapping("/razze/save")
+    public String mostraFormCreazioneRazza(Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("razza", new com.rifugio.rifugio.entities.Razza());
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "creazione_razza";
+    }
+
+    @PostMapping("/razze/save")
+    public String salvaRazza(@Validated @ModelAttribute("razza") com.rifugio.rifugio.entities.Razza razza,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        // Validazione custom
+        if (razza.getNome() == null || razza.getNome().trim().isEmpty()) {
+            bindingResult.rejectValue("nome", "error.razza", "Il nome è obbligatorio.");
+        }
+        if (razza.getSpecie() == null) {
+            bindingResult.rejectValue("specie", "error.razza", "Seleziona una specie.");
+        }
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "creazione_razza";
+        }
+        
+        razzaService.salva(razza);
+        redirectAttributes.addFlashAttribute("successMessage", "Razza creata con successo!");
+        return "redirect:/dashboard/admin/razze";
+    }
+
+    @GetMapping("/razze/update/{id}")
+    public String aggiornaRazza(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        model.addAttribute("razza", razzaService.getRazzaById(id).orElse(new com.rifugio.rifugio.entities.Razza()));
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "modifica_razza";
+    }
+
+    @PostMapping("/razze/update/{id}")
+    public String aggiornaRazza(@PathVariable Integer id,
+                                @Validated @ModelAttribute("razza") com.rifugio.rifugio.entities.Razza razza,
+                                BindingResult bindingResult,
+                                Model model,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        // Validazione custom
+        if (razza.getNome() == null || razza.getNome().trim().isEmpty()) {
+            bindingResult.rejectValue("nome", "error.razza", "Il nome è obbligatorio.");
+        }
+        if (razza.getSpecie() == null) {
+            bindingResult.rejectValue("specie", "error.razza", "Seleziona una specie.");
+        }
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specie", specieService.getAllSpecie());
+            return "modifica_razza";
+        }
+        
+        razzaService.aggiorna(id, razza);
+        redirectAttributes.addFlashAttribute("successMessage", "Razza aggiornata con successo!");
+        return "redirect:/dashboard/admin/razze";
+    }
+
+    @PostMapping("/razze/delete/{id}")
+    public String eliminaRazza(@PathVariable Integer id, 
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/";
+        }
+        
+        try {
+            razzaService.elimina(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Razza eliminata con successo!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Impossibile eliminare la razza. Potrebbe essere utilizzata da alcuni animali.");
+        }
+        
+        return "redirect:/dashboard/admin/razze";
     }
 
 }
