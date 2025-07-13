@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rifugio.rifugio.entities.Adozioni;
@@ -42,5 +43,9 @@ public class AdozioniServiceImpl implements AdozioniService {
             return adozioniRepo.save(aggiornata);
         }
         return null;
+    }
+
+    public List<Adozioni> getUltimeAdozioni() {
+        return adozioniRepo.findUltimeAdozioni(PageRequest.of(0, 5));
     }
 }

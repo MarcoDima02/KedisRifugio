@@ -3,6 +3,7 @@ package com.rifugio.rifugio.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rifugio.rifugio.entities.VisiteVeterinarie;
@@ -39,8 +40,11 @@ public class VisiteVeterinarieServiceImpl implements VisiteVeterinarieService {
         visiteVeterinarieRepo.deleteById(id);
     }
 
+    public List<VisiteVeterinarie> getUltimeVisite() {
+        return visiteVeterinarieRepo.findUltimeVisite(java.time.LocalDate.now(), PageRequest.of(0, 5));
+    }
     
-
-
-
+    public List<VisiteVeterinarie> getProssimeVisite() {
+        return visiteVeterinarieRepo.findProssimeVisite(java.time.LocalDate.now(), PageRequest.of(0, 5));
+    }
 }

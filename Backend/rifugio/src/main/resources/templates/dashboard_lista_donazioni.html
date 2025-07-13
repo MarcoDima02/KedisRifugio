@@ -36,7 +36,7 @@
                         <td th:text="${donazione.id_donazione}">1</td>
                         <td th:text="${donazione.importo}">100.00</td>
                         <td th:text="${donazione.persona.nome + ' ' + donazione.persona.cognome}">Mario Rossi</td>
-                        <td th:text="${#dates.format(donazione.data_donazione, 'dd/MM/yyyy')}">01/01/2020</td>
+                        <td th:text="${#temporals.format(donazione.data_donazione, 'dd/MM/yyyy HH:mm')}">01/01/2020 15:30</td>
                         <td th:text="${donazione.descrizione}">Descrizione</td>
                         <td>
                                     <a th:href="@{/dashboard/admin/donazioni/update/{id}(id=${donazione.id_donazione})}" class="action-icon-btn" title="Modifica">

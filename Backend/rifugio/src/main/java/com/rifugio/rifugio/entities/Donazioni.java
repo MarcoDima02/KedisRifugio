@@ -1,6 +1,6 @@
 package com.rifugio.rifugio.entities;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +23,7 @@ public class Donazioni {
     @JoinColumn(name = "id_persona", referencedColumnName = "Id_Persona")
     private Utenti persona;
 
-    private Date data_donazione;
+    private LocalDateTime data_donazione;
 
     private String descrizione;
     
@@ -59,11 +59,11 @@ public class Donazioni {
         this.persona = persona;
     }
 
-    public Date getData_donazione() {
+    public LocalDateTime getData_donazione() {
         return data_donazione;
     }
 
-    public void setData_donazione(Date data_donazione) {
+    public void setData_donazione(LocalDateTime data_donazione) {
         this.data_donazione = data_donazione;
     }
 

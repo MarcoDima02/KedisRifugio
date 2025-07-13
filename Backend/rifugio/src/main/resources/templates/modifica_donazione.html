@@ -34,12 +34,16 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div class="filter-field">
                                 <label for="importo">Importo (€)</label>
-                                <input type="number" id="importo" th:field="*{importo}" min="1" step="0.01" required />
+                                <input type="number" id="importo" th:field="*{importo}" 
+                                       min="1.00" max="999999.99" step="0.01" required />
+                                <small class="form-help">Importo minimo: €1.00, massimo: €999,999.99</small>
                             </div>
                             
                             <div class="filter-field">
-                                <label for="data_donazione">Data di Donazione</label>
-                                <input type="date" id="data_donazione" th:field="*{data_donazione}" required />
+                                <label for="data_donazione"><i class="fas fa-calendar-day"></i> Data di Donazione</label>
+                                <input type="date" id="data_donazione" th:field="*{data_donazione}" required
+                                       th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
+                                <small class="form-help">La data di donazione non può essere nel futuro</small>
                             </div>
                         </div>
                         

@@ -647,3 +647,44 @@
     margin-top: 4px;
     display: block;
 }
+
+/* Input con icone */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding-right: 40px; /* Spazio per l'icona */
+}
+
+.input-with-icon .input-icon {
+    position: absolute;
+    right: 12px;
+    color: #007C40;
+    font-size: 1rem;
+    pointer-events: none; /* L'icona non interferisce con il click sul campo */
+    z-index: 2;
+}
+
+/* Stile specifico per input date e time con icone */
+.input-with-icon input[type="date"],
+.input-with-icon input[type="time"] {
+    padding-right: 45px; /* Più spazio per input date/time che hanno i loro controlli */
+}
+
+/* Hover effect per l'icona */
+.input-with-icon:hover .input-icon {
+    color: #004B23;
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+/* Focus effect */
+.input-with-icon input:focus + .input-icon {
+    color: #004B23;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}

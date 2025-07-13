@@ -3,6 +3,7 @@ package com.rifugio.rifugio.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rifugio.rifugio.entities.Donazioni;
@@ -48,9 +49,11 @@ public class DonazioniServiceImpl implements DonazioniService {
             donazioniRepo.deleteById(id);
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
-
+    
+    @Override
+    public List<Donazioni> getUltimeDonazioni() {
+        return donazioniRepo.findUltimeDonazioni(PageRequest.of(0, 5));
+    }
 }

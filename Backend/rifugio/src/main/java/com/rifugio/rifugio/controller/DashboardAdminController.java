@@ -2,7 +2,11 @@ package com.rifugio.rifugio.controller;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.rifugio.rifugio.dto.AttivitaRecente;
 import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.AnagraficaAnimali;
 import com.rifugio.rifugio.entities.CartellaClinica;
@@ -100,6 +105,78 @@ public class DashboardAdminController {
         model.addAttribute("numAnimali", numAnimali);
         model.addAttribute("numAdozioni", numAdozioni);
         model.addAttribute("totDonazioni", String.format("%.2f", totDonazioni));
+        
+        // Attività recenti
+        List<AttivitaRecente> attivitaRecenti = new ArrayList<>();
+        
+        // Aggiungi ultime donazioni
+        List<Donazioni> ultimeDonazioni = donazioniService.getUltimeDonazioni();
+        for (Donazioni donazione : ultimeDonazioni) {
+            LocalDateTime dataOra = donazione.getData_donazione(); // Ora include già data e ora
+            String dettagli = String.format("€%.2f da %s %s", 
+                donazione.getImporto(),
+                donazione.getPersona().getNome(),
+                donazione.getPersona().getCognome());
+            attivitaRecenti.add(new AttivitaRecente(dataOra, "Donazione", dettagli, "Ricevuta", "badge-success"));
+        }
+        
+        // Aggiungi ultime adozioni
+        List<Adozioni> ultimeAdozioni = adozioniService.getUltimeAdozioni();
+        for (Adozioni adozione : ultimeAdozioni) {
+            LocalDateTime dataOra = adozione.getDataAdozione().toLocalDate().atStartOfDay();
+            String dettagli = String.format("%s adottato da %s %s", 
+                adozione.getAnimale().getNome(),
+                adozione.getPersona().getNome(),
+                adozione.getPersona().getCognome());
+            String stato = adozione.getStepAdozione() != null ? adozione.getStepAdozione().getNome_step() : "In corso";
+            String badgeClass = stato.contains("Completata") ? "badge-success" : "badge-info";
+            attivitaRecenti.add(new AttivitaRecente(dataOra, "Adozione", dettagli, stato, badgeClass));
+        }
+        
+        // Aggiungi ultime visite veterinarie (solo quelle passate)
+        List<VisiteVeterinarie> ultimeVisite = visiteVeterinarieService.getUltimeVisite();
+        for (VisiteVeterinarie visita : ultimeVisite) {
+            LocalDateTime dataOra = visita.getData().atTime(visita.getOra());
+            String dettagli = String.format("%s - %s", 
+                visita.getId_animale().getNome(),
+                visita.getMotivo());
+            // Le visite passate sono sempre considerate completate
+            String stato = visita.getEsito() != null && !visita.getEsito().isEmpty() ? "Completata" : "Effettuata";
+            String badgeClass = "badge-success";
+            attivitaRecenti.add(new AttivitaRecente(dataOra, "Visita Veterinaria", dettagli, stato, badgeClass));
+        }
+        
+        // Aggiungi prossime visite veterinarie (solo quelle future o di oggi)
+        List<VisiteVeterinarie> prossimeVisite = visiteVeterinarieService.getProssimeVisite();
+        for (VisiteVeterinarie visita : prossimeVisite) {
+            LocalDateTime dataOra = visita.getData().atTime(visita.getOra());
+            String dettagli = String.format("%s - %s", 
+                visita.getId_animale().getNome(),
+                visita.getMotivo());
+            // Determina lo stato basato su data/ora e risultato
+            String stato;
+            String badgeClass;
+            
+            if (dataOra.isBefore(LocalDateTime.now())) {
+                // Visita già passata ma recuperata come "prossima" - non dovrebbe succedere
+                stato = visita.getEsito() != null && !visita.getEsito().isEmpty() ? "Completata" : "Effettuata";
+                badgeClass = "badge-success";
+            } else {
+                // Visita futura
+                stato = "Programmata";
+                badgeClass = "badge-warning";
+            }
+            
+            attivitaRecenti.add(new AttivitaRecente(dataOra, "Visita Veterinaria", dettagli, stato, badgeClass));
+        }
+        
+        // Ordina per data decrescente e prendi solo i primi 10
+        attivitaRecenti.sort(Comparator.comparing(AttivitaRecente::getDataOra).reversed());
+        if (attivitaRecenti.size() > 10) {
+            attivitaRecenti = attivitaRecenti.subList(0, 10);
+        }
+        
+        model.addAttribute("attivitaRecenti", attivitaRecenti);
         return "dashboard_admin";
     }
 
@@ -436,16 +513,20 @@ public class DashboardAdminController {
             return "redirect:/dashboard/admin/donazioni/save";
         }
         
-        // Imposta la data
+        // Imposta la data e ora
         try {
             if (dataDonazioneStr != null && !dataDonazioneStr.trim().isEmpty()) {
-                java.sql.Date dataDate = java.sql.Date.valueOf(dataDonazioneStr);
-                donazione.setData_donazione(dataDate);
+                // Parsea la data e imposta l'ora corrente
+                LocalDate dataDate = LocalDate.parse(dataDonazioneStr);
+                LocalDateTime dataOra = dataDate.atTime(LocalTime.now());
+                donazione.setData_donazione(dataOra);
             } else {
-                donazione.setData_donazione(new java.sql.Date(System.currentTimeMillis()));
+                // Usa data e ora correnti
+                donazione.setData_donazione(LocalDateTime.now());
             }
         } catch (Exception e) {
-            donazione.setData_donazione(new java.sql.Date(System.currentTimeMillis()));
+            // In caso di errore, usa data e ora correnti
+            donazione.setData_donazione(LocalDateTime.now());
         }
         
         try {
@@ -763,6 +844,25 @@ public class DashboardAdminController {
             }
         });
         
+        // Custom editor per LocalDateTime (per le donazioni)
+        binder.registerCustomEditor(LocalDateTime.class, "data_donazione", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    // Il form HTML invia solo la data (yyyy-MM-dd), aggiungiamo l'ora corrente
+                    LocalDate date = LocalDate.parse(text);
+                    setValue(date.atTime(LocalTime.now()));
+                }
+            }
+            @Override
+            public String getAsText() {
+                LocalDateTime dateTime = (LocalDateTime) getValue();
+                return dateTime != null ? dateTime.toLocalDate().toString() : "";
+            }
+        });
+        
         // Custom editor per convertire ID utente in oggetto Utenti
         binder.registerCustomEditor(Utenti.class, "persona", new PropertyEditorSupport() {
             @Override
@@ -796,6 +896,29 @@ public class DashboardAdminController {
                         setValue(null);
                     }
                 }
+            }
+        });
+        
+        // Custom editor per convertire String in LocalDateTime
+        binder.registerCustomEditor(LocalDateTime.class, "dataVisita", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    try {
+                        // Supponiamo che la data venga ricevuta nel formato "dd/MM/yyyy HH:mm"
+                        LocalDateTime dataOra = LocalDateTime.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                        setValue(dataOra);
+                    } catch (Exception e) {
+                        setValue(null);
+                    }
+                }
+            }
+            @Override
+            public String getAsText() {
+                LocalDateTime value = (LocalDateTime) getValue();
+                return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "";
             }
         });
     }

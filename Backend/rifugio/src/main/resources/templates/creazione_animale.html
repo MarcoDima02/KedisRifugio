@@ -37,7 +37,10 @@
           
           <div class="filter-field">
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" th:field="*{nome}" required />
+            <input type="text" id="nome" th:field="*{nome}" required 
+                   minlength="2" maxlength="50" pattern="[A-Za-zÀ-ù\s]+" 
+                   title="Il nome deve contenere solo lettere e spazi, minimo 2 caratteri" />
+            <small class="form-help">Solo lettere e spazi, da 2 a 50 caratteri</small>
           </div>
 
           <div class="filter-field">
@@ -77,12 +80,17 @@
 
           <div class="filter-field">
             <label for="dataNascita">Data di Nascita:</label>
-            <input type="date" id="dataNascita" th:field="*{dataNascita}" required />
+            <input type="date" id="dataNascita" th:field="*{dataNascita}" required 
+                   max="9999-12-31" onchange="validateDates()" />
+            <small class="form-help">La data di nascita deve essere precedente alla data di arrivo</small>
           </div>
 
           <div class="filter-field">
             <label for="dataArrivo">Data di Arrivo:</label>
-            <input type="date" id="dataArrivo" th:field="*{dataArrivo}" required />
+            <input type="date" id="dataArrivo" th:field="*{dataArrivo}" required 
+                   th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+                   onchange="validateDates()" />
+            <small class="form-help">La data di arrivo non può essere nel futuro</small>
           </div>
 
           <div class="filter-field">
@@ -118,12 +126,18 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="filter-field">
               <label for="microchip">Microchip:</label>
-              <input type="text" id="microchip" th:field="*{idCartellaClinica.microchip}" />
+              <input type="text" id="microchip" th:field="*{idCartellaClinica.microchip}" 
+                     pattern="[0-9]{15}" maxlength="15" 
+                     title="Il microchip deve essere di 15 cifre" 
+                     placeholder="Es: 380260123456789" />
+              <small class="form-help">Codice di 15 cifre (opzionale)</small>
             </div>
 
             <div class="filter-field">
               <label for="vaccinazioni">Vaccinazioni (numero):</label>
-              <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" min="0" />
+              <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" 
+                     min="0" max="50" />
+              <small class="form-help">Numero di vaccinazioni effettuate (0-50)</small>
             </div>
           </div>
 
@@ -425,6 +439,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Gestione immagini inizializzata');
 });
+
+// Validazione date animale
+function validateDates() {
+    const dataNascita = document.getElementById('dataNascita').value;
+    const dataArrivo = document.getElementById('dataArrivo').value;
+    
+    if (dataNascita && dataArrivo) {
+        const nascita = new Date(dataNascita);
+        const arrivo = new Date(dataArrivo);
+        
+        if (nascita >= arrivo) {
+            alert('Errore: La data di nascita deve essere precedente alla data di arrivo nel rifugio');
+            document.getElementById('dataNascita').style.borderColor = '#dc3545';
+            document.getElementById('dataArrivo').style.borderColor = '#dc3545';
+            return false;
+        } else {
+            document.getElementById('dataNascita').style.borderColor = '#007C40';
+            document.getElementById('dataArrivo').style.borderColor = '#007C40';
+            return true;
+        }
+    }
+    return true;
+}
 </script>
 
 </body>

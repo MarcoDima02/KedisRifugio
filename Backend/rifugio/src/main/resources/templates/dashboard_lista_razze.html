@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diamoci una zampa</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /> -->
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-        <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
-
-        <div class="main-content">
-            <h1 class="page-title">
-                Lista Razze
-            </h1>
-
-            <section class="green-section">
+    
+    <th:block th:replace="fragments/sidebar :: customSidebar"></th:block>
+    
+    <div class="main-content">
+        <h1 class="page-title">
+            Lista Razze
+        </h1>
+        
+        <section class="green-section">
+                <a th:href="@{/dashboard/admin/razze/save}" class="add-btn">Aggiungi Razza</a>
                 <table class="animal-table">
                     <thead>
                         <tr>
@@ -46,7 +46,6 @@
                     </tbody>
                 </table>
 
-                <a th:href="@{/dashboard/admin/razze/save}" class="add-btn">Aggiungi Razza</a>
                 
             </section>
         </div>

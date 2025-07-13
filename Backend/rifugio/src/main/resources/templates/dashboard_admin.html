@@ -84,35 +84,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>04/06/2025 15:30</td>
-                        <td>Adozione</td>
-                        <td>Stella adottata da Famiglia Verdi</td>
-                        <td><span class="badge badge-success">Completata</span></td>
+                    <tr th:each="attivita : ${attivitaRecenti}">
+                        <td th:text="${attivita.dataOraFormatted}">04/06/2025 15:30</td>
+                        <td th:text="${attivita.tipo}">Tipo attività</td>
+                        <td th:text="${attivita.dettagli}">Dettagli attività</td>
+                        <td><span th:class="|badge ${attivita.badgeClass}|" th:text="${attivita.stato}">Stato</span></td>
                     </tr>
-                    <tr>
-                        <td>04/06/2025 14:00</td>
-                        <td>Visita Veterinaria</td>
-                        <td>Zefiro - Controllo di routine</td>
-                        <td><span class="badge badge-info">Prenotata</span></td>
-                    </tr>
-                    <tr>
-                        <td>04/06/2025 13:00</td>
-                        <td>Donazione</td>
-                        <td>€50 da Lorenzo Maero</td>
-                        <td><span class="badge badge-success">Ricevuta</span></td>
-                    </tr>
-                    <tr>
-                        <td>04/06/2025 11:47</td>
-                        <td>Nuovo animale</td>
-                        <td>Thor - Cane maschio 7 anni</td>
-                        <td><span class="badge badge-info">Nuovo</span></td>
-                    </tr>
-                    <tr>
-                        <td>04/06/2025 11:30</td>
-                        <td>Adozione</td>
-                        <td>Luna - Famiglia Rossi non soddisfa i requisiti</td>
-                        <td><span class="badge badge-danger">Rifiutata</span></td>
+                    <tr th:if="${#lists.isEmpty(attivitaRecenti)}">
+                        <td colspan="4" style="text-align: center; padding: 2rem; color: #666;">
+                            <i class="fas fa-info-circle"></i> Nessuna attività recente disponibile
+                        </td>
                     </tr>
                 </tbody>
             </table>

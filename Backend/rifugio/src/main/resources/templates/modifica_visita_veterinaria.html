@@ -39,14 +39,14 @@
                         <h3><i class="fas fa-calendar-alt"></i> Data e Ora</h3>
                         
                         <div class="filter-field">
-                            <label for="data">Data</label>
-                            <input type="text" id="data" th:field="*{data}" required pattern="\d{2}/\d{2}/\d{4}" placeholder="gg/mm/aaaa" />
+                            <label for="data"><i class="fas fa-calendar-day"></i> Data</label>
+                            <input type="date" id="data" th:field="*{data}" required />
                             <div th:if="${#fields.hasErrors('data')}" class="error-message" th:errors="*{data}"></div>
                             <div th:if="${visita.data == null}" class="error-message">Attenzione: la data non è valorizzata, inseriscila per continuare.</div>
                         </div>
                         
                         <div class="filter-field">
-                            <label for="ora">Ora</label>
+                            <label for="ora"><i class="fas fa-clock"></i> Ora</label>
                             <input type="time" id="ora" th:field="*{ora}" required />
                             <div th:if="${#fields.hasErrors('ora')}" class="error-message" th:errors="*{ora}"></div>
                         </div>

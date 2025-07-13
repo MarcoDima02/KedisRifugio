@@ -38,13 +38,15 @@
                     <div class="form-field">
                         <label for="importo">Importo (€):</label>
                         <input type="number" name="importo" id="importo" class="form-control" 
-                               step="1.00" min="1.00" required>
+                               step="0.01" min="1.00" max="999999.99" required>
+                        <small class="form-help">Importo minimo: €1.00, massimo: €999,999.99</small>
                     </div>
 
                     <div class="form-field">
-                        <label for="data_donazione">Data donazione:</label>
-                        <input type="date" name="data_donazione" id="data_donazione" class="form-control">
-                        <small class="form-help">Se non specificata, verrà usata la data odierna</small>
+                        <label for="data_donazione"><i class="fas fa-calendar-day"></i> Data donazione:</label>
+                        <input type="date" name="data_donazione" id="data_donazione" class="form-control"
+                               th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+                        <small class="form-help">Se non specificata, verrà usata la data odierna. Non può essere nel futuro</small>
                     </div>
 
                     <div class="form-field">

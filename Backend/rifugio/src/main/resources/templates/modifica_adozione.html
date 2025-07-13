@@ -67,7 +67,9 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div class="filter-field">
                                 <label for="dataAdozione">Data Adozione</label>
-                                <input type="date" id="dataAdozione" th:field="*{dataAdozione}" required>
+                                <input type="date" id="dataAdozione" th:field="*{dataAdozione}" required
+                                       th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+                                <small class="form-help">La data di adozione non può essere nel futuro</small>
                             </div>
                             
                             <div class="filter-field">
