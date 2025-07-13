@@ -284,6 +284,9 @@ public class DashboardAdminController {
         }
 
         if (bindingResult.hasErrors()) {
+            // Ricarica la razza dal database per assicurarsi che l'ID sia presente
+            Razza razzaFromDb = razzaService.getRazzaById(id);
+            razza.setIdRazza(razzaFromDb.getIdRazza());
             model.addAttribute("specie", specieService.getAllSpecie());
             return "modifica_razza";  
         }
