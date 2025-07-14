@@ -3,33 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fai una donazione - Diamoci una zampa</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-    <link
+    <!-- <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> -->
 
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     
     <th:block th:replace="fragments/header :: customHeader"></th:block>
 
-    <h1 class="page-title">Fai una donazione</h1>
+    <h1 class="page-title">
+        <i class="fas fa-heart" style="color: #e74c3c; margin-right: 0.5rem;"></i>
+        Fai una donazione
+    </h1>
 
     <div class="green-section">
-        <form class="donazione-form" action="/donazione/save" method="post" th:object="${donazione}">
-            <div class="form-group">
-                <label for="importo">Importo (€)</label>
-                <input type="number" min="1" id="importo" name="importo" th:field="*{importo}" required placeholder="Inserisci l'importo">
+            <div class="donazioni-description">
+                <h3 style="color: #d4fadd; text-align: center; margin-bottom: 1.5rem; font-size: 1.4rem;">
+                    <i class="fas fa-paw" style="margin-right: 0.5rem;"></i>
+                    Il tuo aiuto fa la differenza
+                </h3>
+                <p style="text-align: center; margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.6;">
+                    Ogni donazione, grande o piccola, ci aiuta a prenderci cura degli animali nel nostro rifugio. 
+                    I fondi vengono utilizzati per:
+                </p>
+                <ul style="margin-bottom: 2rem; line-height: 1.8;">
+                    <li><i class="fas fa-stethoscope" style="margin-right: 0.5rem; color: #a1d99b;"></i> Cure veterinarie e controlli medici</li>
+                    <li><i class="fas fa-utensils" style="margin-right: 0.5rem; color: #a1d99b;"></i> Cibo e nutrizione di qualità</li>
+                    <li><i class="fas fa-home" style="margin-right: 0.5rem; color: #a1d99b;"></i> Mantenimento delle strutture</li>
+                    <li><i class="fas fa-users" style="margin-right: 0.5rem; color: #a1d99b;"></i> Supporto per le adozioni</li>
+                </ul>
             </div>
-            <div class="form-group">
-                <label for="descrizione">Descrizione (opzionale)</label>
-                <textarea id="descrizione" name="descrizione" rows="3" th:field="*{descrizione}" placeholder="Motivo della donazione o messaggio"></textarea>
+
+            <form class="donazione-form" action="/donazione/save" method="post" th:object="${donazione}">
+                <div class="form-group">
+                    <label for="importo">
+                        <i class="fas fa-euro-sign" style="margin-right: 0.5rem;"></i>
+                        Importo (€)
+                    </label>
+                    <input type="number" min="1" step="1.00" id="importo" name="importo" th:field="*{importo}" required placeholder="Inserisci l'importo della tua donazione">
+                </div>
+                
+                <div class="form-group">
+                    <label for="metodo_pagamento">
+                        <i class="fas fa-credit-card" style="margin-right: 0.5rem;"></i>
+                        Metodo di pagamento
+                    </label>
+                    <select name="metodo_pagamento" id="metodo_pagamento" th:field="*{metodo_pagamento}" required style="width: 100%; padding: 0.7rem 1rem; border-radius: 8px; border: none; font-size: 1.1rem; margin-top: 0.3rem; background: #17613a; color: #fff; box-shadow: 0 2px 8px rgba(23,97,58,0.07);">
+                        <option value="" style="background: #17613a; color: #fff;">Seleziona metodo di pagamento</option>
+                        <option value="Carta di credito" style="background: #17613a; color: #fff;">Carta di credito</option>
+                        <option value="Bonifico bancario" style="background: #17613a; color: #fff;">Bonifico bancario</option>
+                        <option value="PayPal" style="background: #17613a; color: #fff;">PayPal</option>
+                        <option value="Assegno" style="background: #17613a; color: #fff;">Assegno</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descrizione">
+                        <i class="fas fa-comment" style="margin-right: 0.5rem;"></i>
+                        Messaggio (opzionale)
+                    </label>
+                    <textarea id="descrizione" name="descrizione" rows="4" th:field="*{descrizione}" placeholder="Lascia un messaggio di supporto o specifica a cosa destinare la donazione..."></textarea>
+                </div>
+                
+                <button type="submit" class="donazioni-btn">
+                    <i class="fas fa-heart" style="margin-right: 0.5rem;"></i>
+                    Dona ora
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 2rem; color: #a1d99b; font-size: 0.95rem;">
+                <i class="fas fa-shield-alt" style="margin-right: 0.5rem;"></i>
+                Le tue donazioni sono sicure e vanno direttamente al rifugio
             </div>
-            <button type="submit" class="donazioni-btn">Dona ora</button>
-        </form>
-    </div>
+        </div>
 
     <th:block th:replace="fragments/footer :: customFooter"></th:block>
 
