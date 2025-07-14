@@ -877,22 +877,66 @@ public class DashboardAdminController {
     // UTENTI
 
     @GetMapping("/utenti")
-    public String getUtenti(Model model, HttpSession session) {
+    public String getUtenti(Model model, HttpSession session,
+                           @RequestParam(value = "ruolo", required = false) String ruolo,
+                           @RequestParam(value = "nome", required = false) String nome,
+                           @RequestParam(value = "cognome", required = false) String cognome,
+                           @RequestParam(value = "email", required = false) String email,
+                           @RequestParam(value = "codiceFiscale", required = false) String codiceFiscale) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        
         // Di default mostriamo solo utenti attivi, con opzione per vedere tutti
         boolean includiEliminati = session.getAttribute("mostraUtentiEliminati") != null && 
                                   (Boolean) session.getAttribute("mostraUtentiEliminati");
         
+        List<Utenti> utenti;
         if (includiEliminati) {
-            model.addAttribute("utenti", utentiService.getAllUtenti()); // Tutti inclusi eliminati
+            utenti = utentiService.getAllUtenti(); // Tutti inclusi eliminati
             model.addAttribute("mostraTutti", true);
         } else {
-            model.addAttribute("utenti", utentiService.getAllUtentiAttivi()); // Solo attivi
+            utenti = utentiService.getAllUtentiAttivi(); // Solo attivi
             model.addAttribute("mostraTutti", false);
         }
         
+        // Applica i filtri se presenti
+        if (ruolo != null && !ruolo.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getRuolo() != null && 
+                            u.getRuolo().equalsIgnoreCase(ruolo.trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (nome != null && !nome.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getNome() != null && 
+                            u.getNome().toLowerCase().startsWith(nome.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (cognome != null && !cognome.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getCognome() != null && 
+                            u.getCognome().toLowerCase().startsWith(cognome.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (email != null && !email.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getEmail() != null && 
+                            u.getEmail().toLowerCase().contains(email.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (codiceFiscale != null && !codiceFiscale.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getCodiceFiscale() != null && 
+                            u.getCodiceFiscale().toLowerCase().startsWith(codiceFiscale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        model.addAttribute("utenti", utenti);
         return "dashboard_lista_utenti";
     }
     
