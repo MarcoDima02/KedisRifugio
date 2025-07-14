@@ -15,6 +15,7 @@ import com.rifugio.rifugio.entities.Adozioni;
 import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.services.AdozioniService;
 import com.rifugio.rifugio.services.AnagraficaAnimaliService;
+import com.rifugio.rifugio.services.DonazioniService;
 import com.rifugio.rifugio.services.StepAdozioniService;
 import com.rifugio.rifugio.services.UtentiService;
 
@@ -35,6 +36,9 @@ public class DashboardUtentiController {
     
     @Autowired
     private StepAdozioniService stepAdozioniService;
+
+    @Autowired
+    private DonazioniService donazioniService;
 
     // Area utente principale
     @GetMapping
@@ -213,6 +217,28 @@ public class DashboardUtentiController {
             model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
             model.addAttribute("utente", utente);
             return "richiesta_adozione_utente";
+        }
+    }
+
+    // === GESTIONE DONAZIONI UTENTE ===
+    
+    // Visualizza le donazioni dell'utente
+    @GetMapping("/donazioni")
+    public String visualizzaDonazioniUtente(Model model, HttpSession session) {
+        Utenti utente = (Utenti) session.getAttribute("user");
+        if (utente == null) {
+            return "redirect:/utenti/login";
+        }
+        
+        try {
+            List<Donazioni> donazioni = donazioniService.getDonazioniByUtente(utente.getId_persona());
+            model.addAttribute("donazioni", donazioni);
+            model.addAttribute("utente", utente);
+            return "donazioni_utenti";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Errore nel caricamento delle donazioni: " + e.getMessage());
+            return "area_utente";
         }
     }
 
