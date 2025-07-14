@@ -20,6 +20,32 @@
         
         <section class="green-section">
                 <a th:href="@{/dashboard/admin/razze/save}" class="add-btn">Aggiungi Razza</a>
+                
+                <!-- Sezione Filtri -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <i class="fas fa-filter"></i>
+                        <h3>Filtri di Ricerca</h3>
+                    </div>
+                    <form method="get" action="/dashboard/admin/razze" class="filter-form">
+                        <div class="filter-field">
+                            <label for="specie">Specie:</label>
+                            <select name="specie" id="specie" class="filter-select">
+                                <option value="">Tutte le specie</option>
+                                <option th:each="s : ${specie}" th:value="${s.idSpecie}" th:text="${s.nome}" th:selected="${param.specie == s.idSpecie}"></option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn-filter">
+                                <i class="fas fa-search"></i> Filtra
+                            </button>
+                            <button type="button" onclick="resetFilters()" class="btn-reset">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <table class="animal-table">
                     <thead>
                         <tr>
@@ -51,6 +77,15 @@
         </div>
 
     </body>
+    
+    <script>
+        function resetFilters() {
+            const specieSelect = document.getElementById('specie');
+            specieSelect.value = '';
+            // Submit the form to reload the page with cleared filters
+            document.querySelector('.filter-form').submit();
+        }
+    </script>
 
 </html>
 

@@ -384,14 +384,25 @@ public class DashboardAdminController {
     // DASHBOARD RAZZE
 
     @GetMapping("/razze")
-    public String getAllRazze(Model model, HttpSession session){
+    public String getAllRazze(Model model, HttpSession session,
+                              @RequestParam(value = "specie", required = false) Integer specieId){
         if (!isAdmin(session)) {
             return "redirect:/";
         }
 
-        model.addAttribute("razze", razzaService.getAllRazze());
-        return "dashboard_lista_razze";  
+        // Ottieni tutte le razze
+        List<Razza> razze = razzaService.getAllRazze();
+        
+        // Applica il filtro per specie se presente
+        if (specieId != null) {
+            razze = razze.stream()
+                    .filter(r -> r.getSpecie() != null && r.getSpecie().getIdSpecie().equals(specieId))
+                    .collect(Collectors.toList());
+        }
 
+        model.addAttribute("razze", razze);
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "dashboard_lista_razze";  
     }
 
     @GetMapping("/razze/save")
