@@ -23,7 +23,25 @@
     margin-right: 12px;
 }
 .sidebar-logo span {
-    font-weight: bold;
+    font.filter-select {
+    padding: 1.2rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #2c3e50;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    margin-top: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
     font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
@@ -450,14 +468,17 @@
 .filter-container {
     background: linear-gradient(135deg, #17613a 0%, #1e7a4b 50%, #25a15e 100%);
     border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    padding: 3rem;
+    margin-bottom: 3rem;
     box-shadow: 
         0 8px 32px rgba(23, 97, 58, 0.3),
         0 4px 16px rgba(23, 97, 58, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .filter-container::before {
@@ -475,8 +496,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -497,15 +518,25 @@
 
 .filter-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
     align-items: end;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .filter-field {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    padding: 1rem;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .filter-field label {
@@ -514,6 +545,7 @@
     font-size: 0.95rem;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 0.3px;
+    margin-bottom: 0.5rem;
 }
 
 .filter-select {
@@ -552,13 +584,16 @@
 
 .filter-input {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 1.2rem 1.5rem;
     border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
     background: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 0.75rem;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 .filter-input:focus {
@@ -591,15 +626,17 @@
 
 .filter-actions {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     align-items: center;
     justify-content: center;
     grid-column: 1 / -1;
-    margin-top: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-filter, .btn-reset {
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     border: none;
     border-radius: 12px;
     font-size: 0.95rem;
@@ -608,11 +645,13 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
+    min-width: 140px;
+    justify-content: center;
 }
 
 .btn-filter {
@@ -694,35 +733,58 @@
 /* Responsive design for filters */
 @media (max-width: 768px) {
     .filter-container {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
     }
     
     .filter-form {
         grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+    
+    .filter-field {
         gap: 1rem;
+        padding: 0.5rem;
     }
     
     .filter-actions {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
     }
     
     .btn-filter, .btn-reset {
         width: 100%;
+        min-width: auto;
     }
 }
 
 @media (max-width: 480px) {
     .filter-container {
-        padding: 1rem;
+        padding: 1.5rem;
         border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .filter-form {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+    
+    .filter-field {
+        gap: 0.75rem;
+        padding: 0.25rem;
     }
     
     .filter-header {
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+    }
+    
+    .filter-header h3 {
+        font-size: 1.1rem;
     }
     
     .filter-select {
