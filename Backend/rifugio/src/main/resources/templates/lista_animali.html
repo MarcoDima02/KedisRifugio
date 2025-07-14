@@ -117,8 +117,8 @@
                         razzaSelect.appendChild(option.cloneNode(true));
                     });
                 } else {
-                    // Fetch delle razze per la specie selezionata
-                    fetch(`/api/razze/specie/${selectedSpecieId}`)
+                    // Fetch delle razze utilizzate dagli animali per la specie selezionata
+                    fetch(`/api/razze/specie/${selectedSpecieId}/utilizzate`)
                         .then(response => response.json())
                         .then(razze => {
                             razze.forEach(razza => {
@@ -129,7 +129,7 @@
                             });
                         })
                         .catch(error => {
-                            console.error('Errore nel caricamento delle razze:', error);
+                            console.error('Errore nel caricamento delle razze utilizzate:', error);
                             // In caso di errore, ripristina tutte le razze
                             originalRazzeOptions.forEach(option => {
                                 razzaSelect.appendChild(option.cloneNode(true));

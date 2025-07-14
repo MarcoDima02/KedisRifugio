@@ -55,4 +55,9 @@ public class RazzaServiceImpl implements RazzaService {
     public List<Razza> getRazzeBySpecieId(Integer idSpecie) {
         return razzaRepo.findBySpecieId(idSpecie);
     }
+
+    @Override
+    public List<Razza> getRazzeUtilizzateBySpecieId(Integer idSpecie) {
+        return razzaRepo.findRazzeUtilizzateBySpecieId(idSpecie);
+    }
 }

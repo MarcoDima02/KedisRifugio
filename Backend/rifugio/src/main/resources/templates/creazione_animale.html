@@ -144,7 +144,7 @@
               <label for="vaccinazioni">Vaccinazioni (numero):</label>
               <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" 
                      min="0" max="50" />
-              <small class="form-help">Numero di vaccinazioni effettuate (0-50)</small>
+              <small class="form-help">Numero di vaccinazioni effettuate (0-5)</small>
             </div>
           </div>
 
@@ -445,6 +445,51 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     console.log('Gestione immagini inizializzata');
+});
+
+// JavaScript per il filtro dinamico delle razze nel form di creazione
+document.addEventListener('DOMContentLoaded', function() {
+    const specieSelect = document.getElementById('specie');
+    const razzaSelect = document.getElementById('razza');
+    
+    // Salva tutte le opzioni originali delle razze
+    const originalRazzeOptions = Array.from(razzaSelect.querySelectorAll('option')).slice(1); // esclude "-- Seleziona --"
+    
+    specieSelect.addEventListener('change', function() {
+        const selectedSpecieId = this.value;
+        
+        // Rimuovi tutte le opzioni tranne "-- Seleziona --"
+        razzaSelect.innerHTML = '<option value="" disabled selected>-- Seleziona --</option>';
+        
+        if (selectedSpecieId === '') {
+            // Se nessuna specie è selezionata, mostra tutte le razze
+            originalRazzeOptions.forEach(option => {
+                razzaSelect.appendChild(option.cloneNode(true));
+            });
+        } else {
+            // Fetch delle razze per la specie selezionata
+            fetch(`/api/razze/specie/${selectedSpecieId}`)
+                .then(response => response.json())
+                .then(razze => {
+                    razze.forEach(razza => {
+                        const option = document.createElement('option');
+                        option.value = razza.idRazza;
+                        option.textContent = razza.nome;
+                        razzaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento delle razze:', error);
+                    // In caso di errore, ripristina tutte le razze
+                    originalRazzeOptions.forEach(option => {
+                        razzaSelect.appendChild(option.cloneNode(true));
+                    });
+                });
+        }
+        
+        // Reset della selezione della razza
+        razzaSelect.value = '';
+    });
 });
 </script>
 

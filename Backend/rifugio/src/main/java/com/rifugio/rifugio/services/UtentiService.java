@@ -22,4 +22,5 @@ public interface UtentiService {
     boolean existsByCodiceFiscale(String codiceFiscale);
     boolean existsActiveByEmail(String email); // Verifica solo tra attivi
     boolean existsActiveByCodiceFiscale(String codiceFiscale); // Verifica solo tra attivi
+    boolean verificaPassword(String passwordInChiaro, String passwordCriptata); // Verifica password
 }

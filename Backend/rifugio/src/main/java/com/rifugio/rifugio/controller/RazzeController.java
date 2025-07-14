@@ -44,6 +44,12 @@ public class RazzeController {
         return razzaService.getRazzeBySpecieId(idSpecie);
     }
 
+    // Nuovo endpoint per ottenere solo le razze utilizzate dagli animali per una specie
+    @GetMapping("/specie/{idSpecie}/utilizzate")
+    public List<Razza> getRazzeUtilizzateBySpecie(@PathVariable Integer idSpecie) {
+        return razzaService.getRazzeUtilizzateBySpecieId(idSpecie);
+    }
+
     @PostMapping
     public ResponseEntity<Razza> crea(@RequestBody Razza razza) {
         return ResponseEntity.ok(razzaService.salva(razza));

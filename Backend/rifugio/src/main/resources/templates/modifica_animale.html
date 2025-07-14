@@ -145,7 +145,7 @@
                             <label for="vaccinazioni">Vaccinazioni (numero):</label>
                             <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" 
                                    min="0" max="50" />
-                            <small class="form-help">Numero di vaccinazioni effettuate (0-50)</small>
+                            <small class="form-help">Numero di vaccinazioni effettuate (0-5)</small>
                         </div>
                     </div>
 
@@ -509,6 +509,72 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+});
+
+// JavaScript per il filtro dinamico delle razze nel form di modifica
+document.addEventListener('DOMContentLoaded', function() {
+    const specieSelect = document.getElementById('specie');
+    const razzaSelect = document.getElementById('razza');
+    
+    // Salva tutte le opzioni originali delle razze
+    const originalRazzeOptions = Array.from(razzaSelect.querySelectorAll('option')).slice(1); // esclude "-- Seleziona --"
+    
+    // Salva i valori selezionati inizialmente per il form di modifica
+    const initialSpecieId = specieSelect.value;
+    const initialRazzaId = razzaSelect.value;
+    
+    // Funzione per filtrare le razze
+    function filterRazzeBySpecie(specieId, mantainSelection = false) {
+        const razzaSelezionata = mantainSelection ? razzaSelect.value : '';
+        
+        // Rimuovi tutte le opzioni tranne "-- Seleziona --"
+        razzaSelect.innerHTML = '<option value="" disabled>-- Seleziona --</option>';
+        
+        if (specieId === '') {
+            // Se nessuna specie è selezionata, mostra tutte le razze
+            originalRazzeOptions.forEach(option => {
+                razzaSelect.appendChild(option.cloneNode(true));
+            });
+        } else {
+            // Fetch delle razze per la specie selezionata
+            fetch(`/api/razze/specie/${specieId}`)
+                .then(response => response.json())
+                .then(razze => {
+                    razze.forEach(razza => {
+                        const option = document.createElement('option');
+                        option.value = razza.idRazza;
+                        option.textContent = razza.nome;
+                        // Se siamo in fase di caricamento iniziale e la razza corrisponde, selezionala
+                        if (mantainSelection && razza.idRazza.toString() === razzaSelezionata) {
+                            option.selected = true;
+                        }
+                        razzaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento delle razze:', error);
+                    // In caso di errore, ripristina tutte le razze
+                    originalRazzeOptions.forEach(option => {
+                        razzaSelect.appendChild(option.cloneNode(true));
+                    });
+                });
+        }
+        
+        // Se non stiamo mantenendo la selezione, reset della selezione della razza
+        if (!mantainSelection) {
+            razzaSelect.value = '';
+        }
+    }
+    
+    // Se c'è una specie già selezionata al caricamento della pagina, filtra le razze
+    if (initialSpecieId) {
+        filterRazzeBySpecie(initialSpecieId, true);
+    }
+    
+    // Event listener per il cambio di specie
+    specieSelect.addEventListener('change', function() {
+        filterRazzeBySpecie(this.value, false);
+    });
 });
 </script>
 </html>

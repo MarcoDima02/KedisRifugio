@@ -13,4 +13,5 @@ public interface RazzaService {
     void elimina(int id);
     List<Razza> getRazzeBySpecie(Specie specie);
     List<Razza> getRazzeBySpecieId(Integer idSpecie);
+    List<Razza> getRazzeUtilizzateBySpecieId(Integer idSpecie);
 }

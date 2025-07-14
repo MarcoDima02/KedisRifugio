@@ -20,4 +20,8 @@ public interface RazzaRepo extends JpaRepository<Razza, Integer> {
     // Trova tutte le razze per ID specie
     @Query("SELECT r FROM Razza r WHERE r.id_specie.Id_Specie = :idSpecie ORDER BY r.nome ASC")
     List<Razza> findBySpecieId(@Param("idSpecie") Integer idSpecie);
+    
+    // Trova solo le razze che sono effettivamente utilizzate dagli animali per una specie specifica
+    @Query("SELECT DISTINCT r FROM Razza r JOIN AnagraficaAnimali a ON a.Razza = r WHERE r.id_specie.Id_Specie = :idSpecie AND a.Id_Stato_Animale.Id_Stato_Animale = 1 ORDER BY r.nome ASC")
+    List<Razza> findRazzeUtilizzateBySpecieId(@Param("idSpecie") Integer idSpecie);
 }

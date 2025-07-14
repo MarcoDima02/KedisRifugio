@@ -60,7 +60,9 @@ public class UtentiController {
         utente.setNome(capitalizeEachWord(utente.getNome().trim()));
         utente.setCognome(capitalizeEachWord(utente.getCognome().trim()));
         utente.setPassword(confirmPassword.trim());
-        utentiRepo.save(utente);
+        
+        // Usa il servizio che cripta automaticamente la password
+        utentiService.createUtente(utente);
 
         return "redirect:/utenti/login?registered=true";
     }
@@ -80,30 +82,33 @@ public class UtentiController {
                          @RequestParam("password") String password,
                          Model model,
                          jakarta.servlet.http.HttpSession session) {
-        // Cerca solo tra utenti attivi
+        // Cerca l'utente attivo per email
         Optional<Utenti> utenteOpt = utentiService.getAllUtentiAttivi().stream()
-                .filter(u -> (u.getEmail().equalsIgnoreCase(Email))
-                        && u.getPassword().equals(password))
+                .filter(u -> u.getEmail().equalsIgnoreCase(Email))
                 .findFirst();
+                
         if (utenteOpt.isPresent()) {
             Utenti utente = utenteOpt.get();
-            model.addAttribute("utente", utente);
-            // Salva nome, iniziali, ruolo e ID in sessione
-            String initials = getUserInitials(utente);
-            session.setAttribute("userInitials", initials);
-            session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
-            session.setAttribute("userRuolo", utente.getRuolo());
-            session.setAttribute("user",utente);
-            // Redirigi in base al ruolo
-            if (utente.getRuolo() != null && utente.getRuolo().equalsIgnoreCase("ADMIN")) {
-                return "redirect:/dashboard/admin";
-            } else {
-                return "redirect:/area-utente";
+            // Verifica la password usando BCrypt
+            if (utentiService.verificaPassword(password, utente.getPassword())) {
+                model.addAttribute("utente", utente);
+                // Salva nome, iniziali, ruolo e ID in sessione
+                String initials = getUserInitials(utente);
+                session.setAttribute("userInitials", initials);
+                session.setAttribute("userFullName", utente.getNome() + " " + utente.getCognome());
+                session.setAttribute("userRuolo", utente.getRuolo());
+                session.setAttribute("user", utente);
+                // Redirigi in base al ruolo
+                if (utente.getRuolo() != null && utente.getRuolo().equalsIgnoreCase("ADMIN")) {
+                    return "redirect:/dashboard/admin";
+                } else {
+                    return "redirect:/area-utente";
+                }
             }
-        } else {
-            model.addAttribute("errorMessage", "Credenziali non valide. Riprova.");
-            return "login";
         }
+        
+        model.addAttribute("errorMessage", "Credenziali non valide. Riprova.");
+        return "login";
     }
 
 

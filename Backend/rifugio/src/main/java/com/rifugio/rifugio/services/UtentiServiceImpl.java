@@ -3,6 +3,7 @@ package com.rifugio.rifugio.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rifugio.rifugio.entities.Utenti;
@@ -13,6 +14,9 @@ public class UtentiServiceImpl implements UtentiService {
 
     @Autowired
     private UtentiRepo utentiRepo;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Utenti> getAllUtenti() {
@@ -43,7 +47,13 @@ public class UtentiServiceImpl implements UtentiService {
             existing.setCodiceFiscale(utente.getCodiceFiscale());
             existing.setNumero(utente.getNumero());
             existing.setEmail(utente.getEmail());
-            existing.setPassword(utente.getPassword());
+            
+            // Cripta la password solo se è stata fornita una nuova password
+            if (utente.getPassword() != null && !utente.getPassword().trim().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(utente.getPassword().trim());
+                existing.setPassword(encodedPassword);
+            }
+            
             existing.setRuolo(utente.getRuolo());
             // Non toccare il campo attivo nell'update normale
             utentiRepo.save(existing);
@@ -74,6 +84,13 @@ public class UtentiServiceImpl implements UtentiService {
     public Utenti createUtente(Utenti utente) {
         // Assicurati che il nuovo utente sia attivo
         utente.setAttivo(true);
+        
+        // Cripta la password prima di salvare
+        if (utente.getPassword() != null && !utente.getPassword().trim().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(utente.getPassword().trim());
+            utente.setPassword(encodedPassword);
+        }
+        
         return utentiRepo.save(utente);
     }
 
@@ -103,5 +120,13 @@ public class UtentiServiceImpl implements UtentiService {
             utente.ripristina(); // Metodo di utilità che imposta attivo = true
             utentiRepo.save(utente);
         }
+    }
+    
+    /**
+     * Verifica se la password fornita corrisponde alla password criptata dell'utente
+     */
+    @Override
+    public boolean verificaPassword(String passwordInChiaro, String passwordCriptata) {
+        return passwordEncoder.matches(passwordInChiaro, passwordCriptata);
     }
 }
