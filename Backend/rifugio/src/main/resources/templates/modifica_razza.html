@@ -25,6 +25,9 @@
             <!-- Form -->
             <form th:action="@{/dashboard/admin/razze/update/{id}(id=${razza.idRazza})}" th:object="${razza}" method="post">
                 
+                <!-- Campo nascosto per l'ID -->
+                <input type="hidden" th:field="*{idRazza}">
+                
                 <!-- Grid per organizzare i campi -->
                 <div class="form-grid">
                     
@@ -34,7 +37,7 @@
                         
                         <div class="filter-field">
                             <label for="nome">Nome Razza</label>
-                            <input type="text" id="nome" th:field="*{nome}" required>
+                            <input type="text" id="nome" th:field="*{nome}">
                             <div th:if="${#fields.hasErrors('nome')}" class="error-message">
                                 <p th:errors="*{nome}"></p>
                             </div>

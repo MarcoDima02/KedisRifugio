@@ -34,7 +34,7 @@
                         
                         <div class="filter-field">
                             <label for="nome">Nome Razza</label>
-                            <input type="text" id="nome" th:field="*{nome}" required>
+                            <input type="text" id="nome" th:field="*{nome}">
                             <div th:if="${#fields.hasErrors('nome')}" class="error-message">
                                 <p th:errors="*{nome}"></p>
                             </div>
