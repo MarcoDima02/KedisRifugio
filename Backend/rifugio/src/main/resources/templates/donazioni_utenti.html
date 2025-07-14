@@ -3,19 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamoci una zampa - Area personale</title>
+    <title>Diamoci una zampa - Le Mie Donazioni</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" th:href="@{/css/user-area.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .donations-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .donations-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #004B23, #007C40);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        
+        .donations-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+        
+        .donations-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .donations-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .donations-section h2 {
+            color: #004B23;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .donations-scroll-container {
+            overflow-x: auto;
+            padding: 1rem 0;
+            margin: 0 -1rem;
+        }
+        
+        .donations-grid {
+            display: flex;
+            gap: 1.5rem;
+            min-width: max-content;
+            padding: 0 1rem;
+        }
+        
+        .donation-card {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 300px;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .donation-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .donation-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .donation-date {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .donation-description {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .donation-method {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .no-donations {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .no-donations i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .back-button {
+            background: linear-gradient(45deg, #007C40, #004B23);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button:hover {
+            background: linear-gradient(45deg, #004B23, #007C40);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .donations-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #004B23;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+        }
+        
+        /* Scrollbar personalizzata */
+        .donations-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .donations-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .donations-scroll-container::-webkit-scrollbar-thumb {
+            background: #007C40;
+            border-radius: 4px;
+        }
+        
+        .donations-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #004B23;
+        }
+        
+        @media (max-width: 768px) {
+            .donations-header h1 {
+                font-size: 2rem;
+            }
+            
+            .donation-card {
+                min-width: 280px;
+            }
+            
+            .donations-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    
     <th:block th:replace="fragments/header :: customHeader"></th:block>
 
-    
+    <div class="donations-container">
+        <!-- Pulsante Indietro -->
+        <a th:href="@{/area-utente}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Torna all'Area Utente
+        </a>
+
+        <!-- Header -->
+        <div class="donations-header">
+            <h1><i class="fas fa-heart"></i> Le Mie Donazioni</h1>
+            <p>Grazie per il tuo supporto al rifugio! Ogni donazione fa la differenza nella vita dei nostri animali.</p>
+            <div th:if="${userFullName != null}" style="margin-top: 1rem; font-size: 1.1rem;">
+                <i class="fas fa-user"></i> <span th:text="${userFullName}"></span>
+            </div>
+        </div>
+
+        <!-- Statistiche -->
+        <div class="donations-section" th:if="${donazioni != null and !donazioni.empty}">
+            <div class="donations-stats">
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${donazioni.size()}">0</div>
+                    <div class="stat-label">Donazioni Totali</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">€<span th:text="${#numbers.formatDecimal(donazioni.stream().mapToDouble(d -> d.importo).sum(), 0, 2)}">0.00</span></div>
+                    <div class="stat-label">Importo Totale</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">€<span th:text="${donazioni.size() > 0 ? #numbers.formatDecimal(donazioni.stream().mapToDouble(d -> d.importo).average().orElse(0), 0, 2) : '0.00'}">0.00</span></div>
+                    <div class="stat-label">Media per Donazione</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Donazioni -->
+        <div class="donations-section">
+            <h2><i class="fas fa-list"></i> Storico Donazioni</h2>
+            
+            <!-- Lista donazioni scrollabile -->
+            <div th:if="${donazioni != null and !donazioni.empty}">
+                <div class="donations-scroll-container">
+                    <div class="donations-grid">
+                        <div th:each="donazione : ${donazioni}" class="donation-card">
+                            <div class="donation-amount">
+                                €<span th:text="${#numbers.formatDecimal(donazione.importo, 0, 2)}">0.00</span>
+                            </div>
+                            <div class="donation-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span th:text="${#temporals.format(donazione.data_donazione, 'dd/MM/yyyy HH:mm')}">Data</span>
+                            </div>
+                            <div class="donation-description" th:if="${donazione.descrizione != null and !donazione.descrizione.empty}">
+                                <strong>Descrizione:</strong><br>
+                                <span th:text="${donazione.descrizione}">Descrizione donazione</span>
+                            </div>
+                            <div class="donation-description" th:if="${donazione.note != null and !donazione.note.empty}">
+                                <strong>Note:</strong><br>
+                                <span th:text="${donazione.note}">Note donazione</span>
+                            </div>
+                            <div class="donation-method">
+                                <i class="fas fa-credit-card"></i>
+                                <span th:text="${donazione.metodo_pagamento ?: 'Non specificato'}">Metodo di pagamento</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Messaggio nessuna donazione -->
+            <div th:if="${donazioni == null or donazioni.empty}" class="no-donations">
+                <i class="fas fa-heart-broken"></i>
+                <h3>Nessuna donazione effettuata</h3>
+                <p>Non hai ancora effettuato donazioni al rifugio.</p>
+                <a th:href="@{/donazione}" class="back-button" style="margin-top: 1rem;">
+                    <i class="fas fa-heart"></i> Fai una Donazione
+                </a>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="donations-section" th:if="${donazioni != null and !donazioni.empty}">
+            <div style="text-align: center; padding: 2rem;">
+                <h3 style="color: #004B23; margin-bottom: 1rem;">Vuoi continuare ad aiutare?</h3>
+                <p style="color: #666; margin-bottom: 2rem;">Ogni contributo è prezioso per il benessere dei nostri animali.</p>
+                <a th:href="@{/donazione}" class="back-button">
+                    <i class="fas fa-heart"></i> Fai una Nuova Donazione
+                </a>
+            </div>
+        </div>
+    </div>
 
     <th:block th:replace="fragments/footer :: customFooter"></th:block>
-    
 </body>
 </html>

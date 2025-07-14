@@ -56,4 +56,9 @@ public class DonazioniServiceImpl implements DonazioniService {
     public List<Donazioni> getUltimeDonazioni() {
         return donazioniRepo.findUltimeDonazioni(PageRequest.of(0, 5));
     }
+    
+    @Override
+    public List<Donazioni> getDonazioniByUtente(Integer idUtente) {
+        return donazioniRepo.findByPersonaIdPersonaOrderByDataDonazioneDesc(idUtente);
+    }
 }
