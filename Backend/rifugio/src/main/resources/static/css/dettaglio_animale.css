@@ -20,14 +20,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 240px;
-  min-height: 240px;
-  max-width: 320px;
-  flex: 0 0 260px;
+  min-width: 320px;
+  min-height: 320px;
+  max-width: 400px;
+  flex: 0 0 300px;
 }
 .animal-detail-card .animal-image-box img {
-  width: 210px;
-  height: 210px;
+  width: 380px;
+  height: 380px;
   object-fit: cover;
   border-radius: 12px;
   background: #fff;
@@ -323,7 +323,12 @@
     min-width: 100%;
     max-width: 100%;
     justify-content: center;
-    padding: 18px 0;
+    padding: 24px 0;
+    min-height: 280px;
+  }
+  .animal-detail-card .animal-image-box img {
+    width: 270px;
+    height: 270px;
   }
   .animal-detail-card .animal-info-box {
     padding: 24px 16px 24px 16px;

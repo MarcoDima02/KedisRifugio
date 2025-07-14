@@ -46,7 +46,11 @@
                       </div>
                       <div class="animal-attr-group">
                         <span class="animal-attr-label">Data di nascita</span>
-                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">-</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}" id="birth-date-admin" th:data-birth="${#dates.format(animale.dataNascita, 'yyyy-MM-dd')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Età</span>
+                        <span class="animal-attr-value" id="age-display-admin">-</span>
                       </div>
                       <div class="animal-attr-group">
                         <span class="animal-attr-label">Data di arrivo</span>
@@ -151,7 +155,11 @@
                       </div>
                       <div class="animal-attr-group">
                         <span class="animal-attr-label">Data di nascita</span>
-                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}">-</span>
+                        <span class="animal-attr-value" th:text="${#dates.format(animale.dataNascita, 'dd/MM/yyyy')}" id="birth-date-user" th:data-birth="${#dates.format(animale.dataNascita, 'yyyy-MM-dd')}">-</span>
+                      </div>
+                      <div class="animal-attr-group">
+                        <span class="animal-attr-label">Età</span>
+                        <span class="animal-attr-value" id="age-display-user">-</span>
                       </div>
                       <div class="animal-attr-group">
                         <span class="animal-attr-label">Data di arrivo</span>
@@ -235,6 +243,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const thumbnails = document.querySelectorAll('.carousel-thumbnail img');
     images = Array.from(thumbnails).map(thumb => thumb.src);
     
+    // Calcola e mostra l'età dell'animale
+    calculateAndDisplayAge();
+    
     // Aggiungi Font Awesome se non presente per le icone
     if (!document.querySelector('link[href*="font-awesome"]')) {
         const fontAwesome = document.createElement('link');
@@ -243,6 +254,69 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(fontAwesome);
     }
 });
+
+function calculateAndDisplayAge() {
+    // Cerca l'elemento della data di nascita (per vista admin)
+    let birthElement = document.getElementById('birth-date-admin');
+    let ageElement = document.getElementById('age-display-admin');
+    
+    // Se non trova gli elementi admin, cerca quelli user
+    if (!birthElement) {
+        birthElement = document.getElementById('birth-date-user');
+        ageElement = document.getElementById('age-display-user');
+    }
+    
+    if (birthElement && ageElement) {
+        const birthDate = birthElement.getAttribute('data-birth');
+        if (birthDate && birthDate !== '-') {
+            const age = calculateAge(birthDate);
+            ageElement.textContent = age;
+        }
+    }
+}
+
+function calculateAge(birthDateString) {
+    const birthDate = new Date(birthDateString);
+    const today = new Date();
+    
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+    
+    // Aggiusta i mesi se necessario
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+    
+    // Aggiusta i giorni se necessario
+    if (today.getDate() < birthDate.getDate()) {
+        months--;
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+    }
+    
+    // Formatta l'output
+    if (years > 0) {
+        if (months > 0) {
+            return `${years} ${years === 1 ? 'anno' : 'anni'} e ${months} ${months === 1 ? 'mese' : 'mesi'}`;
+        } else {
+            return `${years} ${years === 1 ? 'anno' : 'anni'}`;
+        }
+    } else if (months > 0) {
+        return `${months} ${months === 1 ? 'mese' : 'mesi'}`;
+    } else {
+        // Calcola i giorni per animali molto piccoli
+        const diffTime = Math.abs(today - birthDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays <= 30) {
+            return `${diffDays} ${diffDays === 1 ? 'giorno' : 'giorni'}`;
+        } else {
+            return "Meno di 1 mese";
+        }
+    }
+}
 
 function setActiveImage(index) {
     currentImageIndex = index;

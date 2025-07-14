@@ -330,8 +330,8 @@ body {
 }
 
 .animal-image-box img {
-  max-width: 130px;
-  max-height: 130px;
+  max-width: 280px;
+  max-height: 280px;
   object-fit: contain;
 }
 
