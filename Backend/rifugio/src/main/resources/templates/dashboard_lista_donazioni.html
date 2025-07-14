@@ -19,8 +19,45 @@
             </h1>
             
             <section class="green-section">
-                <table class="animal-table">
                 <a th:href="@{/dashboard/admin/donazioni/save}" class="add-btn">Aggiungi Nuova Donazione</a>
+                
+                <!-- Sezione Filtri -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <i class="fas fa-filter"></i>
+                        <h3>Filtri di Ricerca</h3>
+                    </div>
+                    <form method="get" action="/dashboard/admin/donazioni" class="filter-form">
+                        <div class="filter-field">
+                            <label for="nomeDonatore">Nome Donatore:</label>
+                            <input type="text" name="nomeDonatore" id="nomeDonatore" class="filter-select" 
+                                   placeholder="Inserisci nome o cognome..." th:value="${param.nomeDonatore}"
+                                   list="nomiDonatori" autocomplete="off">
+                            <datalist id="nomiDonatori">
+                                <option th:each="utente : ${utentiSuggerimenti}" 
+                                        th:value="${utente.nome + ' ' + utente.cognome}" 
+                                        th:text="${utente.nome + ' ' + utente.cognome + ' (' + utente.email + ')'}"></option>
+                            </datalist>
+                        </div>
+                        <div class="filter-field">
+                            <label for="ordinamento">Ordina per Importo:</label>
+                            <select name="ordinamento" id="ordinamento" class="filter-select">
+                                <option value="desc" th:selected="${param.ordinamento == 'desc' or param.ordinamento == null}">Dal più alto al più basso</option>
+                                <option value="asc" th:selected="${param.ordinamento == 'asc'}">Dal più basso al più alto</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn-filter">
+                                <i class="fas fa-search"></i> Filtra
+                            </button>
+                            <button type="button" onclick="resetFilters()" class="btn-reset">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <table class="animal-table">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -55,7 +92,45 @@
         </section>
     </div>
 
-    
-</body>
+    <script th:inline="javascript">
+        function resetFilters() {
+            // Reset tutti i filtri ai valori di default
+            document.getElementById('nomeDonatore').value = '';
+            document.getElementById('ordinamento').value = 'desc';
+            
+            // Ricarica la pagina senza parametri di filtro
+            window.location.href = '/dashboard/admin/donazioni';
+        }
+        
+        // Migliora l'autocompletamento
+        document.addEventListener('DOMContentLoaded', function() {
+            const nomeDonatoreInput = document.getElementById('nomeDonatore');
+            
+            if (nomeDonatoreInput) {
+                nomeDonatoreInput.addEventListener('input', function() {
+                    // Capitalizza la prima lettera di ogni parola mentre si digita
+                    const words = this.value.split(' ');
+                    const capitalizedWords = words.map(word => {
+                        if (word.length > 0) {
+                            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                        }
+                        return word;
+                    });
+                    this.value = capitalizedWords.join(' ');
+                });
+                
+                // Quando si seleziona un'opzione dal datalist, estrae solo il nome
+                nomeDonatoreInput.addEventListener('change', function() {
+                    const value = this.value;
+                    // Se il valore contiene " (", estrae solo la parte del nome
+                    if (value.includes(' (')) {
+                        this.value = value.split(' (')[0];
+                    }
+                });
+            }
+        });
+    </script>
+
+    </body>
 </html>
 

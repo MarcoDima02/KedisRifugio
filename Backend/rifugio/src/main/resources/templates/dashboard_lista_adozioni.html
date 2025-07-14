@@ -31,22 +31,32 @@
                     <form method="get" action="/dashboard/admin/adozioni" class="filter-form">
                         <div class="filter-field">
                             <label for="nomeAnimale">Nome Animale:</label>
-                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-input" 
-                                   placeholder="Es: Lu, Bella, Max..." th:value="${param.nomeAnimale}" />
+                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-select" 
+                                   placeholder="Inserisci nome animale..." th:value="${param.nomeAnimale}"
+                                   list="nomiAnimali" autocomplete="off">
+                            <datalist id="nomiAnimali">
+                                <option th:each="animale : ${animaliSuggerimenti}" th:value="${animale.nome}" th:text="${animale.nome + ' (ID: ' + animale.idAnimale + ')'}"></option>
+                            </datalist>
                         </div>
                         <div class="filter-field">
                             <label for="nomePersona">Nome/Cognome Persona:</label>
-                            <input type="text" name="nomePersona" id="nomePersona" class="filter-input" 
-                                   placeholder="Es: Mario, Rossi, Mario Rossi..." th:value="${param.nomePersona}" />
+                            <input type="text" name="nomePersona" id="nomePersona" class="filter-select" 
+                                   placeholder="Inserisci nome o cognome..." th:value="${param.nomePersona}"
+                                   list="nomiPersone" autocomplete="off">
+                            <datalist id="nomiPersone">
+                                <option th:each="utente : ${utentiSuggerimenti}" 
+                                        th:value="${utente.nome + ' ' + utente.cognome}" 
+                                        th:text="${utente.nome + ' ' + utente.cognome + ' (' + utente.email + ')'}"></option>
+                            </datalist>
                         </div>
                         <div class="filter-field">
                             <label for="dataDa">Data Adozione Da:</label>
-                            <input type="date" name="dataDa" id="dataDa" class="filter-input" 
+                            <input type="date" name="dataDa" id="dataDa" class="filter-select" 
                                    th:value="${param.dataDa}" />
                         </div>
                         <div class="filter-field">
                             <label for="dataA">Data Adozione A:</label>
-                            <input type="date" name="dataA" id="dataA" class="filter-input" 
+                            <input type="date" name="dataA" id="dataA" class="filter-select" 
                                    th:value="${param.dataA}" />
                         </div>
                         <div class="filter-actions">
@@ -61,7 +71,6 @@
                 </div>
                 
                 <table class="animal-table">
-                    <a th:href="@{/dashboard/admin/adozioni/save}" class="add-btn">Aggiungi Nuova Adozione</a>
                     <thead>
                         <tr>
                             <th>Id Adozione</th>
@@ -103,15 +112,82 @@
 
     </body>
     
-    <script>
+    <script th:inline="javascript">
         function resetFilters() {
+            // Reset tutti i filtri ai valori di default
             document.getElementById('nomeAnimale').value = '';
             document.getElementById('nomePersona').value = '';
             document.getElementById('dataDa').value = '';
             document.getElementById('dataA').value = '';
+            
             // Ricarica la pagina senza parametri di filtro
             window.location.href = '/dashboard/admin/adozioni';
         }
+        
+        // Validazione delle date e autocompletamento
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataDa = document.getElementById('dataDa');
+            const dataA = document.getElementById('dataA');
+            const nomeAnimaleInput = document.getElementById('nomeAnimale');
+            const nomePersonaInput = document.getElementById('nomePersona');
+            
+            // Validazione date
+            dataDa.addEventListener('change', function() {
+                if (dataA.value && dataDa.value > dataA.value) {
+                    alert('La data di inizio non può essere successiva alla data di fine');
+                    dataDa.value = '';
+                }
+            });
+            
+            dataA.addEventListener('change', function() {
+                if (dataDa.value && dataA.value < dataDa.value) {
+                    alert('La data di fine non può essere precedente alla data di inizio');
+                    dataA.value = '';
+                }
+            });
+            
+            // Migliora l'autocompletamento per nome animale
+            if (nomeAnimaleInput) {
+                nomeAnimaleInput.addEventListener('input', function() {
+                    // Capitalizza la prima lettera mentre si digita
+                    const value = this.value;
+                    if (value.length > 0) {
+                        this.value = value.charAt(0).toUpperCase() + value.slice(1);
+                    }
+                });
+                
+                // Quando si seleziona un'opzione dal datalist, estrae solo il nome
+                nomeAnimaleInput.addEventListener('change', function() {
+                    const value = this.value;
+                    if (value.includes(' (ID: ')) {
+                        this.value = value.split(' (ID: ')[0];
+                    }
+                });
+            }
+            
+            // Migliora l'autocompletamento per nome persona
+            if (nomePersonaInput) {
+                nomePersonaInput.addEventListener('input', function() {
+                    // Capitalizza la prima lettera di ogni parola mentre si digita
+                    const words = this.value.split(' ');
+                    const capitalizedWords = words.map(word => {
+                        if (word.length > 0) {
+                            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                        }
+                        return word;
+                    });
+                    this.value = capitalizedWords.join(' ');
+                });
+                
+                // Quando si seleziona un'opzione dal datalist, estrae solo il nome
+                nomePersonaInput.addEventListener('change', function() {
+                    const value = this.value;
+                    if (value.includes(' (')) {
+                        this.value = value.split(' (')[0];
+                    }
+                });
+            }
+        });
     </script>
 
 </html>

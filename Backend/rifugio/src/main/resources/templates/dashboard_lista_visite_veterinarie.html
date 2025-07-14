@@ -24,9 +24,45 @@
             </div>
             
             <section class="green-section">
+                <a th:href="@{/dashboard/admin/visite-veterinarie/save}" class="add-btn">Aggiungi Nuova Visita</a>
+                
+                <!-- Sezione Filtri -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <i class="fas fa-filter"></i>
+                        <h3>Filtri di Ricerca</h3>
+                    </div>
+                    <form method="get" action="/dashboard/admin/visite-veterinarie" class="filter-form">
+                        <div class="filter-field">
+                            <label for="nomeAnimale">Nome Animale:</label>
+                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-select" 
+                                   placeholder="Inserisci nome animale..." th:value="${param.nomeAnimale}"
+                                   list="nomiAnimali" autocomplete="off">
+                            <datalist id="nomiAnimali">
+                                <option th:each="animale : ${animaliSuggerimenti}" th:value="${animale.nome}" th:text="${animale.nome + ' (ID: ' + animale.idAnimale + ')'}"></option>
+                            </datalist>
+                        </div>
+                        <div class="filter-field">
+                            <label for="dataInizio">Data Inizio:</label>
+                            <input type="date" name="dataInizio" id="dataInizio" class="filter-select" th:value="${param.dataInizio}">
+                        </div>
+                        <div class="filter-field">
+                            <label for="dataFine">Data Fine:</label>
+                            <input type="date" name="dataFine" id="dataFine" class="filter-select" th:value="${param.dataFine}">
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn-filter">
+                                <i class="fas fa-search"></i> Filtra
+                            </button>
+                            <button type="button" onclick="resetFilters()" class="btn-reset">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <table class="animal-table">
                     <thead>
-                        <a th:href="@{/dashboard/admin/visite-veterinarie/save}" class="add-btn">Aggiungi Nuova Visita</a>
                         <tr>
                             <th>Id</th>
                             <th>Data</th>
@@ -57,6 +93,60 @@
 
             </section>
         </div>
+
+    <script th:inline="javascript">
+        function resetFilters() {
+            // Reset tutti i filtri ai valori di default
+            document.getElementById('nomeAnimale').value = '';
+            document.getElementById('dataInizio').value = '';
+            document.getElementById('dataFine').value = '';
+            
+            // Ricarica la pagina senza parametri di filtro
+            window.location.href = '/dashboard/admin/visite-veterinarie';
+        }
+        
+        // Validazione delle date
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataInizio = document.getElementById('dataInizio');
+            const dataFine = document.getElementById('dataFine');
+            const nomeAnimaleInput = document.getElementById('nomeAnimale');
+            
+            // Validazione date
+            dataInizio.addEventListener('change', function() {
+                if (dataFine.value && dataInizio.value > dataFine.value) {
+                    alert('La data di inizio non può essere successiva alla data di fine');
+                    dataInizio.value = '';
+                }
+            });
+            
+            dataFine.addEventListener('change', function() {
+                if (dataInizio.value && dataFine.value < dataInizio.value) {
+                    alert('La data di fine non può essere precedente alla data di inizio');
+                    dataFine.value = '';
+                }
+            });
+            
+            // Migliora l'autocompletamento
+            if (nomeAnimaleInput) {
+                nomeAnimaleInput.addEventListener('input', function() {
+                    // Capitalizza la prima lettera mentre si digita
+                    const value = this.value;
+                    if (value.length > 0) {
+                        this.value = value.charAt(0).toUpperCase() + value.slice(1);
+                    }
+                });
+                
+                // Quando si seleziona un'opzione dal datalist, estrae solo il nome
+                nomeAnimaleInput.addEventListener('change', function() {
+                    const value = this.value;
+                    // Se il valore contiene " (ID: ", estrae solo la parte del nome
+                    if (value.includes(' (ID: ')) {
+                        this.value = value.split(' (ID: ')[0];
+                    }
+                });
+            }
+        });
+    </script>
 
     </body>
 </html>
