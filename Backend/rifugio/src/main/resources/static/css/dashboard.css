@@ -187,29 +187,89 @@
     border-collapse: collapse;
 }
 .dashboard-table th, .dashboard-table td {
-    padding: 12px 8px;
+    padding: 14px 12px;
     text-align: left;
 }
+
+.dashboard-table th:last-child, 
+.dashboard-table td:last-child {
+    text-align: center;
+    width: 140px;
+}
+
 .dashboard-table th {
     color: #17613a;
     font-weight: 600;
     border-bottom: 2px solid #e6f2ea;
+    font-size: 0.95em;
 }
+
 .dashboard-table tr:not(:last-child) td {
     border-bottom: 1px solid #f0f0f0;
 }
+
+.dashboard-table tbody tr:hover {
+    background-color: #f8fffe;
+}
 .dashboard-table .badge {
-    border-radius: 8px;
-    padding: 2px 10px;
-    font-size: 0.9em;
-    font-weight: 500;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #fff;
     display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+    white-space: nowrap;
 }
-.badge-success { background: #1e7a4b; }
-.badge-warning { background: #f7b924; }
-.badge-danger { background: #e74c3c; }
-.badge-info { background: #3498db; }
+
+/* Stati specifici per le attività */
+.badge-success { 
+    background: linear-gradient(135deg, #28a745, #1e7e34); 
+    color: #fff;
+}
+.badge-warning { 
+    background: linear-gradient(135deg, #ffc107, #e0a800); 
+    color: #000;
+    text-shadow: none;
+}
+.badge-danger { 
+    background: linear-gradient(135deg, #dc3545, #bd2130); 
+    color: #fff;
+}
+.badge-info { 
+    background: linear-gradient(135deg, #17a2b8, #138496); 
+    color: #fff;
+}
+
+/* Badge specifici per i diversi stati */
+.badge-effettuata {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    color: #fff;
+}
+
+.badge-in-attesa {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    color: #000;
+}
+
+.badge-completata {
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    color: #fff;
+}
+
+.badge-in-corso {
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    color: #fff;
+}
+
+.badge-annullata {
+    background: linear-gradient(135deg, #dc3545, #bd2130);
+    color: #fff;
+}
 
 .dashboard-home-btn {
     display: flex;

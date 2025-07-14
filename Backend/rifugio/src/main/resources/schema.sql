@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS utenti;
 -- Creazione tabelle indipendenti
 CREATE TABLE stato_animale (
     id_stato_animale INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    descrizione VARCHAR(50) NOT NULL
+    descrizione VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE specie (
@@ -50,8 +50,8 @@ CREATE TABLE anagrafica_animali (
     sesso CHAR(1) NOT NULL CHECK (sesso IN ('M', 'F')),
     data_nascita DATE NOT NULL,
     data_arrivo DATE NOT NULL,
-    descrizione_breve VARCHAR(100),
-    descrizione_lunga VARCHAR(400),
+    descrizione_breve VARCHAR(200),
+    descrizione_lunga VARCHAR(1500),
     id_cartella_clinica INT NOT NULL,
     id_stato_animale INT NOT NULL,
     FOREIGN KEY (id_specie) REFERENCES specie(id_specie),
