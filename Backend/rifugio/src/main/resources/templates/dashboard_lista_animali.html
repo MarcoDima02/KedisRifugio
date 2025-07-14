@@ -20,13 +20,66 @@
             </h1>
             
             <section class="green-section">
+                <a th:href="@{/dashboard/admin/animali/save}" class="add-btn">Aggiungi Nuovo Animale</a>
+                
+                <!-- Sezione Filtri -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <i class="fas fa-filter"></i>
+                        <h3>Filtri di Ricerca</h3>
+                    </div>
+                    <form method="get" action="/dashboard/admin/animali" class="filter-form">
+                        <div class="filter-field">
+                            <label for="nomeAnimale">Nome Animale:</label>
+                            <input type="text" 
+                                   name="nomeAnimale" 
+                                   id="nomeAnimale" 
+                                   list="animaliSuggerimenti" 
+                                   placeholder="Cerca per nome..." 
+                                   class="filter-input"
+                                   th:value="${param.nomeAnimale}">
+                            <datalist id="animaliSuggerimenti">
+                                <option th:each="a : ${animaliSuggerimenti}" 
+                                        th:value="${a.nome}" 
+                                        th:text="${a.nome}">
+                                </option>
+                            </datalist>
+                        </div>
+                        <div class="filter-field">
+                            <label for="specie">Specie:</label>
+                            <select name="specie" id="specie" class="filter-select">
+                                <option value="">Tutte le specie</option>
+                                <option th:each="s : ${specie}" th:value="${s.idSpecie}" th:text="${s.nome}" th:selected="${param.specie == s.idSpecie}"></option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="razza">Razza:</label>
+                            <select name="razza" id="razza" class="filter-select">
+                                <option value="">Tutte le razze</option>
+                                <option th:each="r : ${razze}" th:value="${r.idRazza}" th:text="${r.nome}" th:selected="${param.razza == r.idRazza}"></option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="sesso">Sesso:</label>
+                            <select name="sesso" id="sesso" class="filter-select">
+                                <option value="">Tutti i sessi</option>
+                                <option value="M" th:selected="${param.sesso == 'M'}">Maschio</option>
+                                <option value="F" th:selected="${param.sesso == 'F'}">Femmina</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn-filter">
+                                <i class="fas fa-search"></i> Filtra
+                            </button>
+                            <button type="button" onclick="resetFilters()" class="btn-reset">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <table class="animal-table">
                     <thead>
-                        
-                          
-                        <a th:href="@{/dashboard/admin/animali/save}" class="add-btn">Aggiungi Nuovo Animale</a>
-                                
-                            
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
@@ -68,8 +121,116 @@
 
                 </table>
 
-
-
+    <script th:inline="javascript">
+        // Carica le razze dal server
+        var allRazze = /*[[${razze}]]*/ [];
+        
+        function resetFilters() {
+            // Reset tutti i select ai valori di default
+            document.getElementById('specie').value = '';
+            document.getElementById('razza').value = '';
+            document.getElementById('sesso').value = '';
+            
+            // Ripristina tutte le razze
+            loadAllRazze();
+            
+            // Ricarica la pagina senza parametri di filtro
+            window.location.href = '/dashboard/admin/animali';
+        }
+        
+        function resetFilters() {
+            document.getElementById('nomeAnimale').value = '';
+            document.getElementById('specie').value = '';
+            document.getElementById('razza').value = '';
+            document.getElementById('sesso').value = '';
+            
+            // Ricarica tutte le razze quando resetti i filtri
+            loadAllRazze();
+            
+            // Reindirizza alla pagina senza parametri
+            window.location.href = '/dashboard/admin/animali';
+        }
+        
+        function loadAllRazze() {
+            const razzaSelect = document.getElementById('razza');
+            // Mantieni l'opzione "Tutte le razze"
+            razzaSelect.innerHTML = '<option value="">Tutte le razze</option>';
+            
+            // Aggiungi tutte le razze (quelle che erano già caricate dal server)
+            allRazze.forEach(function(razza) {
+                const option = document.createElement('option');
+                option.value = razza.idRazza;
+                option.textContent = razza.nome;
+                razzaSelect.appendChild(option);
+            });
+        }
+        
+        function filterRazzeBySpecie() {
+            const specieId = document.getElementById('specie').value;
+            const razzaSelect = document.getElementById('razza');
+            
+            if (!specieId) {
+                // Se nessuna specie è selezionata, mostra tutte le razze
+                loadAllRazze();
+                return;
+            }
+            
+            // Chiama l'API per ottenere le razze della specie selezionata
+            fetch(`/dashboard/admin/api/razze-by-specie/${specieId}`)
+                .then(response => response.json())
+                .then(razze => {
+                    // Svuota il select delle razze
+                    razzaSelect.innerHTML = '<option value="">Tutte le razze</option>';
+                    
+                    // Aggiungi le razze filtrate
+                    razze.forEach(function(razza) {
+                        const option = document.createElement('option');
+                        option.value = razza.idRazza;
+                        option.textContent = razza.nome;
+                        razzaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento delle razze:', error);
+                    // In caso di errore, mantieni tutte le razze
+                    loadAllRazze();
+                });
+        }
+        
+        // Gestione autocompletamento nome animale
+        function handleNomeAnimaleInput() {
+            const input = document.getElementById('nomeAnimale');
+            if (input) {
+                // Capitalizza la prima lettera
+                input.addEventListener('input', function(e) {
+                    const value = e.target.value;
+                    if (value.length > 0) {
+                        e.target.value = value.charAt(0).toUpperCase() + value.slice(1);
+                    }
+                });
+                
+                // Gestisci la selezione dal datalist
+                input.addEventListener('change', function(e) {
+                    const datalist = document.getElementById('animaliSuggerimenti');
+                    const options = datalist.querySelectorAll('option');
+                    const selectedValue = e.target.value;
+                    
+                    // Pulisci il valore se viene selezionato dal datalist
+                    options.forEach(option => {
+                        if (option.value === selectedValue) {
+                            e.target.value = option.value;
+                        }
+                    });
+                });
+            }
+        }
+        
+        // Aggiungi event listener quando la pagina è caricata
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('specie').addEventListener('change', filterRazzeBySpecie);
+            handleNomeAnimaleInput();
+        });
+    </script>
 
     </body>
 </html>

@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rifugio.rifugio.dto.AttivitaRecente;
@@ -182,13 +185,60 @@ public class DashboardAdminController {
 
     // DASHBOARD ANIMALI
 
+    // API endpoint per ottenere razze per specie (per filtro dinamico)
+    @GetMapping("/api/razze-by-specie/{specieId}")
+    @ResponseBody
+    public List<Razza> getRazzeBySpecie(@PathVariable Integer specieId) {
+        return razzaService.getRazzeBySpecieId(specieId);
+    }
+
     @GetMapping("/animali")
-    public String getAnimali(Model model, HttpSession session) {
+    public String getAnimali(Model model, HttpSession session,
+                             @RequestParam(value = "specie", required = false) Integer specieId,
+                             @RequestParam(value = "razza", required = false) Integer razzaId,
+                             @RequestParam(value = "sesso", required = false) String sesso,
+                             @RequestParam(value = "nomeAnimale", required = false) String nomeAnimale) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
-        model.addAttribute("razzaList", razzaService.getAllRazze());    
+        
+        // Ottieni tutti gli animali
+        List<AnagraficaAnimali> animali = anagraficaAnimaleService.getAllAnagraficaAnimali();
+        
+        // Filtro per nome animale
+        if (nomeAnimale != null && !nomeAnimale.trim().isEmpty()) {
+            animali = animali.stream()
+                    .filter(a -> a.getNome() != null && 
+                            a.getNome().toLowerCase().contains(nomeAnimale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        // Applica i filtri se presenti
+        if (specieId != null) {
+            animali = animali.stream()
+                    .filter(a -> a.getSpecie() != null && a.getSpecie().getIdSpecie().equals(specieId))
+                    .collect(Collectors.toList());
+        }
+        
+        if (razzaId != null) {
+            animali = animali.stream()
+                    .filter(a -> a.getRazza() != null && a.getRazza().getIdRazza().equals(razzaId))
+                    .collect(Collectors.toList());
+        }
+        
+        if (sesso != null && !sesso.isEmpty()) {
+            Character sessoChar = sesso.charAt(0); // Converte la stringa in carattere
+            animali = animali.stream()
+                    .filter(a -> sessoChar.equals(a.getSesso()))
+                    .collect(Collectors.toList());
+        }
+        
+        // Aggiungi i dati al modello
+        model.addAttribute("animali", animali);
+        model.addAttribute("specie", specieService.getAllSpecie());
+        model.addAttribute("razze", razzaService.getAllRazze());
+        model.addAttribute("animaliSuggerimenti", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        
         return "dashboard_lista_animali";
     }
 
@@ -344,14 +394,25 @@ public class DashboardAdminController {
     // DASHBOARD RAZZE
 
     @GetMapping("/razze")
-    public String getAllRazze(Model model, HttpSession session){
+    public String getAllRazze(Model model, HttpSession session,
+                              @RequestParam(value = "specie", required = false) Integer specieId){
         if (!isAdmin(session)) {
             return "redirect:/";
         }
 
-        model.addAttribute("razze", razzaService.getAllRazze());
-        return "dashboard_lista_razze";  
+        // Ottieni tutte le razze
+        List<Razza> razze = razzaService.getAllRazze();
+        
+        // Applica il filtro per specie se presente
+        if (specieId != null) {
+            razze = razze.stream()
+                    .filter(r -> r.getSpecie() != null && r.getSpecie().getIdSpecie().equals(specieId))
+                    .collect(Collectors.toList());
+        }
 
+        model.addAttribute("razze", razze);
+        model.addAttribute("specie", specieService.getAllSpecie());
+        return "dashboard_lista_razze";  
     }
 
     @GetMapping("/razze/save")
@@ -430,11 +491,38 @@ public class DashboardAdminController {
     // DASHBOARD DONAZIONI
 
     @GetMapping("/donazioni")
-    public String getAllDonazioni(Model model, HttpSession session) {
+    public String getAllDonazioni(Model model, HttpSession session,
+                                 @RequestParam(value = "nomeDonatore", required = false) String nomeDonatore,
+                                 @RequestParam(value = "ordinamento", required = false, defaultValue = "desc") String ordinamento) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("donazioni", donazioniService.getAllDonazioni());
+        
+        List<Donazioni> donazioni = donazioniService.getAllDonazioni();
+        
+        // Filtro per nome donatore
+        if (nomeDonatore != null && !nomeDonatore.trim().isEmpty()) {
+            donazioni = donazioni.stream()
+                .filter(d -> d.getPersona() != null && (
+                    (d.getPersona().getNome() != null && 
+                     d.getPersona().getNome().toLowerCase().contains(nomeDonatore.toLowerCase().trim())) ||
+                    (d.getPersona().getCognome() != null && 
+                     d.getPersona().getCognome().toLowerCase().contains(nomeDonatore.toLowerCase().trim())) ||
+                    (d.getPersona().getNome() != null && d.getPersona().getCognome() != null &&
+                     (d.getPersona().getNome() + " " + d.getPersona().getCognome()).toLowerCase().contains(nomeDonatore.toLowerCase().trim()))
+                ))
+                .collect(Collectors.toList());
+        }
+        
+        // Ordinamento per importo
+        if ("asc".equals(ordinamento)) {
+            donazioni.sort(Comparator.comparing(Donazioni::getImporto));
+        } else {
+            donazioni.sort(Comparator.comparing(Donazioni::getImporto).reversed());
+        }
+        
+        model.addAttribute("donazioni", donazioni);
+        model.addAttribute("utentiSuggerimenti", utentiService.getAllUtentiAttivi());
         return "dashboard_lista_donazioni";
     }
 
@@ -561,11 +649,63 @@ public class DashboardAdminController {
     // DASHBOARD VISITE VETERINARIE
 
     @GetMapping("/visite-veterinarie")
-    public String getVisiteVeterinarie(Model model, HttpSession session) {
+    public String getVisiteVeterinarie(Model model, HttpSession session,
+                                     @RequestParam(value = "nomeAnimale", required = false) String nomeAnimale,
+                                     @RequestParam(value = "dataInizio", required = false) String dataInizio,
+                                     @RequestParam(value = "dataFine", required = false) String dataFine) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("visiteVeterinarie", visiteVeterinarieService.getAllVisiteVeterinarie());
+        
+        List<VisiteVeterinarie> visiteVeterinarie;
+        
+        // Se ci sono filtri, applica la logica di filtro
+        if ((nomeAnimale != null && !nomeAnimale.trim().isEmpty()) || 
+            (dataInizio != null && !dataInizio.trim().isEmpty()) || 
+            (dataFine != null && !dataFine.trim().isEmpty())) {
+            
+            // Applica filtri
+            visiteVeterinarie = visiteVeterinarieService.getAllVisiteVeterinarie().stream()
+                .filter(visita -> {
+                    // Filtro per nome animale
+                    if (nomeAnimale != null && !nomeAnimale.trim().isEmpty()) {
+                        return visita.getId_animale().getNome().toLowerCase()
+                               .contains(nomeAnimale.toLowerCase());
+                    }
+                    return true;
+                })
+                .filter(visita -> {
+                    // Filtro per data inizio
+                    if (dataInizio != null && !dataInizio.trim().isEmpty()) {
+                        try {
+                            LocalDate dataInizioFilter = LocalDate.parse(dataInizio);
+                            return !visita.getData().isBefore(dataInizioFilter);
+                        } catch (Exception e) {
+                            return true; // Se parsing fallisce, non filtra
+                        }
+                    }
+                    return true;
+                })
+                .filter(visita -> {
+                    // Filtro per data fine
+                    if (dataFine != null && !dataFine.trim().isEmpty()) {
+                        try {
+                            LocalDate dataFineFilter = LocalDate.parse(dataFine);
+                            return !visita.getData().isAfter(dataFineFilter);
+                        } catch (Exception e) {
+                            return true; // Se parsing fallisce, non filtra
+                        }
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+        } else {
+            // Nessun filtro, mostra tutte le visite
+            visiteVeterinarie = visiteVeterinarieService.getAllVisiteVeterinarie();
+        }
+        
+        model.addAttribute("visiteVeterinarie", visiteVeterinarie);
+        model.addAttribute("animaliSuggerimenti", anagraficaAnimaleService.getAllAnagraficaAnimali());
         return "dashboard_lista_visite_veterinarie";
     }
 
@@ -630,16 +770,42 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        
+        // Validazione aggiuntiva personalizzata
+        if (visita.getData() == null) {
+            bindingResult.rejectValue("data", "error.data", "La data è obbligatoria");
+        }
+        if (visita.getOra() == null) {
+            bindingResult.rejectValue("ora", "error.ora", "L'ora è obbligatoria");
+        }
+        if (visita.getId_animale() == null) {
+            bindingResult.rejectValue("id_animale", "error.id_animale", "Seleziona un animale");
+        }
+        if (visita.getMotivo() == null || visita.getMotivo().trim().isEmpty()) {
+            bindingResult.rejectValue("motivo", "error.motivo", "Il motivo è obbligatorio");
+        }
+        if (visita.getEsito() == null || visita.getEsito().trim().isEmpty()) {
+            bindingResult.rejectValue("esito", "error.esito", "L'esito è obbligatorio");
+        }
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("errorMessage", "Tutti i campi sono obbligatori. Controlla i dati inseriti.");
             return "creazione_visita_veterinaria";
         }
-        if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
-            visita.setEsito("In attesa");
+        
+        try {
+            if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
+                visita.setEsito("In attesa");
+            }
+            visiteVeterinarieService.addVisita(visita);
+            redirectAttributes.addFlashAttribute("successMessage", "Visita veterinaria registrata con successo!");
+            return "redirect:/dashboard/admin/visite-veterinarie";
+        } catch (Exception e) {
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("errorMessage", "Errore durante il salvataggio. Verifica che tutti i campi siano compilati correttamente.");
+            return "creazione_visita_veterinaria";
         }
-        visiteVeterinarieService.addVisita(visita);
-        redirectAttributes.addFlashAttribute("successMessage", "Visita veterinaria registrata con successo!");
-        return "redirect:/dashboard/admin/visite-veterinarie";
     }
 
     @GetMapping("/visite-veterinarie/{id}")
@@ -654,11 +820,69 @@ public class DashboardAdminController {
     // DASHBOARD ADOZIONI
 
     @GetMapping("/adozioni")
-    public String getAdozioni(Model model, HttpSession session) {
+    public String getAdozioni(Model model, HttpSession session,
+                              @RequestParam(value = "nomeAnimale", required = false) String nomeAnimale,
+                              @RequestParam(value = "nomePersona", required = false) String nomePersona,
+                              @RequestParam(value = "dataDa", required = false) String dataDa,
+                              @RequestParam(value = "dataA", required = false) String dataA) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("adozioni", adozioniService.getAllAdozioni());
+        
+        // Ottieni tutte le adozioni
+        List<Adozioni> adozioni = adozioniService.getAllAdozioni();
+        
+        // Applica i filtri se presenti
+        if (nomeAnimale != null && !nomeAnimale.trim().isEmpty()) {
+            adozioni = adozioni.stream()
+                    .filter(a -> a.getAnimale() != null && 
+                            a.getAnimale().getNome() != null &&
+                            a.getAnimale().getNome().toLowerCase().startsWith(nomeAnimale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (nomePersona != null && !nomePersona.trim().isEmpty()) {
+            adozioni = adozioni.stream()
+                    .filter(a -> a.getPersona() != null && (
+                            (a.getPersona().getNome() != null && 
+                             a.getPersona().getNome().toLowerCase().startsWith(nomePersona.toLowerCase().trim())) ||
+                            (a.getPersona().getCognome() != null && 
+                             a.getPersona().getCognome().toLowerCase().startsWith(nomePersona.toLowerCase().trim())) ||
+                            (a.getPersona().getNome() != null && a.getPersona().getCognome() != null &&
+                             (a.getPersona().getNome() + " " + a.getPersona().getCognome()).toLowerCase().startsWith(nomePersona.toLowerCase().trim()))
+                    ))
+                    .collect(Collectors.toList());
+        }
+        
+        // Filtro per data DI INIZIO (dataDa)
+        if (dataDa != null && !dataDa.trim().isEmpty()) {
+            try {
+                LocalDate dataInizio = LocalDate.parse(dataDa);
+                adozioni = adozioni.stream()
+                        .filter(a -> a.getDataAdozione() != null &&
+                                !a.getDataAdozione().toLocalDate().isBefore(dataInizio))
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                System.err.println("Errore parsing data inizio: " + e.getMessage());
+            }
+        }
+        
+        // Filtro per data DI FINE (dataA)
+        if (dataA != null && !dataA.trim().isEmpty()) {
+            try {
+                LocalDate dataFine = LocalDate.parse(dataA);
+                adozioni = adozioni.stream()
+                        .filter(a -> a.getDataAdozione() != null &&
+                                !a.getDataAdozione().toLocalDate().isAfter(dataFine))
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                System.err.println("Errore parsing data fine: " + e.getMessage());
+            }
+        }
+        
+        model.addAttribute("adozioni", adozioni);
+        model.addAttribute("animaliSuggerimenti", anagraficaAnimaleService.getAllAnagraficaAnimali());
+        model.addAttribute("utentiSuggerimenti", utentiService.getAllUtentiAttivi());
         return "dashboard_lista_adozioni";
     }
 
@@ -770,22 +994,66 @@ public class DashboardAdminController {
     // UTENTI
 
     @GetMapping("/utenti")
-    public String getUtenti(Model model, HttpSession session) {
+    public String getUtenti(Model model, HttpSession session,
+                           @RequestParam(value = "ruolo", required = false) String ruolo,
+                           @RequestParam(value = "nome", required = false) String nome,
+                           @RequestParam(value = "cognome", required = false) String cognome,
+                           @RequestParam(value = "email", required = false) String email,
+                           @RequestParam(value = "codiceFiscale", required = false) String codiceFiscale) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        
         // Di default mostriamo solo utenti attivi, con opzione per vedere tutti
         boolean includiEliminati = session.getAttribute("mostraUtentiEliminati") != null && 
                                   (Boolean) session.getAttribute("mostraUtentiEliminati");
         
+        List<Utenti> utenti;
         if (includiEliminati) {
-            model.addAttribute("utenti", utentiService.getAllUtenti()); // Tutti inclusi eliminati
+            utenti = utentiService.getAllUtenti(); // Tutti inclusi eliminati
             model.addAttribute("mostraTutti", true);
         } else {
-            model.addAttribute("utenti", utentiService.getAllUtentiAttivi()); // Solo attivi
+            utenti = utentiService.getAllUtentiAttivi(); // Solo attivi
             model.addAttribute("mostraTutti", false);
         }
         
+        // Applica i filtri se presenti
+        if (ruolo != null && !ruolo.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getRuolo() != null && 
+                            u.getRuolo().equalsIgnoreCase(ruolo.trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (nome != null && !nome.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getNome() != null && 
+                            u.getNome().toLowerCase().startsWith(nome.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (cognome != null && !cognome.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getCognome() != null && 
+                            u.getCognome().toLowerCase().startsWith(cognome.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (email != null && !email.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getEmail() != null && 
+                            u.getEmail().toLowerCase().contains(email.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (codiceFiscale != null && !codiceFiscale.trim().isEmpty()) {
+            utenti = utenti.stream()
+                    .filter(u -> u.getCodiceFiscale() != null && 
+                            u.getCodiceFiscale().toLowerCase().startsWith(codiceFiscale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        model.addAttribute("utenti", utenti);
         return "dashboard_lista_utenti";
     }
     
@@ -851,13 +1119,48 @@ public class DashboardAdminController {
                 if (text == null || text.isEmpty()) {
                     setValue(null);
                 } else {
-                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    try {
+                        // Prova prima il formato ISO (yyyy-MM-dd) per i campi input type="date"
+                        setValue(LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
+                    } catch (Exception e) {
+                        try {
+                            // Fallback al formato dd/MM/yyyy
+                            setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                        } catch (Exception e2) {
+                            throw new IllegalArgumentException("Formato data non valido: " + text);
+                        }
+                    }
                 }
             }
             @Override
             public String getAsText() {
                 LocalDate value = (LocalDate) getValue();
-                return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
+                return (value != null) ? value.format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+            }
+        });
+        
+        // Custom editor per LocalTime (per le visite veterinarie)
+        binder.registerCustomEditor(LocalTime.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    try {
+                        setValue(LocalTime.parse(text, DateTimeFormatter.ISO_LOCAL_TIME));
+                    } catch (Exception e) {
+                        try {
+                            setValue(LocalTime.parse(text, DateTimeFormatter.ofPattern("HH:mm")));
+                        } catch (Exception e2) {
+                            throw new IllegalArgumentException("Formato ora non valido: " + text);
+                        }
+                    }
+                }
+            }
+            @Override
+            public String getAsText() {
+                LocalTime value = (LocalTime) getValue();
+                return (value != null) ? value.format(DateTimeFormatter.ISO_LOCAL_TIME) : "";
             }
         });
         

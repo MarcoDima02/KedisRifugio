@@ -32,8 +32,74 @@
                     <span th:if="${mostraTutti}">Mostra Solo Attivi</span>
                 </button>
             </form>
-
             <section class="green-section">
+
+                
+            <!-- Sezione Filtri -->
+            <div class="filter-container">
+                <div class="filter-header">
+                    <i class="fas fa-filter"></i>
+                    <h3>Filtri di Ricerca</h3>
+                </div>
+                <form method="get" action="/dashboard/admin/utenti" class="filter-form">
+                    <!-- Campo nascosto per mantenere lo stato di visualizzazione -->
+                    <input type="hidden" name="preserveView" value="true" />
+                    
+                    <div class="filter-field">
+                        <label for="ruolo">
+                            <i class="fas fa-user-shield"></i>
+                            Ruolo:
+                        </label>
+                        <select name="ruolo" id="ruolo" class="filter-select">
+                            <option value="">Tutti i ruoli</option>
+                            <option value="USER" th:selected="${param.ruolo == 'USER'}">USER</option>
+                            <option value="ADMIN" th:selected="${param.ruolo == 'ADMIN'}">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="nome">
+                            <i class="fas fa-signature"></i>
+                            Nome:
+                        </label>
+                        <input type="text" name="nome" id="nome" class="filter-input" 
+                               placeholder="Es: Mario, Luca..." th:value="${param.nome}" />
+                    </div>
+                    <div class="filter-field">
+                        <label for="cognome">
+                            <i class="fas fa-user-tag"></i>
+                            Cognome:
+                        </label>
+                        <input type="text" name="cognome" id="cognome" class="filter-input" 
+                               placeholder="Es: Rossi, Bianchi..." th:value="${param.cognome}" />
+                    </div>
+                    <div class="filter-field">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email:
+                        </label>
+                        <input type="text" name="email" id="email" class="filter-input" 
+                               placeholder="Es: mario@email.com..." th:value="${param.email}" />
+                    </div>
+                    <div class="filter-field">
+                        <label for="codiceFiscale">
+                            <i class="fas fa-id-card"></i>
+                            Codice Fiscale:
+                        </label>
+                        <input type="text" name="codiceFiscale" id="codiceFiscale" class="filter-input" 
+                               placeholder="Es: RSSMRA..." th:value="${param.codiceFiscale}" />
+                    </div>
+                    <div class="filter-actions">
+                        <button type="submit" class="btn-filter">
+                            <i class="fas fa-search"></i> Filtra
+                        </button>
+                        <button type="button" onclick="resetFilters()" class="btn-reset">
+                            <i class="fas fa-times"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
                 <table class="animal-table">
                     <thead>
                         <a th:href="@{/dashboard/admin/utenti/save}" class="add-btn">Aggiungi Nuovo Utente</a>
@@ -122,4 +188,17 @@
         </div>
 
     </body>
+    
+    <script>
+        function resetFilters() {
+            document.getElementById('ruolo').value = '';
+            document.getElementById('nome').value = '';
+            document.getElementById('cognome').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('codiceFiscale').value = '';
+            // Ricarica la pagina mantenendo solo lo stato di visualizzazione utenti eliminati
+            window.location.href = '/dashboard/admin/utenti';
+        }
+    </script>
+
 </html>
