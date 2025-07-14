@@ -20,6 +20,46 @@
             </h1>
 
             <section class="green-section">
+                <a th:href="@{/dashboard/admin/adozioni/save}" class="add-btn">Aggiungi Nuova Adozione</a>
+                
+                <!-- Sezione Filtri -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <i class="fas fa-filter"></i>
+                        <h3>Filtri di Ricerca</h3>
+                    </div>
+                    <form method="get" action="/dashboard/admin/adozioni" class="filter-form">
+                        <div class="filter-field">
+                            <label for="nomeAnimale">Nome Animale:</label>
+                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-input" 
+                                   placeholder="Es: Lu, Bella, Max..." th:value="${param.nomeAnimale}" />
+                        </div>
+                        <div class="filter-field">
+                            <label for="nomePersona">Nome/Cognome Persona:</label>
+                            <input type="text" name="nomePersona" id="nomePersona" class="filter-input" 
+                                   placeholder="Es: Mario, Rossi, Mario Rossi..." th:value="${param.nomePersona}" />
+                        </div>
+                        <div class="filter-field">
+                            <label for="dataDa">Data Adozione Da:</label>
+                            <input type="date" name="dataDa" id="dataDa" class="filter-input" 
+                                   th:value="${param.dataDa}" />
+                        </div>
+                        <div class="filter-field">
+                            <label for="dataA">Data Adozione A:</label>
+                            <input type="date" name="dataA" id="dataA" class="filter-input" 
+                                   th:value="${param.dataA}" />
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn-filter">
+                                <i class="fas fa-search"></i> Filtra
+                            </button>
+                            <button type="button" onclick="resetFilters()" class="btn-reset">
+                                <i class="fas fa-times"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <table class="animal-table">
                     <a th:href="@{/dashboard/admin/adozioni/save}" class="add-btn">Aggiungi Nuova Adozione</a>
                     <thead>
@@ -62,6 +102,17 @@
         </div>
 
     </body>
+    
+    <script>
+        function resetFilters() {
+            document.getElementById('nomeAnimale').value = '';
+            document.getElementById('nomePersona').value = '';
+            document.getElementById('dataDa').value = '';
+            document.getElementById('dataA').value = '';
+            // Ricarica la pagina senza parametri di filtro
+            window.location.href = '/dashboard/admin/adozioni';
+        }
+    </script>
 
 </html>
 

@@ -705,11 +705,67 @@ public class DashboardAdminController {
     // DASHBOARD ADOZIONI
 
     @GetMapping("/adozioni")
-    public String getAdozioni(Model model, HttpSession session) {
+    public String getAdozioni(Model model, HttpSession session,
+                              @RequestParam(value = "nomeAnimale", required = false) String nomeAnimale,
+                              @RequestParam(value = "nomePersona", required = false) String nomePersona,
+                              @RequestParam(value = "dataDa", required = false) String dataDa,
+                              @RequestParam(value = "dataA", required = false) String dataA) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("adozioni", adozioniService.getAllAdozioni());
+        
+        // Ottieni tutte le adozioni
+        List<Adozioni> adozioni = adozioniService.getAllAdozioni();
+        
+        // Applica i filtri se presenti
+        if (nomeAnimale != null && !nomeAnimale.trim().isEmpty()) {
+            adozioni = adozioni.stream()
+                    .filter(a -> a.getAnimale() != null && 
+                            a.getAnimale().getNome() != null &&
+                            a.getAnimale().getNome().toLowerCase().startsWith(nomeAnimale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
+        
+        if (nomePersona != null && !nomePersona.trim().isEmpty()) {
+            adozioni = adozioni.stream()
+                    .filter(a -> a.getPersona() != null && (
+                            (a.getPersona().getNome() != null && 
+                             a.getPersona().getNome().toLowerCase().startsWith(nomePersona.toLowerCase().trim())) ||
+                            (a.getPersona().getCognome() != null && 
+                             a.getPersona().getCognome().toLowerCase().startsWith(nomePersona.toLowerCase().trim())) ||
+                            (a.getPersona().getNome() != null && a.getPersona().getCognome() != null &&
+                             (a.getPersona().getNome() + " " + a.getPersona().getCognome()).toLowerCase().startsWith(nomePersona.toLowerCase().trim()))
+                    ))
+                    .collect(Collectors.toList());
+        }
+        
+        // Filtro per data DI INIZIO (dataDa)
+        if (dataDa != null && !dataDa.trim().isEmpty()) {
+            try {
+                LocalDate dataInizio = LocalDate.parse(dataDa);
+                adozioni = adozioni.stream()
+                        .filter(a -> a.getDataAdozione() != null &&
+                                !a.getDataAdozione().toLocalDate().isBefore(dataInizio))
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                System.err.println("Errore parsing data inizio: " + e.getMessage());
+            }
+        }
+        
+        // Filtro per data DI FINE (dataA)
+        if (dataA != null && !dataA.trim().isEmpty()) {
+            try {
+                LocalDate dataFine = LocalDate.parse(dataA);
+                adozioni = adozioni.stream()
+                        .filter(a -> a.getDataAdozione() != null &&
+                                !a.getDataAdozione().toLocalDate().isAfter(dataFine))
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                System.err.println("Errore parsing data fine: " + e.getMessage());
+            }
+        }
+        
+        model.addAttribute("adozioni", adozioni);
         return "dashboard_lista_adozioni";
     }
 
