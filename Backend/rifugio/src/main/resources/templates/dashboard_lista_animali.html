@@ -30,6 +30,22 @@
                     </div>
                     <form method="get" action="/dashboard/admin/animali" class="filter-form">
                         <div class="filter-field">
+                            <label for="nomeAnimale">Nome Animale:</label>
+                            <input type="text" 
+                                   name="nomeAnimale" 
+                                   id="nomeAnimale" 
+                                   list="animaliSuggerimenti" 
+                                   placeholder="Cerca per nome..." 
+                                   class="filter-input"
+                                   th:value="${param.nomeAnimale}">
+                            <datalist id="animaliSuggerimenti">
+                                <option th:each="a : ${animaliSuggerimenti}" 
+                                        th:value="${a.nome}" 
+                                        th:text="${a.nome}">
+                                </option>
+                            </datalist>
+                        </div>
+                        <div class="filter-field">
                             <label for="specie">Specie:</label>
                             <select name="specie" id="specie" class="filter-select">
                                 <option value="">Tutte le specie</option>
@@ -122,6 +138,19 @@
             window.location.href = '/dashboard/admin/animali';
         }
         
+        function resetFilters() {
+            document.getElementById('nomeAnimale').value = '';
+            document.getElementById('specie').value = '';
+            document.getElementById('razza').value = '';
+            document.getElementById('sesso').value = '';
+            
+            // Ricarica tutte le razze quando resetti i filtri
+            loadAllRazze();
+            
+            // Reindirizza alla pagina senza parametri
+            window.location.href = '/dashboard/admin/animali';
+        }
+        
         function loadAllRazze() {
             const razzaSelect = document.getElementById('razza');
             // Mantieni l'opzione "Tutte le razze"
@@ -168,9 +197,38 @@
                 });
         }
         
+        // Gestione autocompletamento nome animale
+        function handleNomeAnimaleInput() {
+            const input = document.getElementById('nomeAnimale');
+            if (input) {
+                // Capitalizza la prima lettera
+                input.addEventListener('input', function(e) {
+                    const value = e.target.value;
+                    if (value.length > 0) {
+                        e.target.value = value.charAt(0).toUpperCase() + value.slice(1);
+                    }
+                });
+                
+                // Gestisci la selezione dal datalist
+                input.addEventListener('change', function(e) {
+                    const datalist = document.getElementById('animaliSuggerimenti');
+                    const options = datalist.querySelectorAll('option');
+                    const selectedValue = e.target.value;
+                    
+                    // Pulisci il valore se viene selezionato dal datalist
+                    options.forEach(option => {
+                        if (option.value === selectedValue) {
+                            e.target.value = option.value;
+                        }
+                    });
+                });
+            }
+        }
+        
         // Aggiungi event listener quando la pagina è caricata
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('specie').addEventListener('change', filterRazzeBySpecie);
+            handleNomeAnimaleInput();
         });
     </script>
 

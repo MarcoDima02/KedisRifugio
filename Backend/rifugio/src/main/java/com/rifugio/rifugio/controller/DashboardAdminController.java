@@ -196,13 +196,22 @@ public class DashboardAdminController {
     public String getAnimali(Model model, HttpSession session,
                              @RequestParam(value = "specie", required = false) Integer specieId,
                              @RequestParam(value = "razza", required = false) Integer razzaId,
-                             @RequestParam(value = "sesso", required = false) String sesso) {
+                             @RequestParam(value = "sesso", required = false) String sesso,
+                             @RequestParam(value = "nomeAnimale", required = false) String nomeAnimale) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
         
         // Ottieni tutti gli animali
         List<AnagraficaAnimali> animali = anagraficaAnimaleService.getAllAnagraficaAnimali();
+        
+        // Filtro per nome animale
+        if (nomeAnimale != null && !nomeAnimale.trim().isEmpty()) {
+            animali = animali.stream()
+                    .filter(a -> a.getNome() != null && 
+                            a.getNome().toLowerCase().contains(nomeAnimale.toLowerCase().trim()))
+                    .collect(Collectors.toList());
+        }
         
         // Applica i filtri se presenti
         if (specieId != null) {
@@ -228,6 +237,7 @@ public class DashboardAdminController {
         model.addAttribute("animali", animali);
         model.addAttribute("specie", specieService.getAllSpecie());
         model.addAttribute("razze", razzaService.getAllRazze());
+        model.addAttribute("animaliSuggerimenti", anagraficaAnimaleService.getAllAnagraficaAnimali());
         
         return "dashboard_lista_animali";
     }

@@ -35,8 +35,8 @@
                     <form method="get" action="/dashboard/admin/visite-veterinarie" class="filter-form">
                         <div class="filter-field">
                             <label for="nomeAnimale">Nome Animale:</label>
-                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-select" 
-                                   placeholder="Inserisci nome animale..." th:value="${param.nomeAnimale}"
+                            <input type="text" name="nomeAnimale" id="nomeAnimale" class="filter-input" 
+                                   placeholder="Cerca per nome..." th:value="${param.nomeAnimale}"
                                    list="nomiAnimali" autocomplete="off">
                             <datalist id="nomiAnimali">
                                 <option th:each="animale : ${animaliSuggerimenti}" th:value="${animale.nome}" th:text="${animale.nome + ' (ID: ' + animale.idAnimale + ')'}"></option>
@@ -44,11 +44,11 @@
                         </div>
                         <div class="filter-field">
                             <label for="dataInizio">Data Inizio:</label>
-                            <input type="date" name="dataInizio" id="dataInizio" class="filter-select" th:value="${param.dataInizio}">
+                            <input type="date" name="dataInizio" id="dataInizio" class="filter-input" th:value="${param.dataInizio}">
                         </div>
                         <div class="filter-field">
                             <label for="dataFine">Data Fine:</label>
-                            <input type="date" name="dataFine" id="dataFine" class="filter-select" th:value="${param.dataFine}">
+                            <input type="date" name="dataFine" id="dataFine" class="filter-input" th:value="${param.dataFine}">
                         </div>
                         <div class="filter-actions">
                             <button type="submit" class="btn-filter">
