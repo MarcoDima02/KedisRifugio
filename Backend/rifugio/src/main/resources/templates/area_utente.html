@@ -109,6 +109,21 @@
                     <i class="fas fa-info-circle"></i> Scopri di Più
                 </a>
             </div>
+
+            <div class="user-card" th:onclick="'window.location.href=\'' + @{/area-utenti/donazioni} + '\''">
+                <div class="user-card-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Le Mie Donazioni</h3>
+                <p>
+                    Visualizza tutte le donazioni da te fate e tutte le informazioni
+                    apposite
+                </p>
+                <a th:href="@{/area-utenti/donazioni}" class="user-card-btn">
+                    <i class="fas fa-eye"></i> Visualizza Donazioni
+                </a>
+            </div>
+
         </div>
     </div>
     
