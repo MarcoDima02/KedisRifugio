@@ -146,7 +146,7 @@ public class DashboardUtentiController {
         
         try {
             model.addAttribute("adozione", new Adozioni());
-            model.addAttribute("animali", anagraficaAnimaliService.getAllAnagraficaAnimali());
+            model.addAttribute("animali", anagraficaAnimaliService.getByIdStatoAnimale(1));
             model.addAttribute("stepAdozioni", stepAdozioniService.getAllStepAdozioni());
             model.addAttribute("utente", utente);
             return "richiesta_adozione_utente";
