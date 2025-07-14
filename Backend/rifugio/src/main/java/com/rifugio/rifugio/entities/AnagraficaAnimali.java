@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 
 @Entity
 @Table(name="AnagraficaAnimali")
@@ -27,6 +28,7 @@ public class AnagraficaAnimali {
     private String Nome;
 
     // cascade = CascadeType.ALL permette di creare una nuova cartella clinica se non esiste durante la creazione di un animale
+    @Valid
     @OneToOne(cascade = CascadeType.ALL) 
     @JoinColumn(name = "Id_Cartella_Clinica", referencedColumnName = "Id_Cartella_Clinica")
     private CartellaClinica Id_Cartella_Clinica;

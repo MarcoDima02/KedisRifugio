@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Cartella_Clinica")
@@ -15,6 +16,8 @@ public class CartellaClinica {
     private Integer Id_Cartella_Clinica;
     private boolean Sterilizzato;
     private Integer Vaccini;
+
+    @Pattern(regexp = "^$|\\d{15}", message = "Il microchip deve essere vuoto oppure contenere esattamente 15 cifre")
     private String Microchip;
     private boolean Sverminazione;
     private boolean Trattamento_Antiparassitario;

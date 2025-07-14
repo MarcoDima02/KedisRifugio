@@ -257,6 +257,11 @@ public class DashboardAdminController {
         
         if (bindingResult.hasErrors()) {
             // se ci sono errori di validazione, ritorna al form
+            // Assicurati che la cartella clinica sia sempre inizializzata
+            if (animale.getIdCartellaClinica() == null) {
+                animale.setIdCartellaClinica(new CartellaClinica());
+            }
+            
             model.addAttribute("specieList", specieService.getAllSpecie());
             model.addAttribute("razzaList", razzaService.getAllRazze());
             model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
@@ -314,12 +319,24 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        
         if (bindingResult.hasErrors()) {
+            // Assicurati che l'ID dell'animale sia impostato per il form
+            animale.setIdAnimale(id);
+            
+            // Ricarica tutti i dati necessari per la pagina di modifica
+            model.addAttribute("animale", animale);
             model.addAttribute("specieList", specieService.getAllSpecie());
             model.addAttribute("razzaList", razzaService.getAllRazze());
             model.addAttribute("statiAnimali", statoAnimaleService.getAllStatiAnimali());
+            
+            // Ricarica anche le immagini
+            var immagini = immagineService.getImmaginiByAnimaleOrdered(id);
+            model.addAttribute("immagini", immagini);
+            
             return "modifica_animale";
         }
+        
         anagraficaAnimaleService.update(id, animale); // aggiorna l'animale
         return "redirect:/dashboard/admin/animali";
     }

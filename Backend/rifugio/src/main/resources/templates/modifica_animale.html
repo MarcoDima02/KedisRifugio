@@ -29,7 +29,6 @@
         <!-- Form -->
         <form th:action="@{/dashboard/admin/animali/update/{id}(id=${animale.idAnimale})}" th:object="${animale}" method="post" novalidate>
 
-            
             <!-- Grid per organizzare i campi -->
             <div class="form-grid">
                 
@@ -39,15 +38,16 @@
                     
                     <div class="filter-field">
                         <label for="nome">Nome:</label>
-                        <input type="text" id="nome" th:field="*{nome}" required 
-                               minlength="2" maxlength="50" pattern="[A-Za-zÀ-ù\s]+" 
-                               title="Il nome deve contenere solo lettere e spazi, minimo 2 caratteri" />
+                        <input type="text" id="nome" th:field="*{nome}" />
                         <small class="form-help">Solo lettere e spazi, da 2 a 50 caratteri</small>
+                        <div th:if="${#fields.hasErrors('nome')}" class="error-message">
+                            <p th:errors="*{nome}"></p>
+                        </div>
                     </div>
 
                     <div class="filter-field">
                         <label for="specie">Specie:</label>
-                        <select id="specie" th:field="*{specie.idSpecie}" required>
+                        <select id="specie" th:field="*{specie.idSpecie}">
                             <option value="" disabled>-- Seleziona --</option>
                             <option th:each="specie : ${specieList}"
                                     th:value="${specie.IdSpecie}"
@@ -75,7 +75,7 @@
                     
                     <div class="filter-field">
                         <label for="sesso">Sesso:</label>
-                        <select id="sesso" th:field="*{sesso}" required>
+                        <select id="sesso" th:field="*{sesso}">
                             <option value="" disabled>Seleziona sesso</option>
                             <option value="M">Maschio</option>
                             <option value="F">Femmina</option>
@@ -84,22 +84,19 @@
 
                     <div class="filter-field">
                         <label for="dataNascita">Data di Nascita:</label>
-                        <input type="date" id="dataNascita" th:field="*{dataNascita}" required 
-                               max="9999-12-31" onchange="validateDates()" />
+                        <input type="date" id="dataNascita" th:field="*{dataNascita}" />
                         <small class="form-help">La data di nascita deve essere precedente alla data di arrivo</small>
                     </div>
 
                     <div class="filter-field">
                         <label for="dataArrivo">Data di Arrivo:</label>
-                        <input type="date" id="dataArrivo" th:field="*{dataArrivo}" required 
-                               th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
-                               onchange="validateDates()" />
+                        <input type="date" id="dataArrivo" th:field="*{dataArrivo}" />
                         <small class="form-help">La data di arrivo non può essere nel futuro</small>
                     </div>
 
                     <div class="filter-field">
                         <label for="idStatoAnimale">Stato Animale:</label>
-                        <select id="idStatoAnimale" th:field="*{idStatoAnimale.idStatoAnimale}" required>
+                        <select id="idStatoAnimale" th:field="*{idStatoAnimale.idStatoAnimale}">
                             <option value="" disabled>-- Seleziona --</option>
                             <option th:each="stato : ${statiAnimali}"
                                     th:value="${stato.idStatoAnimale}"
@@ -132,10 +129,16 @@
                         <div class="filter-field">
                             <label for="microchip">Microchip:</label>
                             <input type="text" id="microchip" th:field="*{idCartellaClinica.microchip}" 
-                                   pattern="[0-9]{15}" maxlength="15" 
-                                   title="Il microchip deve essere di 15 cifre" 
-                                   placeholder="Es: 380260123456789" />
+                                   maxlength="15" 
+                                   placeholder="Es: 380260123456789" 
+                                   th:class="${#fields.hasErrors('idCartellaClinica.microchip')} ? 'input-error' : ''" />
                             <small class="form-help">Codice di 15 cifre (opzionale)</small>
+                            
+                            <!-- Messaggio di errore -->
+                            <div th:if="${#fields.hasErrors('idCartellaClinica.microchip')}" class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Errore: deve essere vuoto o di 15 cifre
+                            </div>
                         </div>
 
                         <div class="filter-field">
@@ -507,28 +510,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
-// Validazione date animale
-function validateDates() {
-    const dataNascita = document.getElementById('dataNascita').value;
-    const dataArrivo = document.getElementById('dataArrivo').value;
-    
-    if (dataNascita && dataArrivo) {
-        const nascita = new Date(dataNascita);
-        const arrivo = new Date(dataArrivo);
-        
-        if (nascita >= arrivo) {
-            alert('Errore: La data di nascita deve essere precedente alla data di arrivo nel rifugio');
-            document.getElementById('dataNascita').style.borderColor = '#dc3545';
-            document.getElementById('dataArrivo').style.borderColor = '#dc3545';
-            return false;
-        } else {
-            document.getElementById('dataNascita').style.borderColor = '#007C40';
-            document.getElementById('dataArrivo').style.borderColor = '#007C40';
-            return true;
-        }
-    }
-    return true;
-}
 </script>
 </html>
