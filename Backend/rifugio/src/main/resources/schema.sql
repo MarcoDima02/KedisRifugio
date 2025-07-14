@@ -35,7 +35,7 @@ CREATE TABLE razze (
 CREATE TABLE cartella_clinica (
     id_cartella_clinica INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     sterilizzato BOOLEAN DEFAULT FALSE,
-    vaccini INT NOT NULL,
+    vaccini INT NOT NULL DEFAULT 0,
     microchip VARCHAR(50),
     sverminazione BOOLEAN DEFAULT FALSE,
     trattamento_antiparassitario BOOLEAN DEFAULT FALSE
