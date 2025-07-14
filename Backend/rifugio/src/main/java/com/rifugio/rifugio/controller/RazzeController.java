@@ -1,12 +1,20 @@
 package com.rifugio.rifugio.controller;
 
-import com.rifugio.rifugio.entities.Razza;
-import com.rifugio.rifugio.services.RazzaService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.rifugio.rifugio.entities.Razza;
+import com.rifugio.rifugio.services.RazzaService;
 
 @RestController
 @RequestMapping("/api/razze")
@@ -28,6 +36,12 @@ public class RazzeController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Nuovo endpoint per ottenere razze filtrate per specie
+    @GetMapping("/specie/{idSpecie}")
+    public List<Razza> getRazzeBySpecie(@PathVariable Integer idSpecie) {
+        return razzaService.getRazzeBySpecieId(idSpecie);
     }
 
     @PostMapping

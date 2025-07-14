@@ -1,11 +1,12 @@
 package com.rifugio.rifugio.services;
 
-import com.rifugio.rifugio.entities.Razza;
-import com.rifugio.rifugio.repos.RazzaRepo;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.rifugio.rifugio.entities.Razza;
+import com.rifugio.rifugio.entities.Specie;
+import com.rifugio.rifugio.repos.RazzaRepo;
 
 @Service
 public class RazzaServiceImpl implements RazzaService {
@@ -43,5 +44,15 @@ public class RazzaServiceImpl implements RazzaService {
     @Override
     public void elimina(int id) {
         razzaRepo.deleteById(id);
+    }
+
+    @Override
+    public List<Razza> getRazzeBySpecie(Specie specie) {
+        return razzaRepo.findBySpecie(specie);
+    }
+
+    @Override
+    public List<Razza> getRazzeBySpecieId(Integer idSpecie) {
+        return razzaRepo.findBySpecieId(idSpecie);
     }
 }
