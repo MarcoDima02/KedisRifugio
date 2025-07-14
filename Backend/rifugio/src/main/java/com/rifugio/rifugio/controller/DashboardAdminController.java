@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rifugio.rifugio.dto.AttivitaRecente;
@@ -183,6 +184,13 @@ public class DashboardAdminController {
     }
 
     // DASHBOARD ANIMALI
+
+    // API endpoint per ottenere razze per specie (per filtro dinamico)
+    @GetMapping("/api/razze-by-specie/{specieId}")
+    @ResponseBody
+    public List<Razza> getRazzeBySpecie(@PathVariable Integer specieId) {
+        return razzaService.getRazzeBySpecieId(specieId);
+    }
 
     @GetMapping("/animali")
     public String getAnimali(Model model, HttpSession session,
