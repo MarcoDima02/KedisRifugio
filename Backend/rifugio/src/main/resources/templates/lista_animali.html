@@ -96,6 +96,53 @@
 
     </section>
 
+    <script>
+        // JavaScript per il filtro dinamico delle razze
+        document.addEventListener('DOMContentLoaded', function() {
+            const specieSelect = document.getElementById('specie');
+            const razzaSelect = document.getElementById('razza');
+            
+            // Salva tutte le opzioni originali delle razze
+            const originalRazzeOptions = Array.from(razzaSelect.querySelectorAll('option')).slice(1); // esclude "Tutto"
+            
+            specieSelect.addEventListener('change', function() {
+                const selectedSpecieId = this.value;
+                
+                // Rimuovi tutte le opzioni tranne "Tutto"
+                razzaSelect.innerHTML = '<option value="" selected>Tutto</option>';
+                
+                if (selectedSpecieId === '') {
+                    // Se nessuna specie è selezionata, mostra tutte le razze
+                    originalRazzeOptions.forEach(option => {
+                        razzaSelect.appendChild(option.cloneNode(true));
+                    });
+                } else {
+                    // Fetch delle razze per la specie selezionata
+                    fetch(`/api/razze/specie/${selectedSpecieId}`)
+                        .then(response => response.json())
+                        .then(razze => {
+                            razze.forEach(razza => {
+                                const option = document.createElement('option');
+                                option.value = razza.idRazza;
+                                option.textContent = razza.nome;
+                                razzaSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Errore nel caricamento delle razze:', error);
+                            // In caso di errore, ripristina tutte le razze
+                            originalRazzeOptions.forEach(option => {
+                                razzaSelect.appendChild(option.cloneNode(true));
+                            });
+                        });
+                }
+                
+                // Reset della selezione della razza
+                razzaSelect.value = '';
+            });
+        });
+    </script>
+
 </body>
 
 <th:block th:replace="fragments/footer :: customFooter"></th:block>
