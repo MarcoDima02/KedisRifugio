@@ -127,7 +127,7 @@
     min-height: 120px;
 }
 
-/* Messaggi di errore */
+/* Messaggi di errore e validazione */
 .error-message {
     color: #dc3545;
     font-size: 0.9rem;
@@ -142,6 +142,41 @@
 .input-error {
     border-color: #dc3545 !important;
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.input-valid {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+}
+
+/* Indicatori campo obbligatorio */
+.required-indicator {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+/* Testo di aiuto */
+.help-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Info form */
+.form-info {
+    background: #e8f4f8;
+    border: 1px solid #bee5eb;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: #0c5460;
+}
+
+.form-info i {
+    color: #17a2b8;
+    margin-right: 0.5rem;
 }
 
 .alert {

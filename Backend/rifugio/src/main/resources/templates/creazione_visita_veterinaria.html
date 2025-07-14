@@ -20,14 +20,25 @@
         <!-- Header del form -->
         <div class="form-header">
             <h2><i class="fas fa-stethoscope"></i> Inserisci Nuova Visita Veterinaria</h2>
+            <div class="form-info">
+                <i class="fas fa-info-circle"></i>
+                <span>I campi contrassegnati con <strong>*</strong> sono obbligatori</span>
+            </div>
         </div>
 
         <!-- Form -->
-        <form th:action="@{/dashboard/admin/visite-veterinarie/save}" th:object="${visita}" method="post" novalidate>
+        <form th:action="@{/dashboard/admin/visite-veterinarie/save}" th:object="${visita}" method="post">
             
-            <!-- Errori generali -->
+            <!-- Messaggio di errore generale -->
+            <div th:if="${errorMessage}" class="alert alert-danger" style="margin: 2rem 2rem 0 2rem;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:text="${errorMessage}"></span>
+            </div>
+            
+            <!-- Errori di validazione -->
             <div th:if="${#fields.hasErrors()}" class="alert alert-danger" style="margin: 2rem 2rem 0 2rem;">
-                <ul style="margin: 0; padding-left: 1.2rem;">
+                <strong><i class="fas fa-exclamation-circle"></i> Attenzione:</strong>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
                     <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
                 </ul>
             </div>
@@ -40,21 +51,18 @@
                     <h3><i class="fas fa-calendar-alt"></i> Data e Ora</h3>
                     
                     <div class="filter-field">
-                        <label for="data"><i class="fas fa-calendar-day"></i> Data:</label>
-                        <input type="date" id="data" th:field="*{data}" required 
-                               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
-                        <small class="form-help">La data della visita non può essere nel passato</small>
+                        <label for="data"><i class="fas fa-calendar-day"></i> Data: *</label>
+                        <input type="date" id="data" th:field="*{data}" required />
+                        <small class="form-help">La data della visita (obbligatoria)</small>
                         <div th:if="${#fields.hasErrors('data')}">
                             <span class="error-message" th:errors="*{data}"></span>
-                        </div>
-                        <div th:if="${visita.data == null}">
-                            <span class="error-message">Attenzione: la data non è valorizzata, inseriscila per continuare.</span>
                         </div>
                     </div>
                     
                     <div class="filter-field">
-                        <label for="ora"><i class="fas fa-clock"></i> Ora:</label>
+                        <label for="ora"><i class="fas fa-clock"></i> Ora: *</label>
                         <input type="time" id="ora" th:field="*{ora}" required />
+                        <small class="form-help">Orario della visita (obbligatorio)</small>
                         <div th:if="${#fields.hasErrors('ora')}">
                             <span class="error-message" th:errors="*{ora}"></span>
                         </div>
@@ -66,14 +74,15 @@
                     <h3><i class="fas fa-paw"></i> Animale</h3>
                     
                     <div class="filter-field">
-                        <label for="id_animale">Seleziona Animale:</label>
+                        <label for="id_animale"><i class="fas fa-paw"></i> Seleziona Animale: *</label>
                         <select id="id_animale" th:field="*{id_animale}" required>
-                            <option value="" disabled selected>-- Seleziona --</option>
+                            <option value="" disabled selected>-- Seleziona un animale --</option>
                             <option th:each="animale : ${animali}"
                                     th:value="${animale.idAnimale}"
                                     th:text="${animale.nome} + ' (ID: ' + ${animale.idAnimale} + ')'">
                             </option>
                         </select>
+                        <small class="form-help">Animale per cui prenotare la visita (obbligatorio)</small>
                         <div th:if="${#fields.hasErrors('id_animale')}">
                             <span class="error-message" th:errors="*{id_animale}"></span>
                         </div>
@@ -86,22 +95,25 @@
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="filter-field">
-                            <label for="motivo">Motivo:</label>
-                            <input type="text" id="motivo" th:field="*{motivo}" maxlength="100" required placeholder="Descrivi il motivo della visita..." />
+                            <label for="motivo"><i class="fas fa-clipboard-list"></i> Motivo: *</label>
+                            <input type="text" id="motivo" th:field="*{motivo}" maxlength="100" required 
+                                   placeholder="Descrivi il motivo della visita..." />
+                            <small class="form-help">Motivo della visita (obbligatorio, max 100 caratteri)</small>
                             <div th:if="${#fields.hasErrors('motivo')}">
                                 <span class="error-message" th:errors="*{motivo}"></span>
                             </div>
                         </div>
                         
                         <div class="filter-field">
-                            <label for="esito">Esito:</label>
+                            <label for="esito"><i class="fas fa-check-circle"></i> Esito: *</label>
                             <select id="esito" th:field="*{esito}" required>
-                                <option value="" selected>-- Seleziona --</option>
+                                <option value="" disabled selected>-- Seleziona esito --</option>
                                 <option value="In attesa">In attesa</option>
                                 <option value="Posticipata">Posticipata</option>
                                 <option value="Effettuata">Effettuata</option>
                                 <option value="Annullata">Annullata</option>
                             </select>
+                            <small class="form-help">Stato della visita (obbligatorio)</small>
                             <div th:if="${#fields.hasErrors('esito')}">
                                 <span class="error-message" th:errors="*{esito}"></span>
                             </div>
@@ -127,6 +139,125 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const dataInput = document.getElementById('data');
+    const oraInput = document.getElementById('ora');
+    const animaleSelect = document.getElementById('id_animale');
+    const motivoInput = document.getElementById('motivo');
+    const esitoSelect = document.getElementById('esito');
+
+    // Validazione in tempo reale
+    function validateField(field, condition, message) {
+        const existingError = field.parentNode.querySelector('.validation-error');
+        if (existingError) {
+            existingError.remove();
+        }
+
+        if (!condition) {
+            field.style.borderColor = '#dc3545';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'validation-error';
+            errorDiv.style.color = '#dc3545';
+            errorDiv.style.fontSize = '0.875rem';
+            errorDiv.style.marginTop = '0.25rem';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+            return false;
+        } else {
+            field.style.borderColor = '#28a745';
+            return true;
+        }
+    }
+
+    // Validazione campi individuali
+    dataInput.addEventListener('blur', function() {
+        validateField(this, this.value !== '', 'La data è obbligatoria');
+    });
+
+    oraInput.addEventListener('blur', function() {
+        validateField(this, this.value !== '', 'L\'ora è obbligatoria');
+    });
+
+    animaleSelect.addEventListener('change', function() {
+        validateField(this, this.value !== '', 'Seleziona un animale');
+    });
+
+    motivoInput.addEventListener('blur', function() {
+        validateField(this, this.value.trim() !== '', 'Il motivo è obbligatorio');
+    });
+
+    esitoSelect.addEventListener('change', function() {
+        validateField(this, this.value !== '', 'Seleziona un esito');
+    });
+
+    // Validazione completa al submit
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Reset stili
+        [dataInput, oraInput, animaleSelect, motivoInput, esitoSelect].forEach(field => {
+            field.style.borderColor = '';
+            const existingError = field.parentNode.querySelector('.validation-error');
+            if (existingError) {
+                existingError.remove();
+            }
+        });
+
+        // Validazione data
+        if (!dataInput.value) {
+            validateField(dataInput, false, 'La data è obbligatoria');
+            isValid = false;
+        }
+
+        // Validazione ora
+        if (!oraInput.value) {
+            validateField(oraInput, false, 'L\'ora è obbligatoria');
+            isValid = false;
+        }
+
+        // Validazione animale
+        if (!animaleSelect.value) {
+            validateField(animaleSelect, false, 'Seleziona un animale');
+            isValid = false;
+        }
+
+        // Validazione motivo
+        if (!motivoInput.value.trim()) {
+            validateField(motivoInput, false, 'Il motivo è obbligatorio');
+            isValid = false;
+        }
+
+        // Validazione esito
+        if (!esitoSelect.value) {
+            validateField(esitoSelect, false, 'Seleziona un esito');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            // Scorri al primo errore
+            const firstError = form.querySelector('.validation-error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+
+    // Rimuovi errori quando l'utente inizia a digitare
+    [dataInput, oraInput, motivoInput].forEach(field => {
+        field.addEventListener('input', function() {
+            this.style.borderColor = '';
+            const existingError = this.parentNode.querySelector('.validation-error');
+            if (existingError) {
+                existingError.remove();
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>

@@ -770,16 +770,42 @@ public class DashboardAdminController {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
+        
+        // Validazione aggiuntiva personalizzata
+        if (visita.getData() == null) {
+            bindingResult.rejectValue("data", "error.data", "La data è obbligatoria");
+        }
+        if (visita.getOra() == null) {
+            bindingResult.rejectValue("ora", "error.ora", "L'ora è obbligatoria");
+        }
+        if (visita.getId_animale() == null) {
+            bindingResult.rejectValue("id_animale", "error.id_animale", "Seleziona un animale");
+        }
+        if (visita.getMotivo() == null || visita.getMotivo().trim().isEmpty()) {
+            bindingResult.rejectValue("motivo", "error.motivo", "Il motivo è obbligatorio");
+        }
+        if (visita.getEsito() == null || visita.getEsito().trim().isEmpty()) {
+            bindingResult.rejectValue("esito", "error.esito", "L'esito è obbligatorio");
+        }
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("errorMessage", "Tutti i campi sono obbligatori. Controlla i dati inseriti.");
             return "creazione_visita_veterinaria";
         }
-        if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
-            visita.setEsito("In attesa");
+        
+        try {
+            if (visita.getEsito() == null || visita.getEsito().isEmpty()) {
+                visita.setEsito("In attesa");
+            }
+            visiteVeterinarieService.addVisita(visita);
+            redirectAttributes.addFlashAttribute("successMessage", "Visita veterinaria registrata con successo!");
+            return "redirect:/dashboard/admin/visite-veterinarie";
+        } catch (Exception e) {
+            model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
+            model.addAttribute("errorMessage", "Errore durante il salvataggio. Verifica che tutti i campi siano compilati correttamente.");
+            return "creazione_visita_veterinaria";
         }
-        visiteVeterinarieService.addVisita(visita);
-        redirectAttributes.addFlashAttribute("successMessage", "Visita veterinaria registrata con successo!");
-        return "redirect:/dashboard/admin/visite-veterinarie";
     }
 
     @GetMapping("/visite-veterinarie/{id}")
@@ -1093,13 +1119,48 @@ public class DashboardAdminController {
                 if (text == null || text.isEmpty()) {
                     setValue(null);
                 } else {
-                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    try {
+                        // Prova prima il formato ISO (yyyy-MM-dd) per i campi input type="date"
+                        setValue(LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
+                    } catch (Exception e) {
+                        try {
+                            // Fallback al formato dd/MM/yyyy
+                            setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                        } catch (Exception e2) {
+                            throw new IllegalArgumentException("Formato data non valido: " + text);
+                        }
+                    }
                 }
             }
             @Override
             public String getAsText() {
                 LocalDate value = (LocalDate) getValue();
-                return (value != null) ? value.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
+                return (value != null) ? value.format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+            }
+        });
+        
+        // Custom editor per LocalTime (per le visite veterinarie)
+        binder.registerCustomEditor(LocalTime.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    try {
+                        setValue(LocalTime.parse(text, DateTimeFormatter.ISO_LOCAL_TIME));
+                    } catch (Exception e) {
+                        try {
+                            setValue(LocalTime.parse(text, DateTimeFormatter.ofPattern("HH:mm")));
+                        } catch (Exception e2) {
+                            throw new IllegalArgumentException("Formato ora non valido: " + text);
+                        }
+                    }
+                }
+            }
+            @Override
+            public String getAsText() {
+                LocalTime value = (LocalTime) getValue();
+                return (value != null) ? value.format(DateTimeFormatter.ISO_LOCAL_TIME) : "";
             }
         });
         

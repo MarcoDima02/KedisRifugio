@@ -3,12 +3,16 @@ package com.rifugio.rifugio.entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class VisiteVeterinarie {
@@ -17,16 +21,23 @@ public class VisiteVeterinarie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_visita;
 
+    @NotNull(message = "La data è obbligatoria")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate data;
 
+    @NotNull(message = "L'ora è obbligatoria")
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime ora;
 
+    @NotNull(message = "L'animale è obbligatorio")
     @ManyToOne
     @JoinColumn (name = "id_animale", referencedColumnName = "id_animale")
     private AnagraficaAnimali id_animale;
 
+    @NotEmpty(message = "Il motivo è obbligatorio")
     private String motivo;
 
+    @NotEmpty(message = "L'esito è obbligatorio")
     private String esito;
 
     public Integer getId_visita() {
