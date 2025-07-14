@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rifugio.rifugio.dto.AttivitaRecente;
@@ -183,12 +185,42 @@ public class DashboardAdminController {
     // DASHBOARD ANIMALI
 
     @GetMapping("/animali")
-    public String getAnimali(Model model, HttpSession session) {
+    public String getAnimali(Model model, HttpSession session,
+                             @RequestParam(value = "specie", required = false) Integer specieId,
+                             @RequestParam(value = "razza", required = false) Integer razzaId,
+                             @RequestParam(value = "sesso", required = false) String sesso) {
         if (!isAdmin(session)) {
             return "redirect:/";
         }
-        model.addAttribute("animali", anagraficaAnimaleService.getAllAnagraficaAnimali());
-        model.addAttribute("razzaList", razzaService.getAllRazze());    
+        
+        // Ottieni tutti gli animali
+        List<AnagraficaAnimali> animali = anagraficaAnimaleService.getAllAnagraficaAnimali();
+        
+        // Applica i filtri se presenti
+        if (specieId != null) {
+            animali = animali.stream()
+                    .filter(a -> a.getSpecie() != null && a.getSpecie().getIdSpecie().equals(specieId))
+                    .collect(Collectors.toList());
+        }
+        
+        if (razzaId != null) {
+            animali = animali.stream()
+                    .filter(a -> a.getRazza() != null && a.getRazza().getIdRazza().equals(razzaId))
+                    .collect(Collectors.toList());
+        }
+        
+        if (sesso != null && !sesso.isEmpty()) {
+            Character sessoChar = sesso.charAt(0); // Converte la stringa in carattere
+            animali = animali.stream()
+                    .filter(a -> sessoChar.equals(a.getSesso()))
+                    .collect(Collectors.toList());
+        }
+        
+        // Aggiungi i dati al modello
+        model.addAttribute("animali", animali);
+        model.addAttribute("specie", specieService.getAllSpecie());
+        model.addAttribute("razze", razzaService.getAllRazze());
+        
         return "dashboard_lista_animali";
     }
 
