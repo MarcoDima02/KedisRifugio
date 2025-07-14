@@ -46,7 +46,10 @@
                     <input type="hidden" name="preserveView" value="true" />
                     
                     <div class="filter-field">
-                        <label for="ruolo">Ruolo:</label>
+                        <label for="ruolo">
+                            <i class="fas fa-user-shield"></i>
+                            Ruolo:
+                        </label>
                         <select name="ruolo" id="ruolo" class="filter-select">
                             <option value="">Tutti i ruoli</option>
                             <option value="USER" th:selected="${param.ruolo == 'USER'}">USER</option>
@@ -54,22 +57,34 @@
                         </select>
                     </div>
                     <div class="filter-field">
-                        <label for="nome">Nome:</label>
+                        <label for="nome">
+                            <i class="fas fa-signature"></i>
+                            Nome:
+                        </label>
                         <input type="text" name="nome" id="nome" class="filter-input" 
                                placeholder="Es: Mario, Luca..." th:value="${param.nome}" />
                     </div>
                     <div class="filter-field">
-                        <label for="cognome">Cognome:</label>
+                        <label for="cognome">
+                            <i class="fas fa-user-tag"></i>
+                            Cognome:
+                        </label>
                         <input type="text" name="cognome" id="cognome" class="filter-input" 
                                placeholder="Es: Rossi, Bianchi..." th:value="${param.cognome}" />
                     </div>
                     <div class="filter-field">
-                        <label for="email">Email:</label>
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email:
+                        </label>
                         <input type="text" name="email" id="email" class="filter-input" 
                                placeholder="Es: mario@email.com..." th:value="${param.email}" />
                     </div>
                     <div class="filter-field">
-                        <label for="codiceFiscale">Codice Fiscale:</label>
+                        <label for="codiceFiscale">
+                            <i class="fas fa-id-card"></i>
+                            Codice Fiscale:
+                        </label>
                         <input type="text" name="codiceFiscale" id="codiceFiscale" class="filter-input" 
                                placeholder="Es: RSSMRA..." th:value="${param.codiceFiscale}" />
                     </div>
