@@ -26,7 +26,7 @@
     </div>
 
     <!-- Form -->
-    <form th:action="@{/dashboard/admin/animali/save}" th:object="${animale}" method="post" enctype="multipart/form-data" novalidate>
+    <form th:action="@{/dashboard/admin/animali/save}" th:object="${animale}" method="post" enctype="multipart/form-data">
       
       <!-- Campi hidden necessari -->
       <input type="hidden" th:field="*{idCartellaClinica.idCartellaClinica}" />
@@ -143,7 +143,7 @@
             <div class="filter-field">
               <label for="vaccinazioni">Vaccinazioni (numero):</label>
               <input type="number" id="vaccinazioni" th:field="*{idCartellaClinica.vaccinazioni}" 
-                     min="0" max="50" />
+                     min="0" max="50" required/>
               <small class="form-help">Numero di vaccinazioni effettuate (0-5)</small>
             </div>
           </div>
