@@ -227,11 +227,11 @@
                     <div class="stat-label">Donazioni Totali</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">€<span th:text="${#numbers.formatDecimal(donazioni.stream().mapToDouble(d -> d.importo).sum(), 0, 2)}">0.00</span></div>
+                    <div class="stat-number">€<span th:text="${#numbers.formatDecimal(importoTotale, 0, 2)}">0.00</span></div>
                     <div class="stat-label">Importo Totale</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">€<span th:text="${donazioni.size() > 0 ? #numbers.formatDecimal(donazioni.stream().mapToDouble(d -> d.importo).average().orElse(0), 0, 2) : '0.00'}">0.00</span></div>
+                    <div class="stat-number">€<span th:text="${#numbers.formatDecimal(mediaPerDonazione, 0, 2)}">0.00</span></div>
                     <div class="stat-label">Media per Donazione</div>
                 </div>
             </div>

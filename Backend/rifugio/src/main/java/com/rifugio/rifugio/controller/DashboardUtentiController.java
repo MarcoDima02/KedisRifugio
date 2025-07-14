@@ -1,5 +1,7 @@
 package com.rifugio.rifugio.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rifugio.rifugio.entities.Adozioni;
+import com.rifugio.rifugio.entities.Donazioni;
 import com.rifugio.rifugio.entities.Utenti;
 import com.rifugio.rifugio.services.AdozioniService;
 import com.rifugio.rifugio.services.AnagraficaAnimaliService;
@@ -232,8 +235,16 @@ public class DashboardUtentiController {
         
         try {
             List<Donazioni> donazioni = donazioniService.getDonazioniByUtente(utente.getId_persona());
+            
+            // Calcola le statistiche delle donazioni
+            double importoTotale = donazioni.stream().mapToDouble(Donazioni::getImporto).sum();
+            double mediaPerDonazione = donazioni.isEmpty() ? 0.0 : importoTotale / donazioni.size();
+            
             model.addAttribute("donazioni", donazioni);
             model.addAttribute("utente", utente);
+            model.addAttribute("importoTotale", importoTotale);
+            model.addAttribute("mediaPerDonazione", mediaPerDonazione);
+            
             return "donazioni_utenti";
         } catch (Exception e) {
             e.printStackTrace();
